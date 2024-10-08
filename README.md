@@ -10,4 +10,7 @@ Creación y configuración de la BD:
 -
 -
 
+Ejecutar proyecto:
+Parado en la raíz del proyecto ejecutar:
+npm run dev
 
