@@ -21,6 +21,7 @@ const login = async (req, res) => {
         }
         else{
             console.log("usuario no encontrado")
+            res.json({codigo: -1, mensaje: "Usuario o contraseña incorrecta", payload: respuesta});
         }
         // res.json ({codigo: 200, mensaje: "Usuario añadido", payload: []});
     }

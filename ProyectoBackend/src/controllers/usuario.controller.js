@@ -19,7 +19,12 @@ const obtenerUsuario = async (req, res) => {
         const {id} = req.params
         const connection = await getConnection();
         const response = await connection.query("SELECT * from usuario where id = ?",id);
-        res.json({codigo: 200, mensaje: "OK", payload:  response});
+        if(response.length == 1){
+            res.json({codigo: 200, mensaje:"OK", payload: []})
+        }
+        else{
+            res.json({codigo: -1, mensaje:"Usuario no encontrado", payload: []})
+        }
     }
     catch(error){
             res.status(500);
