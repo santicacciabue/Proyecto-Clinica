@@ -13,7 +13,7 @@ const login = async (req, res) => {
         // }
 
         const connection = await getConnection();
-        const respuesta = await connection.query("SELECT id FROM usuario WHERE usuario = ? AND password = ?", [usuario, password]);
+        const respuesta = await connection.query("SELECT id FROM usuario WHERE dni = ? AND password = ?", [usuario, password]);
         console.log(respuesta);
         if(respuesta.length > 0){
             console.log("se encontro el usuario")
