@@ -1,8 +1,24 @@
 import { getConnection } from "./../database/database";
-
+const secret = process.env.secret;
+const jwt = require ("jsonwebtoken");
 // Obtener usuarios
 const obtenerUsuarios = async (req, res) => {
     try{
+        
+        const resultadoVerificar = verificarToken(req);
+        console.log(req);
+        if(resultadoVerificar.estado == false){
+            console.log("entro al if")
+            res.send(resultadoVerificar.error)
+        }
+        // console.log(resultadoVerificar);
+        // const payload = jwt.verify(token, secret)
+        // console.log(payload);
+        // console.log(token);
+
+        // if(Date.now() > payload.exp){
+        //     return res.status(401).send({error: "token expirado"});
+        // }
         const connection = await getConnection();
         const response = await connection.query("SELECT * from usuario");
         res.json({codigo: 200, mensaje: "OK", payload:  response});
@@ -11,6 +27,25 @@ const obtenerUsuarios = async (req, res) => {
             res.status(500);
             res.send(error.message);
     }
+}
+
+function verificarToken(req){
+    const token = req.headers.authorization;
+    if(!token){
+        return {estado: false, error: "Token no proporcionado"}
+    }
+    console.log("paso")
+    try{
+        const payload = jwt.verify(token, secret);
+        if(Date.now() > payload.exp){
+            return {estado: false, error: "Token expirado"}
+        }
+        return {estado: true};
+    }
+    catch(error){
+        return {estado: false, error: "Token inválido"}
+    }  
+
 }
 
 // Obtener usuarios
@@ -103,6 +138,8 @@ const actualizarUsuario = async (req, res) => {
         res.send(error.message);
     }
 }
+
+
 
 export const methods = {
     obtenerUsuarios,

@@ -1,5 +1,6 @@
 import { getConnection } from "./../database/database";
-
+const jwt = require ("jsonwebtoken");
+const secret = process.env.SECRET
 //crear usuario
 const login = async (req, res) => {
     try{
@@ -11,13 +12,18 @@ const login = async (req, res) => {
         //     usuario,
         //     password
         // }
-
         const connection = await getConnection();
-        const respuesta = await connection.query("SELECT id FROM usuario WHERE dni = ? AND password = ?", [usuario, password]);
+        const respuesta = await connection.query("SELECT id, nombre, apellido, rol  FROM usuario WHERE dni = ? AND password = ?", [usuario, password]);
         console.log(respuesta);
+        const token = jwt.sign({
+            sub: respuesta.id,
+            name: respuesta.nombre,
+            exp: Date.now() + 60 * 1000
+        }, secret);
+        console.log(token)
         if(respuesta.length > 0){
             console.log("se encontro el usuario")
-            res.json({codigo: 200, mensaje: "OK", payload: respuesta});
+            res.json({codigo: 200, mensaje: "OK", payload: respuesta, jwt: token});
         }
         else{
             console.log("usuario no encontrado")
