@@ -1,7 +1,7 @@
 - Gestión de Usuarios:
     . GET - /api/obtenerUsuarios
 
-    . GET - /api/obtenerUsuarios/:id
+    . GET - /api/obtenerUsuario/:id
 
     . POST - /api/crearUsuario
         body:
