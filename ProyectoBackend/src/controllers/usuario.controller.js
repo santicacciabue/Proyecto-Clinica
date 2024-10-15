@@ -6,19 +6,9 @@ const obtenerUsuarios = async (req, res) => {
     try{
         
         const resultadoVerificar = verificarToken(req);
-        console.log(req);
         if(resultadoVerificar.estado == false){
-            console.log("entro al if")
-            res.send(resultadoVerificar.error)
+            return res.send({codigo: -1, mensaje: resultadoVerificar.error})
         }
-        // console.log(resultadoVerificar);
-        // const payload = jwt.verify(token, secret)
-        // console.log(payload);
-        // console.log(token);
-
-        // if(Date.now() > payload.exp){
-        //     return res.status(401).send({error: "token expirado"});
-        // }
         const connection = await getConnection();
         const response = await connection.query("SELECT * from usuario");
         res.json({codigo: 200, mensaje: "OK", payload:  response});
@@ -51,6 +41,11 @@ function verificarToken(req){
 // Obtener usuarios
 const obtenerUsuario = async (req, res) => {
     try{
+
+        const resultadoVerificar = verificarToken(req);
+        if(resultadoVerificar.estado == false){
+            return res.send({codigo: -1, mensaje: resultadoVerificar.error})
+        }
         const {id} = req.params
         const connection = await getConnection();
         const response = await connection.query("SELECT * from usuario where id = ?",id);
@@ -70,6 +65,10 @@ const obtenerUsuario = async (req, res) => {
 //crear usuario
 const crearUsuario = async (req, res) => {
     try{
+        const resultadoVerificar = verificarToken(req);
+        if(resultadoVerificar.estado == false){
+            return res.send({codigo: -1, mensaje: resultadoVerificar.error})
+        }
         const {
             dni,
             apellido,
@@ -105,6 +104,10 @@ const crearUsuario = async (req, res) => {
 //UPDATE (todos los campos)
 const actualizarUsuario = async (req, res) => {
     try{
+        const resultadoVerificar = verificarToken(req);
+        if(resultadoVerificar.estado == false){
+            return res.send({codigo: -1, mensaje: resultadoVerificar.error})
+        }
         console.log(req.params);
         const {id} = req.params;
         const {

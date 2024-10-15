@@ -8,17 +8,13 @@ const login = async (req, res) => {
             usuario,
             password
         } = req.body
-        // const cuerpo = {
-        //     usuario,
-        //     password
-        // }
         const connection = await getConnection();
         const respuesta = await connection.query("SELECT id, nombre, apellido, rol  FROM usuario WHERE dni = ? AND password = ?", [usuario, password]);
         console.log(respuesta);
         const token = jwt.sign({
             sub: respuesta.id,
             name: respuesta.nombre,
-            exp: Date.now() + 60 * 1000
+            exp: Date.now() + 60 * 30000
         }, secret);
         console.log(token)
         if(respuesta.length > 0){
