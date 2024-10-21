@@ -5,6 +5,7 @@ import cors from "cors";
 //Routes
 import usuarioRoutes from "./routes/usuario.routes";
 import loginRoutes from "./routes/login.routes"
+import agendaRoutes from "./routes/agenda.routes"
 
 const app = express();
 
@@ -20,5 +21,6 @@ app.use(express.json());
 //Routes
 app.use("/api",usuarioRoutes);
 app.use("/api",loginRoutes);
+app.use("/api",agendaRoutes);
 
 export default app;
