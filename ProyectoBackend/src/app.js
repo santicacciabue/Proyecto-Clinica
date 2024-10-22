@@ -6,8 +6,8 @@ import cors from "cors";
 import usuarioRoutes from "./routes/usuario.routes";
 import loginRoutes from "./routes/login.routes"
 import agendaRoutes from "./routes/agenda.routes"
-import loginRoutes from "./routes/login.routes";
 import turnoRoutes from "./routes/turno.routes";
+import especialidadRoutes from "./routes/especialidad.routes"
 
 const app = express();
 
@@ -25,5 +25,6 @@ app.use("/api",usuarioRoutes);
 app.use("/api",loginRoutes);
 app.use("/api",agendaRoutes);
 app.use("/api",turnoRoutes);
+app.use("/api",especialidadRoutes);
 
 export default app;

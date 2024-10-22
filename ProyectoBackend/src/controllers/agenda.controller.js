@@ -12,8 +12,7 @@ const obtenerAgenda = async (req, res) => {
         }
         const connection = await getConnection();
         const response = await connection.query("SELECT * from agenda where id_medico = ?",id_medico);
-        // res.json({codigo: 200, mensaje: "OK", payload:  response});
-        if(response){
+        if(response.length > 0){
             res.json({codigo: 200, mensaje:"OK", payload: response})
         }
         else{
@@ -71,6 +70,7 @@ const crearAgenda = async (req, res) => {
 }
 
 const modificarAgenda = async (req, res) => {
+    let connection;
     try{
         const { id } = req.params
         const {
@@ -91,14 +91,32 @@ const modificarAgenda = async (req, res) => {
         if(resultadoVerificar.estado == false){
             return res.send({codigo: -1, mensaje: resultadoVerificar.error})
         }
-        const connection = await getConnection();
-        const response = await connection.query("UPDATE agenda SET ? where id = ?",[registroAgenda,id]);
-        res.json({codigo: 200, mensaje: "OK", payload:  response});
+        connection = await getConnection();
+        const responseSelect = await connection.query("SELECT * FROM agenda where id = ?",id);
+        console.log(responseSelect)
+        if(responseSelect.length === 1){
+            console.log("entro")
+            const connection = await getConnection();
+            const response = await connection.query("UPDATE agenda SET ? where id = ?",[registroAgenda,id]);
+            if(response.affectedRows > 0){
+                res.json({codigo: 200, mensaje: "Agenda modificada", payload:  []});
+            }
+            else{
+                res.json({codigo: 1, mensaje: "Error modificando agenda", payload:  []});
+            }
+        }
+        else{
+            res.json({codigo: -1, mensaje: "No existe agenda con el id proporcionado", payload: []});
+        }
+        
+
+        // res.json({codigo: 200, mensaje: "OK", payload:  response});
     }
     catch(error){
             res.status(500);
             res.send(error.message);
     }
+    
 
 
 
@@ -132,7 +150,6 @@ function verificarToken(req){
     if(!token){
         return {estado: false, error: "Token no proporcionado"}
     }
-    console.log("paso")
     try{
         const payload = jwt.verify(token, secret);
         if(Date.now() > payload.exp){

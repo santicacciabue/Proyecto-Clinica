@@ -69,5 +69,36 @@
                 "id_cobertura": tinyint
             }
     .DELETE - /eliminarTurnoPaciente/:id
+    
+- Especialidad
+    . GET - /api/obtenerEspecialidades
+    . GET - /api/obtenerEspecialidadesMedico/:id_medico
+    . GET - /api/obtenerCoberturas
+    . POST - api/crearMedicoEspecialidad 
+        body:
+        {
+            "id_medico": number,
+            "id_especialidad": number
+        }
+- Gestión de agenda
+    . GET - /api/obtenerAgenda/:id_medico
+    . POST - /api/crearAgenda
+        body:
+        {
+            "id_medico": number,
+            "id_especialidad": number,
+            "fecha": string (AAAA-MM-DD),
+            "hora_entrada": string (HH:mm),
+            "hora_salida": string (HH:mm)
+        }
+    . PUT - /api/modificarAgenda/:id_agenda
+        body: 
+        {
+            "id_medico": number,
+            "id_especialidad": number,
+            "fecha": string (AAAA-MM-DD),
+            "hora_entrada": string (HH:mm),
+            "hora_salida": string (HH:mm)
+        }
 
         
