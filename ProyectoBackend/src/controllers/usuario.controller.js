@@ -65,10 +65,10 @@ const obtenerUsuario = async (req, res) => {
 //crear usuario
 const crearUsuario = async (req, res) => {
     try{
-        const resultadoVerificar = verificarToken(req);
-        if(resultadoVerificar.estado == false){
-            return res.send({codigo: -1, mensaje: resultadoVerificar.error})
-        }
+        // const resultadoVerificar = verificarToken(req);
+        // if(resultadoVerificar.estado == false){
+        //     return res.send({codigo: -1, mensaje: resultadoVerificar.error})
+        // }
         const {
             dni,
             apellido,
@@ -92,8 +92,8 @@ const crearUsuario = async (req, res) => {
         }
 
         const connection = await getConnection();
-        await connection.query("INSERT INTO usuario set ?",usuario)
-        res.json ({codigo: 200, mensaje: "Usuario añadido", payload: []});
+        const response = await connection.query("INSERT INTO usuario set ?",usuario)
+        res.json ({codigo: 200, mensaje: "Usuario añadido", payload: [{id_usuario: response.insertId}]});
     }
     catch(error){
         res.status(500);
