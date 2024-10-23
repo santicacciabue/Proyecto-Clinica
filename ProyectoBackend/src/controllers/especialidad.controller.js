@@ -69,6 +69,29 @@ const obtenerEspecialidadesMedico = async (req, res) => {
     
 }
 
+const obtenerMedicoPorEspecialidad = async (req, res) => {
+    try{
+        const {id_especialidad } = req.params;
+        const resultadoVerificar = verificarToken(req);
+        if(resultadoVerificar.estado == false){
+            return res.send({codigo: -1, mensaje: resultadoVerificar.error})
+        }
+        const connection = await getConnection();
+        const response = await connection.query("SELECT ME.id_medico, U.nombre, U.apellido, ME.id_especialidad from medico_especialidad ME join usuario U on ME.id_medico = U.id where id_especialidad = ? ",id_especialidad);
+        if(response.length > 0){
+            res.json({codigo: 200, mensaje:"OK", payload: response})
+        }
+        else{
+            res.json({codigo: 200, mensaje:"OK: No existe médico para esa especialidad", payload: []})
+        }
+    }
+    catch(error){
+            res.status(500);
+            res.send(error.message);
+    }
+    
+}
+
 const crearMedicoEspecialidad = async (req, res) => {
     try{
         const {id_medico, id_especialidad } = req.body;
@@ -118,5 +141,6 @@ export const methods = {
     obtenerEspecialidades,
     obtenerEspecialidadesMedico,
     crearMedicoEspecialidad,
-    obtenerCoberturas
+    obtenerCoberturas,
+    obtenerMedicoPorEspecialidad
 }

@@ -73,6 +73,7 @@
 - Especialidad
     . GET - /api/obtenerEspecialidades
     . GET - /api/obtenerEspecialidadesMedico/:id_medico
+    . GET - /api/obtenerMedicoPorEspecialidad/:id_especialidad
     . GET - /api/obtenerCoberturas
     . POST - api/crearMedicoEspecialidad 
         body:
