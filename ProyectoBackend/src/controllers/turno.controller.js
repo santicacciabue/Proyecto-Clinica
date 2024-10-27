@@ -11,7 +11,7 @@ const obtenerTurnoPaciente = async (req, res) => {
         }
         const {id} = req.params
         const connection = await getConnection();
-        const response = await connection.query("SELECT * from turno where id_paciente = ?",id);
+        const response = await connection.query("SELECT T.id as id_turno, T.nota, T.fecha, T.hora, T.id_paciente, T.id_cobertura, U.nombre as nombre_medico, U.apellido as apellido_medico, E.id as id_especialidad, E.descripcion as especialidad from turno T         join agenda A on T.id_agenda = A.id join usuario U on A.id_medico = U.id join especialidad E on A.id_especialidad = E.id where id_paciente = ?",id);
         res.json({codigo: 200, mensaje: "OK", payload:  response});
     }
     catch(error){
