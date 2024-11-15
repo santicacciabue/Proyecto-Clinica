@@ -10,7 +10,7 @@ const obtenerUsuarios = async (req, res) => {
             return res.send({codigo: -1, mensaje: resultadoVerificar.error})
         }
         const connection = await getConnection();
-        const response = await connection.query("SELECT * from usuario");
+        const response = await connection.query("SELECT u.*,c.nombre as nombre_cobertura from usuario u left join cobertura c ON c.id = u.id_cobertura");
         res.json({codigo: 200, mensaje: "OK", payload:  response});
     }
     catch(error){
@@ -48,7 +48,7 @@ const obtenerUsuario = async (req, res) => {
         }
         const {id} = req.params
         const connection = await getConnection();
-        const response = await connection.query("SELECT * from usuario where id = ?",id);
+        const response = await connection.query("SELECT u.*,c.nombre as nombre_cobertura from usuario u left join cobertura c ON c.id = u.id_cobertura where u.id = ?",id);
         if(response.length == 1){
             res.json({codigo: 200, mensaje:"OK", payload: response})
         }
@@ -65,10 +65,6 @@ const obtenerUsuario = async (req, res) => {
 //crear usuario
 const crearUsuario = async (req, res) => {
     try{
-        // const resultadoVerificar = verificarToken(req);
-        // if(resultadoVerificar.estado == false){
-        //     return res.send({codigo: -1, mensaje: resultadoVerificar.error})
-        // }
         const {
             dni,
             apellido,
@@ -77,7 +73,8 @@ const crearUsuario = async (req, res) => {
             password,
             rol,
             email,
-            telefono
+            telefono,
+            id_cobertura
         } = req.body
 
         const usuario = {
@@ -88,7 +85,8 @@ const crearUsuario = async (req, res) => {
             password,
             rol,
             email,
-            telefono
+            telefono,
+            id_cobertura
         }
 
         const connection = await getConnection();
@@ -118,7 +116,8 @@ const actualizarUsuario = async (req, res) => {
             password,
             rol,
             email,
-            telefono
+            telefono,
+            id_cobertura
         } = req.body
 
         const usuario = {
@@ -129,7 +128,8 @@ const actualizarUsuario = async (req, res) => {
             password,
             rol,
             email,
-            telefono
+            telefono,
+            id_cobertura
         }
 
         const connection = await getConnection();
