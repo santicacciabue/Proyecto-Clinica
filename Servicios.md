@@ -14,7 +14,8 @@
             "rol": string (operador, administrador, paciente, medico),
             "email": string,
             "telefono": string,
-            "dni": string
+            "dni": string,
+            "id_cobertura": number
         }
     . PUT - /actualizarUsuario/:id
         body:
