@@ -26,10 +26,6 @@ const obtenerEspecialidades = async (req, res) => {
 }
 const obtenerCoberturas = async (req, res) => {
     try{
-        const resultadoVerificar = verificarToken(req);
-        if(resultadoVerificar.estado == false){
-            return res.send({codigo: -1, mensaje: resultadoVerificar.error})
-        }
         const connection = await getConnection();
         const response = await connection.query("SELECT * from cobertura");
         if(response.length > 0){
