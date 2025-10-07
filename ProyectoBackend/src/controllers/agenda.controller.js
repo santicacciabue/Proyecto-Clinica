@@ -138,10 +138,6 @@ const modificarAgenda = async (req, res) => {
 //             res.status(500);
 //             res.send(error.message);
 //     }
-
-
-
-    
 // }
 
 

@@ -90,7 +90,7 @@ const crearUsuario = async (req, res) => {
         }
 
         const connection = await getConnection();
-        const response = await connection.query("INSERT INTO usuario set ?",usuario)
+        const response = await connection.query("INSERT INTO usuario set ?",usuario);
         res.json ({codigo: 200, mensaje: "Usuario añadido", payload: [{id_usuario: response.insertId}]});
     }
     catch(error){
