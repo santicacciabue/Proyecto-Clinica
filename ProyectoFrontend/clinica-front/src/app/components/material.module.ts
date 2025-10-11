@@ -1,37 +1,28 @@
-// src/app/shared/material.module.ts
+
 
 import { NgModule } from '@angular/core';
-
-// Componentes de Material que usaremos globalmente
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
+import { MatCardModule } from '@angular/material/card';
+import { MatTooltipModule } from '@angular/material/tooltip'; // Para el ícono 'info' en el header
+import { MatDatepickerModule } from '@angular/material/datepicker'; 
+import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
   imports: [
-    MatToolbarModule,
-    MatIconModule,
-    MatButtonModule,
-    MatCardModule,
-    MatInputModule,
-    MatFormFieldModule,
-    MatDialogModule,
-    MatSelectModule,
+    MatToolbarModule, MatIconModule, MatButtonModule, MatInputModule, 
+    MatFormFieldModule, MatDialogModule, MatSelectModule, MatCardModule,
+    MatTooltipModule, MatDatepickerModule, MatNativeDateModule
   ],
   exports: [
-    MatToolbarModule,
-    MatIconModule,
-    MatButtonModule,
-    MatCardModule,
-    MatInputModule,
-    MatFormFieldModule,
-    MatDialogModule,
-    MatSelectModule,
+    MatToolbarModule, MatIconModule, MatButtonModule, MatInputModule, 
+    MatFormFieldModule, MatDialogModule, MatSelectModule, MatCardModule,
+    MatTooltipModule, MatDatepickerModule, MatNativeDateModule
   ]
 })
 export class MaterialModule { }

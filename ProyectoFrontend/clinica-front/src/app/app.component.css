@@ -1,0 +1,26 @@
+/* src/styles.css (o styles.scss) */
+
+/* Configuración básica para el layout */
+
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-color: #f4f4f4; /* Fondo general muy claro */
+}
+
+/* Aplicar CSS Grid al contenedor principal */
+.app-container {
+  display: grid;
+  /* Define las filas: auto para el header, 1fr para el contenido principal (que ocupa todo el espacio restante), y auto para el footer */
+  grid-template-rows: auto 1fr auto; 
+  min-height: 100vh; /* Asegura que el contenedor principal ocupe toda la altura de la vista */
+}
+
+/* Estilos para el contenido principal */
+main {
+  padding: 20px;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto; /* Centrar el contenido principal */
+}

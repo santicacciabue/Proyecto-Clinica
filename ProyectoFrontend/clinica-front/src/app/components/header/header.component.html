@@ -1,24 +1,37 @@
 <mat-toolbar color="primary">
-  <span class="title">Clínica Virtual</span>
+    <span class="title" routerLink="/">Clínica Virtual</span>
+    <span class="welcome-text">Bienvenido a la clínica virtual</span>
 
-  <span class="spacer"></span> <ng-container *ngIf="!isLoggedIn">
-    [cite_start]<span class="welcome-text">Bienvenido a la clínica virtual [cite: 5]</span>
-    <button mat-flat-button color="accent" (click)="openLogin()">
-      [cite_start]Iniciar sesión [cite: 9]
-    </button>
-    <button mat-stroked-button color="accent" routerLink="/auth/registro">
-      [cite_start]Registrarse [cite: 9]
-    </button>
-  </ng-container>
+    <span class="spacer"></span> 
+    
+    <ng-container *ngIf="(sesionIniciada$ | async) === false">
+        
+        
+        <button mat-flat-button color="accent" (click)="abrirLogin()">
+            Iniciar sesión
+        </button>
+        <button mat-stroked-button color="accent" routerLink="/auth/registro">
+            Registrarse
+        </button>
+    </ng-container>
 
-  <ng-container *ngIf="isLoggedIn">
-    <span class="user-name">{{ userName }}</span>
-    <mat-icon
-      [matTooltip]="userType"
-      matTooltipPosition="below"
-      aria-label="Tipo de usuario"
-      >info</mat-icon
-    >
-    [cite_start]<button mat-button (click)="logout()">Cerrar sesión [cite: 12]</button>
-  </ng-container>
+    <ng-container *ngIf="(sesionIniciada$ | async) === true">
+        
+        <span class="user-info">
+            <span>Hola, {{ obtenerNombreUsuario() }}</span>
+            
+            <button 
+                mat-icon-button 
+                [matTooltip]="'Rol: ' +  obtenerRolUsuario()" 
+                matTooltipPosition="below" 
+                aria-label="Información del rol de usuario">
+                <mat-icon>info</mat-icon>
+            </button>
+        </span>
+
+        <button mat-button (click)="cerrarSesion()">
+            Cerrar sesión
+        </button>
+    </ng-container>
+
 </mat-toolbar>

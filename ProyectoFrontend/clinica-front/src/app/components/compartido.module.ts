@@ -1,11 +1,11 @@
+// src/app/compartido.module.ts
+
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MaterialModule } from './material.module';
-import { HeaderComponent } from './header/header.component'; // Lo crearemos en el siguiente paso
-import { FooterComponent } from './footer/footer.component'; // Lo crearemos en el siguiente paso
-import { RouterModule } from '@angular/router'; // Necesario para la navegación
-
-
+import { RouterModule } from '@angular/router'; // Para que el Router funcione
+import { HeaderComponent } from '../components/header/header.component'; 
+import { FooterComponent } from '../components/footer/footer.component'; 
+import { MaterialModule } from './material.module'; // Importa el módulo de Material
 
 @NgModule({
   declarations: [
@@ -14,14 +14,14 @@ import { RouterModule } from '@angular/router'; // Necesario para la navegación
   ],
   imports: [
     CommonModule,
-    MaterialModule,
-    RouterModule 
+    RouterModule,
+    MaterialModule 
   ],
   exports: [
-    MaterialModule, // Exporta MaterialModule para que otros lo usen fácilmente
     HeaderComponent,
-    FooterComponent
-    // Aquí puedes añadir otros módulos o componentes compartidos como el LoginModal
+    FooterComponent,
+    RouterModule, // Exporta RouterModule y MaterialModule para que los otros módulos puedan usar la navegación y los componentes de Material
+    MaterialModule 
   ]
 })
 export class CompartidoModule { }

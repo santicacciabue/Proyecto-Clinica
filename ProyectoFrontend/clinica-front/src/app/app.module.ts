@@ -1,32 +1,25 @@
+// src/app/app.module.ts
+
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // Asegúrate de tener esto
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-// import { ServicesComponent } from './services/services/services.component';
-import { HeaderComponent } from './components/header/header.component';
-import { FooterComponent } from './components/footer/footer.component';
-// import { AuthComponent } from './auth/auth.component';
-// import { PacientesComponent } from './pacientes/pacientes.component';
-// import { MedicosComponent } from './medicos/medicos.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { CompartidoModule } from './components/compartido.module';
+import { CompartidoModule } from '../app/components/compartido.module'; // Importa tu módulo compartido
+import { BienvenidaComponent } from '../app/components/bienvenida/bienvenida.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
-  // declarations: [
-  //   AppComponent,
-  //   ServicesComponent,
-  //   HeaderComponent,
-  //   FooterComponent,
-  //   AuthComponent,
-  //   PacientesComponent,
-  //   MedicosComponent
-  // ],
+  declarations: [
+    AppComponent,
+    BienvenidaComponent
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    CompartidoModule
+    CompartidoModule, 
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
