@@ -1,7 +1,10 @@
 import { getConnection } from "./../database/database";
+import { verificarToken } from "./usuario.controller.js";
 
 const secret = process.env.secret;
 const jwt = require ("jsonwebtoken");
+
+
 
 const obtenerEspecialidades = async (req, res) => {
     try{
@@ -73,12 +76,22 @@ const obtenerMedicoPorEspecialidad = async (req, res) => {
             return res.send({codigo: -1, mensaje: resultadoVerificar.error})
         }
         const connection = await getConnection();
-        const response = await connection.query("SELECT ME.id_medico, U.nombre, U.apellido, ME.id_especialidad from medico_especialidad ME join usuario U on ME.id_medico = U.id where id_especialidad = ? ",id_especialidad);
+        const query = `
+            SELECT DISTINCT 
+                ME.id_medico AS id,        
+                U.nombre, 
+                U.apellido
+            FROM medico_especialidad ME 
+            JOIN usuario U ON ME.id_medico = U.id
+            JOIN agenda A ON ME.id_medico = A.id_medico    -- <--- AÑADIDO: VINCULA CON AGENDA
+            WHERE ME.id_especialidad = ?
+        `;
+        const response = await connection.query(query, id_especialidad);
         if(response.length > 0){
             res.json({codigo: 200, mensaje:"OK", payload: response})
         }
         else{
-            res.json({codigo: 200, mensaje:"OK: No existe médico para esa especialidad", payload: []})
+            res.json({codigo: 200, mensaje:"OK: No existe médico con agenda para esa especialidad", payload: []})
         }
     }
     catch(error){
@@ -112,24 +125,6 @@ const crearMedicoEspecialidad = async (req, res) => {
     
 }
 
-
-function verificarToken(req){
-    const token = req.headers.authorization;
-    if(!token){
-        return {estado: false, error: "Token no proporcionado"}
-    }
-    try{
-        const payload = jwt.verify(token, secret);
-        if(Date.now() > payload.exp){
-            return {estado: false, error: "Token expirado"}
-        }
-        return {estado: true};
-    }
-    catch(error){
-        return {estado: false, error: "Token inválido"}
-    }  
-
-}
 
 
 

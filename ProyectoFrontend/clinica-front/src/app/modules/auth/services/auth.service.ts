@@ -2,40 +2,41 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 // Importamos map para transformar la respuesta del servidor
 import { Observable, BehaviorSubject, map } from 'rxjs'; 
+import { jwtDecode } from 'jwt-decode';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root'
 })
 export class AuthService {
-  
-  // URL base de tu API de Node.js
-  private urlBaseApi = 'http://localhost:4000/api'; 
-  
-  // Usamos BehaviorSubject para guardar el estado de la sesión (true/false)
-  private estadoSesion = new BehaviorSubject<boolean>(this.verificarToken());
+ 
+  // URL base de tu API de Node.js
+  private urlBaseApi = 'http://localhost:4000/api'; 
+  
+  // Usamos BehaviorSubject para guardar el estado de la sesión (true/false)
+  private estadoSesion = new BehaviorSubject<boolean>(this.verificarToken());
 
-  // Este Observable es para que otros componentes (ej. Header) se suscriban y reaccionen a los cambios
-  sesionIniciada$ = this.estadoSesion.asObservable(); 
+  // Este Observable es para que otros componentes (ej. Header) se suscriban y reaccionen a los cambios
+  sesionIniciada$ = this.estadoSesion.asObservable(); 
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) { }
 
-  // --- MÉTODOS DE UTILIDAD INTERNA ---
+  // --- MÉTODOS DE UTILIDAD INTERNA ---
 
-  private verificarToken(): boolean {
+  private verificarToken(): boolean {
     // Comprueba si existe el token en LocalStorage
-     return !!localStorage.getItem('AuthToken');
-  }
+     return !!localStorage.getItem('token_acceso');
+  }
 
-  // --- MÉTODOS PARA LLAMADAS A LA API ---
+  // --- MÉTODOS PARA LLAMADAS A LA API ---
 
-  // 1. OBTENER COBERTURAS (GET /api/coberturas)
-  obtenerCoberturas(): Observable<any[]> {
+  // 1. OBTENER COBERTURAS (GET /api/coberturas)
+  obtenerCoberturas(): Observable<any[]> {
     // Apuntamos a la ruta exacta de tu controlador de "Clínica"
     // El Back-end devuelve un array dentro de 'payload' si el código es 200.
     return this.http.get<any[]>(`${this.urlBaseApi}/obtenerCoberturas`).pipe(
         map((respuestaApi: any) => respuestaApi.payload)
     );
-  }
+  }
 
 // Función de utilidad para formatear la fecha a 'YYYY-MM-DD'
   private formatearFecha(fecha: Date | string): string {
@@ -54,8 +55,8 @@ export class AuthService {
   }
 
 
-  // 2. REGISTRAR PACIENTE (POST /crearUsuario)
-  registrarPaciente(datosUsuario: any): Observable<any> {
+  // 2. REGISTRAR PACIENTE (POST /crearUsuario)
+  registrarPaciente(datosUsuario: any): Observable<any> {
     
     // --- PASO CRÍTICO: ADAPTAR DATOS PARA EL BACK-END ---
     const datosParaApi = {
@@ -75,8 +76,8 @@ export class AuthService {
     delete datosParaApi.repeatPassword;
 
     // Ahora sí, enviamos el objeto 'datosParaApi' a la ruta correcta
-    return this.http.post(`${this.urlBaseApi}/crearUsuario`, datosParaApi);
-  }
+    return this.http.post(`${this.urlBaseApi}/crearUsuario`, datosParaApi);
+  }
 
   // 3. INICIAR SESIÓN (POST /login)
   iniciarSesion(credenciales: any): Observable<any> {
@@ -107,21 +108,62 @@ export class AuthService {
     );
   }
 
+ 
+
   // 4. CERRAR SESIÓN
-  cerrarSesion(): void {
-    localStorage.removeItem('token_acceso');
-    localStorage.removeItem('rol_usuario');
-    localStorage.removeItem('nombre_usuario');
-    this.estadoSesion.next(false);
-  }
+  cerrarSesion(): void {
+    localStorage.removeItem('token_acceso');
+    localStorage.removeItem('rol_usuario');
+    localStorage.removeItem('nombre_usuario');
+    this.estadoSesion.next(false);
+  }
 
-  // --- MÉTODOS DE ACCESO PÚBLICO ---
+  // --- MÉTODOS DE ACCESO PÚBLICO ---
 
-  obtenerNombreCompleto(): string | null {
-    return localStorage.getItem('nombre_usuario');
-  }
+  // 5. METODO PÚBLICO PARA EL GUARD
+  isLoggedIn(): boolean {
+      // Simplemente llama al método privado corregido
+      return this.verificarToken();
+  }
+
+  obtenerNombreCompleto(): string | null {
+    return localStorage.getItem('nombre_usuario');
+  }
   
-  obtenerRolUsuario(): string | null {
-    return localStorage.getItem('rol_usuario');
-  }
+  obtenerRolUsuario(): string | null {
+    return localStorage.getItem('rol_usuario');
+  }
+
+ /**
+     * Decodifica el token JWT almacenado y devuelve los datos del usuario (payload).
+     * @returns Los datos del usuario o null si no hay token o es inválido.
+     */
+    obtenerDatosUsuario(): any {
+        const token = localStorage.getItem('token_acceso');
+        
+        if (!token) {
+            return null;
+        }
+
+        try {
+            // Decodifica el token para obtener el payload
+            const payload: any = jwtDecode(token);
+            console.log(payload)
+            // CRÍTICO: AJUSTA LOS NOMBRES DE LAS PROPIEDADES 
+            // a como se llaman REALMENTE en el token de tu back-end.
+            return {
+              id: payload.id, // Asumiendo que el ID es 'id' o 'id_usuario'
+              nombre: payload.nombre,
+              apellido: payload.apellido,
+              rol: payload.rol,
+              id_cobertura: payload.id_cobertura, 
+              nombre_cobertura: payload.nombre_cobertura
+          }
+        } catch (error) {
+            console.error("Error al decodificar el token:", error);
+            // Esto también manejará la expiración si tu backend usa el campo 'exp'
+            this.cerrarSesion();
+            return null;
+        }
+    }
 }

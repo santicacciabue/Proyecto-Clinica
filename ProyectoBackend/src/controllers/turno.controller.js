@@ -1,4 +1,5 @@
 import { getConnection } from "./../database/database";
+import { verificarToken } from "./usuario.controller.js";
 const secret = process.env.secret;
 const jwt = require ("jsonwebtoken");
 
@@ -41,6 +42,40 @@ const obtenerTurnosMedico = async (req, res) => {
     }
 }
 
+const obtenerHorasOcupadas = async (req, res) => {
+    try {
+        const resultadoVerificar = verificarToken(req);
+        if(resultadoVerificar.estado == false){
+            return res.send({codigo: -1, mensaje: resultadoVerificar.error})
+        }
+
+        // Asumimos que sigue usando POST con id_medico y fecha en el body
+        const { id_medico, fecha } = req.body; 
+
+        if (!id_medico || !fecha) {
+            return res.status(400).json({ codigo: -1, mensaje: "Faltan parámetros: id_medico o fecha" });
+        }
+        
+        const connection = await getConnection();
+        
+        // QUERY SIMPLE: Solo trae la columna 'hora'
+        const query = `
+            SELECT T.hora 
+            FROM turno T 
+            JOIN agenda A ON T.id_agenda = A.id 
+            WHERE A.id_medico = ? AND T.fecha = ?
+        `;
+
+        const response = await connection.query(query, [id_medico, fecha]);
+        
+        // Response será un array de objetos: [{ hora: '09:00' }, { hora: '10:00' }]
+        res.json({ codigo: 200, mensaje: "OK", payload: response });
+    } catch (error) {
+        res.status(500).json({ codigo: 500, mensaje: "Error del servidor", error: error.message });
+    }
+};
+
+
 //Crear turno para un paciente
 const asignarTurnoPaciente = async (req, res) => {
     try {
@@ -55,8 +90,15 @@ const asignarTurnoPaciente = async (req, res) => {
         await connection.query("INSERT INTO turno SET ?",turno)
        res.json({codigo: 200, message: "Turno asignado correctamente", payload: []})
     } catch (error) {
-        res.status(500);
-        res.send(error.message);
+        // Imprime el error de SQL detallado en la consola del servidor
+        console.error("ERROR AL ASIGNAR TURNO:", error.message); 
+    
+        res.status(500).json({ 
+            codigo: 500, 
+            mensaje: "Error interno del servidor al asignar turno. Revise los logs del servidor.", 
+            detalle_error: error.message // Puedes enviar el detalle para debug rápido si quieres
+        });
+        
     }
 }
 
@@ -100,26 +142,11 @@ const eliminarTurnoPaciente = async (req, res) => {
     }
 }
 
-function verificarToken(req){
-    const token = req.headers.authorization;
-    if(!token){
-        return {estado: false, error: "Token no proporcionado"}
-    }
-    try{
-        const payload = jwt.verify(token, secret);
-        if(Date.now() > payload.exp){
-            return {estado: false, error: "Token expirado"}
-        }
-        return {estado: true};
-    }
-    catch(error){
-        return {estado: false, error: "Token inválido"}
-    }  
-}
 
 export const methods = {
     obtenerTurnoPaciente,
     obtenerTurnosMedico,
+    obtenerHorasOcupadas,
     asignarTurnoPaciente,
     actualizarTurnoPaciente,
     eliminarTurnoPaciente

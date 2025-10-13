@@ -1,5 +1,5 @@
 import { getConnection } from "./../database/database";
-
+import { verificarToken } from "./usuario.controller.js";
 const secret = process.env.secret;
 const jwt = require ("jsonwebtoken");
 
@@ -140,24 +140,6 @@ const modificarAgenda = async (req, res) => {
 //     }
 // }
 
-
-function verificarToken(req){
-    const token = req.headers.authorization;
-    if(!token){
-        return {estado: false, error: "Token no proporcionado"}
-    }
-    try{
-        const payload = jwt.verify(token, secret);
-        if(Date.now() > payload.exp){
-            return {estado: false, error: "Token expirado"}
-        }
-        return {estado: true};
-    }
-    catch(error){
-        return {estado: false, error: "Token inválido"}
-    }  
-
-}
 
 
 

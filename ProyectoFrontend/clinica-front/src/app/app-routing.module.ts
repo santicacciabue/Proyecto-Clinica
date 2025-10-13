@@ -6,6 +6,8 @@ const routes: Routes = [
   
   { path: '', component: BienvenidaComponent },
   { path: 'auth', loadChildren: () => import('./modules/auth/auth.module').then(m => m.AuthModule)},
+  
+  { path: 'paciente', loadChildren: () => import('./modules/paciente/paciente.module').then(m => m.PacienteModule) },
 
 ];
 

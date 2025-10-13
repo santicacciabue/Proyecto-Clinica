@@ -4,30 +4,55 @@ const secret = process.env.SECRET
 //crear usuario
 const login = async (req, res) => {
     try{
-        const {
-            usuario,
-            password
-        } = req.body
+        const { usuario, password } = req.body
         const connection = await getConnection();
-        const respuesta = await connection.query("SELECT id, nombre, apellido, rol  FROM usuario WHERE dni = ? AND password = ?", [usuario, password]);
-        console.log(respuesta);
-        const token = jwt.sign({
-            sub: respuesta.id,
-            name: respuesta.nombre,
-            exp: Date.now() + 60 * 30000
-        }, secret);
-        console.log(token)
+        
+        // Esta consulta SQL busca un usuario que coincida con el DNI y la contraseña proporcionados
+        // y obtiene también información relacionada de la tabla 'cobertura' mediante un LEFT JOIN.
+        const respuesta = await connection.query(
+            `SELECT 
+                U.id, U.nombre, U.apellido, U.rol, U.id_cobertura,
+                C.nombre AS nombre_cobertura
+            FROM usuario U
+            LEFT JOIN cobertura C ON C.id = U.id_cobertura
+            WHERE U.dni = ? AND U.password = ?`, 
+            [usuario, password]
+        );
+        
+        // VERIFICACIÓN CLAVE: Si se encontró al menos una fila (el usuario)
         if(respuesta.length > 0){
-            console.log("se encontro el usuario")
-            res.json({codigo: 200, mensaje: "OK", payload: respuesta, jwt: token});
+            const datosUsuario = respuesta[0]; // Tomamos la primera (y única) fila
+            
+            // CREACIÓN DEL PAYLOAD DEL JWT DENTRO DE LA VERIFICACIÓN
+            const payload = {
+                id: datosUsuario.id, 
+                rol: datosUsuario.rol,
+                id_cobertura: datosUsuario.id_cobertura,
+                nombre: datosUsuario.nombre, 
+                apellido: datosUsuario.apellido,
+                nombre_cobertura: datosUsuario.nombre_cobertura,
+            };
+
+            const token = jwt.sign(payload, secret, { expiresIn: '8h' });
+            
+            console.log("se encontro el usuario");
+            
+            // RESPUESTA DE ÉXITO
+            res.json({
+                codigo: 200, 
+                mensaje: "OK", 
+                payload: respuesta, 
+                jwt: token
+            });
         }
         else{
-            console.log("usuario no encontrado")
-            res.json({codigo: -1, mensaje: "Usuario o contraseña incorrecta", payload: respuesta});
+            // RESPUESTA DE ERROR (Usuario no encontrado)
+            console.log("usuario no encontrado");
+            res.json({codigo: -1, mensaje: "Usuario o contraseña incorrecta", payload: []});
         }
-        // res.json ({codigo: 200, mensaje: "Usuario añadido", payload: []});
     }
     catch(error){
+        console.error("ERROR EN LOGIN:", error); 
         res.status(500);
         res.send(error.message);
     }

@@ -7,7 +7,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CompartidoModule } from '../app/components/compartido.module'; // Importa tu módulo compartido
 import { BienvenidaComponent } from '../app/components/bienvenida/bienvenida.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { JwtInterceptor } from './interceptors/jwt.interceptor';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,13 @@ import { HttpClientModule } from '@angular/common/http';
     CompartidoModule, 
     HttpClientModule,
   ],
-  providers: [],
+  providers: [ // ACA SE REGISTRA EL INTERCEPTOR
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: JwtInterceptor,
+      multi: true // Le dice a Angular que pueden haber múltiples interceptores
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
