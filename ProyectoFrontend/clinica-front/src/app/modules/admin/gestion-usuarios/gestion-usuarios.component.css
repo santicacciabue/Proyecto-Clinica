@@ -1,0 +1,17 @@
+/* src/app/modules/admin/gestion-usuarios/gestion-usuarios.component.css */
+
+/* Estilo para ocultar el grupo de especialidad cuando no se necesita */
+.hidden-field {
+    display: none !important;
+}
+/* Estilo para que los inputs en SweetAlert se vean mejor */
+.swal2-content-admin input, 
+.swal2-content-admin select {
+    margin-bottom: 10px;
+}
+.swal2-content-admin .swal2-label {
+    display: block;
+    text-align: left;
+    margin-top: 5px;
+    font-weight: bold;
+}

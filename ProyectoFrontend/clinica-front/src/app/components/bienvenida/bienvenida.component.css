@@ -16,6 +16,9 @@
     align-items: center;
 }
 
+.tituloClinica{
+    cursor: pointer;
+}
 /* Estilos para el Dashboard del Paciente */
 
 .dashboard-title {

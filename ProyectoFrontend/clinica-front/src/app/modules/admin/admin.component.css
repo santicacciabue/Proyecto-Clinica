@@ -1,0 +1,94 @@
+
+
+.admin-container {
+    display: flex; 
+    min-height: calc(100vh - 120px); 
+    padding: 0;
+    width: 100%;
+    margin: 0;
+    max-width: none;
+}
+
+
+.admin-sidebar {
+    width: 250px; 
+    background-color: #f8f9fa; 
+    border-right: 1px solid #dee2e6; 
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05); 
+    
+}
+
+.sidebar-title {
+    color: #3f51b5; 
+    font-size: 1.4em;
+    margin-top: 0;
+    margin-bottom: 30px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.admin-menu {
+    list-style: none; 
+    padding: 0;
+    margin: 0;
+}
+
+.admin-menu li {
+    margin-bottom: 10px;
+}
+
+.admin-menu a {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    text-decoration: none;
+    color: #495057; 
+    font-weight: 500;
+    border-radius: 4px;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.admin-menu a:hover {
+    background-color: #e9ecef; 
+    color: #3f51b5;
+}
+
+.admin-menu a.active {
+    background-color: #3f51b5; 
+    color: white; 
+    box-shadow: 0 2px 5px rgba(63, 81, 181, 0.3);
+}
+
+.menu-icon {
+    margin-right: 10px;
+    font-size: 20px;
+}
+
+
+
+/* CONTENIDO PRINCIPAL */
+
+.admin-content {
+    flex-grow: 1; 
+    padding: 20px 40px;
+    background-color: white;
+    margin-left: 20px; 
+    border-radius: 8px; 
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
+}
+
+/* Estilo para la página de inicio del admin */
+.welcome-card {
+    padding: 40px;
+    background-color: #f0f4ff;
+    border: 1px solid #3f51b5;
+    border-radius: 8px;
+    text-align: center;
+    margin-top: 50px;
+}
+
+.welcome-card h1 {
+    color: #3f51b5;
+    font-size: 2em;
+}

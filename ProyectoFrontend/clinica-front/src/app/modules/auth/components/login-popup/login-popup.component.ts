@@ -39,8 +39,8 @@ export class LoginPopupComponent {
     this.servicioAuth.iniciarSesion(credenciales).subscribe({
       next: (respuesta) => {
         // Éxito: El token ya fue guardado en LocalStorage por el AuthService
-        this.referenciaDialogo.close(true); // Cierra el pop-up y notifica éxito
-        this.enrutador.navigate(['/']); // Redirige al Home (la página principal logueada)
+        this.referenciaDialogo.close(respuesta.usuario.rol);
+
       },
       error: (errorLogin) => {
         // Fallo: Muestra el mensaje de error del servidor

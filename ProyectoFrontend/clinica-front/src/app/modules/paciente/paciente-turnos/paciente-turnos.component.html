@@ -1,5 +1,8 @@
 <div class="turnos-container">
     <mat-card class="turnos-card">
+        <button mat-icon-button (click)="irAlHome()" class="back-button" title="Volver al inicio">
+            <mat-icon>arrow_back</mat-icon> 
+        </button>
         <mat-card-title>Mis Turnos Programados</mat-card-title>
         <mat-card-subtitle>A continuación, se listan tus turnos desde el más próximo.</mat-card-subtitle>
         
@@ -26,7 +29,7 @@
                     
                     <p>
                         <mat-icon color="primary">event</mat-icon> 
-                        {{ formatearFechaCompleta(turno.fecha, turno.hora) }} a las {{ turno.hora }} horas
+                        Turno: {{ turno.fecha | date: 'dd/MM/yyyy' }} a las {{ turno.hora }} hs
                     </p>
                     
                     <p>
@@ -43,6 +46,13 @@
                         <mat-icon color="accent">description</mat-icon> 
                         Notas: {{ turno.nota || 'No hay notas asociadas.' }}
                     </p>
+
+                    <button 
+                        mat-raised-button 
+                        color="warn" 
+                        (click)="$event.stopPropagation(); cancelarTurno(turno)">
+                        <mat-icon>cancel</mat-icon> Cancelar Turno
+                    </button>
                 </div>
             </mat-list-item>
         </mat-list>

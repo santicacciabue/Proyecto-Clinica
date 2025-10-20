@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router'; 
+import { CompartidoModule } from '../../components/compartido.module';
 
 import { PacienteRoutingModule } from './paciente-routing.module';
 import { PacienteComponent } from './paciente.component';
@@ -17,6 +19,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
+import { ConfirmacionTurnoComponent } from './nuevo-turno/confirmacion-turno/confirmacion-turno.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
 
@@ -25,10 +29,12 @@ import { MatIconModule } from '@angular/material/icon';
     PacienteComponent,
     NuevoTurnoComponent,
     PacienteDatosComponent,
-    PacienteTurnosComponent
+    PacienteTurnosComponent,
+    ConfirmacionTurnoComponent
   ],
   imports: [
     CommonModule,
+    CompartidoModule,
     PacienteRoutingModule,
     ReactiveFormsModule,
     MatCardModule,
@@ -40,6 +46,8 @@ import { MatIconModule } from '@angular/material/icon';
     MatNativeDateModule,
     MatListModule,
     MatIconModule,
+    RouterModule,
+    MatProgressSpinnerModule,
   ]
 })
 export class PacienteModule { }

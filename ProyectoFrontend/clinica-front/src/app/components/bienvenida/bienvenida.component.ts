@@ -20,12 +20,14 @@ export class BienvenidaComponent implements OnInit {
   constructor(
     private servicioAuth: AuthService,
     private enrutador: Router,
-    private dialogo: MatDialog
+    private dialogo: MatDialog,
+    private router: Router
   ) {
     this.sesionIniciada = this.servicioAuth.sesionIniciada$;
   }
 
   ngOnInit(): void {
+    
     // Nos suscribimos al estado para obtener el rol, aunque el *ngIf usará la pipe async
     this.sesionIniciada.subscribe(isLoggedIn => {
         if (isLoggedIn) {
@@ -41,11 +43,20 @@ export class BienvenidaComponent implements OnInit {
       width: '400px',
       autoFocus: false
     });
-    // Si el login es exitoso, redirigimos al home
     dialogRef.afterClosed().subscribe(resultado => {
-      if (resultado === true) {
-        this.enrutador.navigate(['/']); 
+      // 'result' es el valor que pasamos en .close(rol)
+      const rolUsuario = resultado; 
+
+      if (rolUsuario === 'administrador') {
+        // La redirección ocurre SOLO después de que el diálogo está cerrado
+        this.router.navigate(['/admin']); 
+      } 
+      // Si quieres redirigir a otros roles:
+      /*
+      else if (rolUsuario === 'paciente') {
+        this.router.navigate(['/perfil']); 
       }
+      */
     });
   }
 

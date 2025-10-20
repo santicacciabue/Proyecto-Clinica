@@ -9,11 +9,14 @@ import { CompartidoModule } from '../app/components/compartido.module'; // Impor
 import { BienvenidaComponent } from '../app/components/bienvenida/bienvenida.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
+import { DatePipe } from '@angular/common';
+
+
 
 @NgModule({
   declarations: [
     AppComponent,
-    BienvenidaComponent
+    BienvenidaComponent,
   ],
   imports: [
     BrowserModule,
@@ -21,13 +24,16 @@ import { JwtInterceptor } from './interceptors/jwt.interceptor';
     BrowserAnimationsModule,
     CompartidoModule, 
     HttpClientModule,
+   
+    
   ],
   providers: [ // ACA SE REGISTRA EL INTERCEPTOR
     {
       provide: HTTP_INTERCEPTORS,
       useClass: JwtInterceptor,
       multi: true // Le dice a Angular que pueden haber múltiples interceptores
-    }
+    },
+    DatePipe
   ],
   bootstrap: [AppComponent]
 })

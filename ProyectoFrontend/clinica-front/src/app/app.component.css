@@ -24,3 +24,19 @@ main {
   width: 100%;
   margin: 0 auto; /* Centrar el contenido principal */
 }
+
+main:has(.admin-container) {
+    max-width: none;
+    width: 100%; 
+    margin: 0; 
+    padding: 0; 
+}
+
+
+/*Estilos de anulación para el módulo de administración*/
+main.admin-layout-override {
+    max-width: none;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}

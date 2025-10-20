@@ -1,7 +1,7 @@
 <div class="app-container">
     <app-header></app-header>
 
-    <main>
+    <main [class.admin-layout-override]="isAdminRoute"> 
         <router-outlet></router-outlet>
     </main>
 

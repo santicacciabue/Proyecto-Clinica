@@ -1,5 +1,8 @@
 <div class="turno-container">
     <mat-card class="turno-card">
+        <button mat-icon-button (click)="irAlHome()" class="back-button" title="Volver al inicio">
+            <mat-icon>arrow_back</mat-icon> 
+        </button>
         <mat-card-title>Solicitar Nuevo Turno</mat-card-title>
         <mat-card-subtitle>Completa los pasos para agendar tu cita.</mat-card-subtitle>
         <mat-card-content>
@@ -37,14 +40,11 @@
                     </mat-error>
                 </mat-form-field>
 
-                <mat-form-field appearance="outline">
+                <mat-form-field appearance="fill">
                     <mat-label>Fecha</mat-label>
-                    <input matInput [matDatepicker]="picker" formControlName="fecha" [min]="fechaMinima" required>
+                    <input matInput [matDatepicker]="picker" [formControl]="fechaControl" [matDatepickerFilter]="fechaFiltro">
                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker></mat-datepicker>
-                    <mat-error *ngIf="formTurno.get('fecha')?.hasError('required')">
-                        La fecha es requerida.
-                    </mat-error>
                 </mat-form-field>
 
                 <mat-form-field appearance="outline">

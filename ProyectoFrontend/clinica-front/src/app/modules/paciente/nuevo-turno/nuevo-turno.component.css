@@ -8,10 +8,22 @@
     min-height: 80vh; /* Altura para centrar mejor */
 }
 
+
+.back-button {
+    position: absolute ;
+    top: 10px ;  /* Ajusta la altura */
+    left: 10px ; /* Ajusta la posición lateral */
+    z-index: 10 ; /* Para que esté por encima de otros elementos */
+}
+
+
 .turno-card {
     max-width: 800px;
     width: 100%;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    position: relative ; /* Necesario para posicionar el botón */
+    padding-top: 40px; /* Aumentar el espacio superior */
+    padding-bottom: 20px;
 }
 
 mat-card-title {
@@ -19,11 +31,14 @@ mat-card-title {
     font-size: 1.5em;
     font-weight: 500;
     margin-bottom: 5px;
+    margin-top: 10px; /* Asegura un poco de separación si el título sigue muy cerca */
+    margin-left: 50px;
 }
 
 mat-card-subtitle {
     color: #666;
     margin-bottom: 20px;
+    margin-left: 50px;
 }
 
 .turno-form {

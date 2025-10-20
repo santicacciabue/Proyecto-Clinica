@@ -7,6 +7,7 @@ import { HeaderComponent } from '../components/header/header.component';
 import { FooterComponent } from '../components/footer/footer.component'; 
 import { MaterialModule } from './material.module'; // Importa el módulo de Material
 
+
 @NgModule({
   declarations: [
     HeaderComponent,
@@ -15,13 +16,15 @@ import { MaterialModule } from './material.module'; // Importa el módulo de Mat
   imports: [
     CommonModule,
     RouterModule,
-    MaterialModule 
+    MaterialModule,
+     
   ],
   exports: [
     HeaderComponent,
     FooterComponent,
     RouterModule, // Exporta RouterModule y MaterialModule para que los otros módulos puedan usar la navegación y los componentes de Material
-    MaterialModule 
+    MaterialModule,
+    
   ]
 })
 export class CompartidoModule { }

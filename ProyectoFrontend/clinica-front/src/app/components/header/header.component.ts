@@ -18,9 +18,10 @@ export class HeaderComponent implements OnInit {
   sesionIniciada$: Observable<boolean>; 
   
   constructor(
-    private dialogo: MatDialog,
+    private dialogo: MatDialog, 
     private servicioAuth: AuthService, 
-    private enrutador: Router
+    private enrutador: Router,
+    private router: Router
   ) {
     this.sesionIniciada$ = this.servicioAuth.sesionIniciada$;
   }
@@ -45,8 +46,11 @@ export class HeaderComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(resultado => {
-      // Si el login fue exitoso, ya no necesitas redirigir aquí.
-      // El AuthService actualiza el estado y la pipe async hace el resto.
+      const rolUsuario = resultado; 
+
+      if (rolUsuario === 'administrador') {
+        this.router.navigate(['/admin']); 
+      } 
     });
   }
 

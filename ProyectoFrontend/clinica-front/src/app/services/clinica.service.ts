@@ -24,7 +24,7 @@ export class ClinicaService {
 
   obtenerEspecialidadesPorCobertura(id_cobertura: number): Observable<any[]> {
     // Asegúrate que esta URL coincida con tu endpoint
-    return this.http.get<any>(`${this.urlBaseApi}/obtenerEspecialidadesPorCobertura/${id_cobertura}`).pipe(
+    return this.http.get<any>(`${this.urlBaseApi}/usuarios/obtenerEspecialidadesPorCobertura/${id_cobertura}`).pipe(
       map(respuestaApi => respuestaApi.payload || []) 
     );
   }
@@ -90,4 +90,40 @@ export class ClinicaService {
         })
     );
   }
+
+  /**
+   * Llama a la API para eliminar el turno del paciente.
+   * @param idTurno ID del turno a eliminar.
+   * @returns Observable con la respuesta de la API (ej: { codigo: 200, message: "Turno eliminado" })
+   */
+  eliminarTurnoPaciente(idTurno: number): Observable<any> {
+    // La ruta es /eliminarTurnoPaciente/:id, usamos un DELETE para mayor coherencia REST
+    // Si tu backend espera un POST, cambia .delete<any> por .post<any>(...)
+    return this.http.delete<any>(`${this.urlBaseApi}/eliminarTurnoPaciente/${idTurno}`);
+  }
+
+
+
+  
+  obtenerTodasCoberturas(): Observable<any[]> {
+     return this.http.get<any>(`${this.urlBaseApi}/obtenerCoberturas`).pipe(
+      // Mapeamos la respuesta para devolver solo el array dentro de 'payload'
+      map(res => res.payload || []) 
+    );
+  }
+  
+
+  obtenerDatosUsuario(idUsuario: number): Observable<any> {
+    return this.http.get<any>(`${this.urlBaseApi}/usuarios/${idUsuario}`).pipe(
+      // Mapeamos para devolver el PRIMER (y único) objeto dentro de 'payload'.
+      map(res => res.payload ? res.payload[0] : null) 
+    );
+  }
+
+  
+  actualizarDatosPaciente(idPaciente: number, datos: any): Observable<any> {
+    // Usamos PUT o PATCH para actualización
+    return this.http.put<any>(`${this.urlBaseApi}/usuarios/${idPaciente}`, datos);
+  }
+
 }

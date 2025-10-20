@@ -1,0 +1,35 @@
+<div class="admin-container">
+    
+    <aside class="admin-sidebar">
+        <h3 class="sidebar-title">Panel de Administración</h3>
+        <nav>
+            <ul class="admin-menu">
+                <li>
+                    <a routerLink="usuarios" routerLinkActive="active">
+                        <mat-icon class="menu-icon">people</mat-icon>
+                        Gestión de Usuarios
+                    </a>
+                </li>
+                <li>
+                    <a routerLink="coberturas" routerLinkActive="active">
+                        <mat-icon class="menu-icon">local_hospital</mat-icon>
+                        Gestión de Coberturas
+                    </a>
+                </li>
+                
+                <li>
+                    <a routerLink="especialidades" routerLinkActive="active">
+                        <mat-icon class="menu-icon">science</mat-icon>
+                        Gestión de Especialidades
+                    </a>
+                </li>
+                
+                </ul>
+        </nav>
+    </aside>
+
+    <main class="admin-content">
+        <router-outlet></router-outlet> 
+    </main>
+
+</div>

@@ -76,7 +76,7 @@ export class AuthService {
     delete datosParaApi.repeatPassword;
 
     // Ahora sí, enviamos el objeto 'datosParaApi' a la ruta correcta
-    return this.http.post(`${this.urlBaseApi}/crearUsuario`, datosParaApi);
+    return this.http.post(`${this.urlBaseApi}/usuarios/crearUsuario`, datosParaApi);
   }
 
   // 3. INICIAR SESIÓN (POST /login)
@@ -91,6 +91,10 @@ export class AuthService {
           
           // Tu Back-end devuelve el usuario en el array 'payload'
           const datosUsuario = respuestaApi.payload[0];
+
+          // 🛑 LOG 1: VERIFICA EL OBJETO DEL BACKEND Y EL ROL 🛑
+            console.log('LOG 1: Datos del usuario recibidos:', datosUsuario); 
+            console.log('LOG 1: Rol del usuario:', datosUsuario.rol);
           
           // Guardamos datos clave en LocalStorage con nombres claros
           localStorage.setItem('token_acceso', respuestaApi.jwt);

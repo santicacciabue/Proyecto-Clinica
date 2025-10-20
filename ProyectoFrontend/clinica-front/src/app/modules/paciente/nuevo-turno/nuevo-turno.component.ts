@@ -1,13 +1,24 @@
 // src/app/modules/paciente/nuevo-turno/nuevo-turno.component.ts
 
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable, EMPTY, forkJoin, of } from 'rxjs'; // Añadido forkJoin y of
 import { tap, switchMap, startWith, map, filter } from 'rxjs/operators';
+import { MatDialog } from '@angular/material/dialog'; 
+import { ConfirmacionTurnoComponent } from './confirmacion-turno/confirmacion-turno.component';
+import { DatePipe } from '@angular/common';
 
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
 import { ClinicaService } from 'src/app/services/clinica.service'; 
+
+// Interfaz para los datos que se muestran en el popup
+export interface DialogData {
+  fecha: string;
+  hora: string;
+  profesional: string;
+  especialidad: string;
+}
 
 @Component({
   selector: 'app-nuevo-turno',
@@ -19,6 +30,12 @@ export class NuevoTurnoComponent implements OnInit {
   formTurno: FormGroup;
   especialidades$: Observable<any[]> = EMPTY;
   medicos$: Observable<any[]> = EMPTY;
+  public medicos: { id: number, nombre: string, apellido: string }[] = [];
+  public especialidades: { id: number, nombre: string }[] = [];
+
+  public fechaControl!: FormControl; 
+
+  public fechasDisponibles: string[] = [];
   
   agendaOpciones: { hora: string }[] = []; // Array simple para el <mat-select>
   agendaCompleta: { hora: string, id_agenda: number }[] = []; // Array auxiliar con el id_agenda
@@ -30,7 +47,9 @@ export class NuevoTurnoComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private authService: AuthService,
-    private clinicaService: ClinicaService
+    private clinicaService: ClinicaService,
+    private dialog: MatDialog,
+    private datePipe: DatePipe
   ) {
     this.formTurno = this.fb.group({
       cobertura: [{ value: '', disabled: true }], 
@@ -46,6 +65,16 @@ export class NuevoTurnoComponent implements OnInit {
     this.cargarDatosIniciales();
     this.configurarFlujoFormulario();
     this.configurarListeners();
+    this.especialidades$.subscribe(data => {
+        this.especialidades = data;
+    });
+    this.medicos$.subscribe(data => {
+        this.medicos = data;
+    });
+  }
+
+  irAlHome(): void {
+      this.router.navigate(['/']);
   }
 
   cargarDatosIniciales(): void {
@@ -108,7 +137,7 @@ export class NuevoTurnoComponent implements OnInit {
   configurarFlujoFormulario(): void {
     const especialidadControl = this.formTurno.get('especialidad')!;
     const profesionalControl = this.formTurno.get('profesional')!;
-    const fechaControl = this.formTurno.get('fecha')!;
+    this.fechaControl = this.formTurno.get('fecha') as FormControl; // Usamos 'as FormControl' para casting
     const horaControl = this.formTurno.get('hora')!;
 
     // Función de limpieza de controles posteriores
@@ -119,35 +148,62 @@ export class NuevoTurnoComponent implements OnInit {
       });
       this.agendaOpciones = []; // Limpiar las opciones de hora
       this.agendaCompleta = [];
+      this.fechasDisponibles = [];
     };
+
+
     
     // 1. Habilitar Profesional
     this.medicos$ = especialidadControl.valueChanges.pipe(
       startWith(null), 
-      tap(() => limpiarControles([profesionalControl, fechaControl, horaControl])),
+      tap(() => limpiarControles([profesionalControl, this.fechaControl, horaControl])),
       switchMap(id_especialidad => {
         if (id_especialidad) {
           profesionalControl.enable();
           return this.clinicaService.obtenerMedicosPorEspecialidad(id_especialidad);
         }
         return EMPTY;
-      })
+      }),
+      tap(medicosData => this.medicos = medicosData)
     );
     
     // 2. Habilitar Fecha
     profesionalControl.valueChanges.pipe(
         startWith(null),
-        tap(() => limpiarControles([fechaControl, horaControl])),
+        tap(() => limpiarControles([this.fechaControl, horaControl])),
         switchMap(id_profesional => {
             if (id_profesional) {
-                fechaControl.enable();
+                this.fechaControl.enable();
+                return this.clinicaService.obtenerAgenda(id_profesional);
             }
             return EMPTY;
         })
-    ).subscribe();
+    ).subscribe(rangosAgenda => { // Recibimos TODA la agenda aquí
+        
+        // 1. Extraer TODAS las fechas únicas y futuras de la agenda
+        const hoy = new Date();
+        const fechas = rangosAgenda
+            .map(r => r.fecha.split('T')[0]) // Extraer YYYY-MM-DD
+            .filter(fechaString => {
+                const fechaAgenda = new Date(fechaString);
+                // Opcional: Asegurar que solo se muestren fechas futuras o el día de hoy
+                return fechaAgenda.getTime() >= new Date(hoy.toDateString()).getTime(); 
+            })
+            // Obtener solo valores ÚNICOS
+            .filter((value, index, self) => self.indexOf(value) === index); 
+        
+        this.fechasDisponibles = fechas;
+
+        // 2. Si solo hay una fecha, seleccionarla automáticamente
+        if (this.fechasDisponibles.length === 1) {
+            // Convertimos el string a Date y lo seteamos en el control
+            // Usamos el string (YYYY-MM-DD) para evitar problemas de hora/zona horaria
+            this.fechaControl.setValue(new Date(this.fechasDisponibles[0]));
+        }
+    }); 
     
 // 3. Cargar Agenda (Slots Disponibles)
-  fechaControl.valueChanges.pipe(
+  this.fechaControl.valueChanges.pipe(
       switchMap((fechaSeleccionada: Date) => {
             const id_profesional = profesionalControl.value;
             
@@ -240,6 +296,24 @@ export class NuevoTurnoComponent implements OnInit {
     });
   }
 
+
+  /**
+ * Función que se usa en el mat-datepicker-filter para habilitar solo las fechas de la agenda.
+ * @param date La fecha que el calendario está intentando mostrar.
+ * @returns true si la fecha está en la lista de this.fechasDisponibles, false si debe deshabilitarse.
+ */
+  fechaFiltro = (date: Date | null): boolean => {
+      if (!date) {
+          return false;
+      }
+      
+      // Obtener la fecha en formato YYYY-MM-DD (debe coincidir con cómo se guarda en this.fechasDisponibles)
+      const fechaLimpia = date.toISOString().split('T')[0];
+      
+      // Solo habilitar la fecha si está en nuestra lista
+      return this.fechasDisponibles.includes(fechaLimpia);
+  };
+
   // Método de Aceptar (POST del turno)
   enviarTurno(): void {
     if (this.formTurno.invalid) {
@@ -249,6 +323,7 @@ export class NuevoTurnoComponent implements OnInit {
     }
 
     const turnoData = this.formTurno.getRawValue();
+
     
     // 1. Buscamos el ID_AGENDA REAL usando la hora seleccionada
     const slotSeleccionado = this.agendaCompleta.find(slot => slot.hora === turnoData.hora);
@@ -261,6 +336,8 @@ export class NuevoTurnoComponent implements OnInit {
     // Obtenemos los IDs REALES del paciente
     const id_paciente_real = this.datosPaciente.id; 
     const id_cobertura_real = this.datosPaciente.id_cobertura; 
+
+    const id_profesional = this.formTurno.get('profesional')!.value;
 
     const datosParaApi = {
         nota: turnoData.notas, 
@@ -277,27 +354,66 @@ export class NuevoTurnoComponent implements OnInit {
 
     // 2. Llamada al Servicio 
     this.clinicaService.solicitarTurno(datosParaApi as any).subscribe({
-      next: (res) => {
-        if (res.codigo === 200) {
-            this.mostrarConfirmacion(turnoData.profesional, turnoData.fecha, turnoData.hora);
-        } else {
-            alert(`Error al confirmar el turno: ${res.message || 'Error desconocido'}`);
-        }
-      },
-      error: (err) => {
-        alert(err.error?.mensaje || 'Error de conexión con el servidor. El turno podría estar ocupado.');
-      }
-    });
+            next: (res) => {
+                if (res.codigo === 200) {
+                    this.mostrarConfirmacion(
+                        id_profesional, 
+                        this.fechaControl.value, 
+                        datosParaApi.hora
+                    );
+                } else {
+                    alert(`Error al confirmar el turno: ${res.message || 'Error desconocido'}`);
+                }
+            },
+            error: (err) => {
+                console.error(err);
+                alert(err.error?.mensaje || 'Error de conexión con el servidor. El turno podría estar ocupado.');
+            }
+        });
   }
 
   mostrarConfirmacion(id_profesional: number, fecha: Date, hora: string): void {
-      // Deberías buscar el nombre completo en el array 'medicos$' si quieres mostrar el nombre real
-      const nombreProfesional = "Profesional Asignado"; 
-      const mensaje = `Turno confirmado con ${nombreProfesional} el día ${fecha.toLocaleDateString()} a las ${hora} horas.`;
-      
-      alert(mensaje); // Reemplazar con MatDialog
-      this.cancelar(); 
-  }
+
+        console.log('Array de Especialidades COMPLETO:', this.especialidades);
+
+
+        const especialidadId = Number(this.formTurno.get('especialidad')!.value);
+        const id_profesional_num = Number(id_profesional); 
+
+    
+        const medico = this.medicos.find(m => m.id === id_profesional_num);
+        const especialidad = this.especialidades.find(e => e.id === especialidadId);
+        const fechaFormateada = this.datePipe.transform(fecha, 'dd/MM/yyyy');
+        
+        console.log('Objeto Especialidad Encontrado:', especialidad);
+        
+        const nombreProfesional = medico 
+            ? `${medico.nombre} ${medico.apellido}` 
+            : 'Profesional Desconocido';
+            
+        const nombreEspecialidad = especialidad 
+            ? especialidad.nombre 
+            : 'Especialidad Desconocida';
+        
+        const dataDialog: DialogData = {
+            fecha: fechaFormateada || 'Fecha Desconocida',
+            hora: hora,
+            profesional: nombreProfesional,
+            especialidad: nombreEspecialidad
+        };
+        
+        this.dialog.open(ConfirmacionTurnoComponent, {
+            width: '400px',
+            data: dataDialog
+        }).afterClosed().subscribe(() => {
+            this.cancelar(); 
+            this.formTurno.reset(); 
+        });
+        
+        this.agendaOpciones = [];
+        this.fechasDisponibles = [];
+        this.formTurno.get('profesional')!.reset(null);
+    }
 
   cancelar(): void {
     this.router.navigate(['/']); 

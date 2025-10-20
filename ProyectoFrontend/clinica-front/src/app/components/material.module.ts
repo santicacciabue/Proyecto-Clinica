@@ -12,17 +12,21 @@ import { MatCardModule } from '@angular/material/card';
 import { MatTooltipModule } from '@angular/material/tooltip'; // Para el ícono 'info' en el header
 import { MatDatepickerModule } from '@angular/material/datepicker'; 
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatTableModule } from '@angular/material/table';
 
 @NgModule({
   imports: [
     MatToolbarModule, MatIconModule, MatButtonModule, MatInputModule, 
     MatFormFieldModule, MatDialogModule, MatSelectModule, MatCardModule,
-    MatTooltipModule, MatDatepickerModule, MatNativeDateModule
+    MatTooltipModule, MatDatepickerModule, MatNativeDateModule,
+    MatProgressSpinnerModule, MatTableModule
   ],
   exports: [
     MatToolbarModule, MatIconModule, MatButtonModule, MatInputModule, 
     MatFormFieldModule, MatDialogModule, MatSelectModule, MatCardModule,
-    MatTooltipModule, MatDatepickerModule, MatNativeDateModule
+    MatTooltipModule, MatDatepickerModule, MatNativeDateModule,
+    MatProgressSpinnerModule, MatTableModule
   ]
 })
 export class MaterialModule { }
