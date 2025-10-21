@@ -9,7 +9,9 @@ const routes: Routes = [
   
   { path: 'paciente', loadChildren: () => import('./modules/paciente/paciente.module').then(m => m.PacienteModule) },
   
-  { path: 'admin', loadChildren: () => import('./modules/admin/admin.module').then(m => m.AdminModule) }
+  { path: 'admin', loadChildren: () => import('./modules/admin/admin.module').then(m => m.AdminModule) },
+  
+  { path: 'medico', loadChildren: () => import('./modules/medico/medico.module').then(m => m.MedicoModule)},
 ];
 
 @NgModule({

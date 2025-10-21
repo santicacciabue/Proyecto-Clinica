@@ -50,7 +50,9 @@ export class HeaderComponent implements OnInit {
 
       if (rolUsuario === 'administrador') {
         this.router.navigate(['/admin']); 
-      } 
+      } else if (rolUsuario === 'medico') {
+        this.router.navigate(['/medico']); 
+      }
     });
   }
 

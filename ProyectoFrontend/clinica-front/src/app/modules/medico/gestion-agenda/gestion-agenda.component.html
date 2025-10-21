@@ -1,0 +1,90 @@
+<div class="agenda-container container-fluid py-4">
+    <div class="agenda-header mb-4">
+    <h2 class="fw-bold mb-3 text-primary">
+        <i class="fas fa-calendar-alt me-2"></i>Gestión de Agenda
+    </h2>
+
+    <div class="row g-3 align-items-end">
+        <div class="col-md-6 col-lg-8">
+            <label class="form-label fw-semibold text-secondary mb-1">Seleccionar día</label>
+            <input
+                type="date"
+                class="form-control form-control-lg shadow-sm"
+                [value]="fechaSeleccionada"
+                (change)="onFechaChange($event)"
+            />
+            </div>
+
+            <div class="col-md-6 col-lg-4 d-grid">
+            <button class="btn btn-success btn-lg shadow-sm" (click)="mostrarCamposHorario()">
+                <i class="fas fa-plus me-2"></i>Agregar nuevo horario
+            </button>
+            </div>
+    </div>
+    </div>
+
+  <div *ngIf="mostrarCampos" class="nuevo-horario card shadow-sm p-4 mb-4">
+    <div class="row g-4 align-items-end">
+      <div class="col-md-3">
+        <label class="form-label fw-semibold">Hora desde</label>
+        <input
+          type="time"
+          class="form-control form-control-lg"
+          [(ngModel)]="nuevoRango.hora_entrada"
+        />
+      </div>
+      <div class="col-md-3">
+        <label class="form-label fw-semibold">Hora hasta</label>
+        <input
+          type="time"
+          class="form-control form-control-lg"
+          [(ngModel)]="nuevoRango.hora_salida"
+        />
+      </div>
+      <div class="col-md-2 d-grid">
+        <button
+          class="btn btn-primary btn-lg shadow-sm"
+          (click)="agregarHorario()"
+          [disabled]="!nuevoRango.hora_entrada || !nuevoRango.hora_salida">
+          Guardar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="agenda-table card shadow-sm flex-grow-1">
+    <div class="card-body p-0">
+      <div *ngIf="horariosCargados.length > 0; else sinHorarios" class="table-responsive">
+        <table class="table table-hover table-bordered mb-0 text-center align-middle">
+          <thead class="table-primary">
+            <tr>
+              <th>ID</th>
+              <th>Hora Entrada</th>
+              <th>Hora Salida</th>
+              <th>Acción</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let h of horariosCargados">
+              <td>{{ h.id }}</td>
+              <td>{{ h.hora_entrada | slice: 0:5 }}</td>
+              <td>{{ h.hora_salida | slice: 0:5 }}</td>
+              <td>
+                <button class="btn btn-outline-danger btn-sm" (click)="eliminarHorario(h.id)">
+                  Eliminar
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <ng-template #sinHorarios>
+        <div class="text-center py-5 text-muted">
+          <i class="fas fa-calendar-times fa-3x mb-3"></i>
+          <p class="fs-5" style="text-align: center;">No hay horarios cargados para este día.</p>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>

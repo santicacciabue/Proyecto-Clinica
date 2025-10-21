@@ -88,6 +88,24 @@ export function verificarAdmin(req) {
     }
 }
 
+export function verificarRol(req, rolRequerido) {
+    const tokenResultado = verificarToken(req);
+
+    if (tokenResultado.estado === false) {
+        return tokenResultado; // Error de token (no provisto, inválido, expirado)
+    }
+
+    const rolUsuario = tokenResultado.payload.rol;
+    const idUsuario = tokenResultado.payload.id; // 🟢 ¡EL ID del usuario autenticado!
+
+    if (rolUsuario && rolUsuario.toLowerCase() === rolRequerido.toLowerCase()) {
+        // Devuelve el estado OK y el ID del usuario para usarlo en la consulta
+        return { estado: true, id: idUsuario, payload: tokenResultado.payload }; 
+    } else {
+        return { estado: false, error: `Permiso denegado. Se requiere rol de ${rolRequerido}.` };
+    }
+}
+
 
 // Obtener usuarios
 const obtenerUsuario = async (req, res) => {

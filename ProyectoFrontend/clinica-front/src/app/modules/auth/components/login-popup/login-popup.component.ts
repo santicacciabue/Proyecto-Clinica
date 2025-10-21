@@ -45,6 +45,7 @@ export class LoginPopupComponent {
       error: (errorLogin) => {
         // Fallo: Muestra el mensaje de error del servidor
         this.mensajeError = errorLogin.message || 'Error al conectar con el servidor.';
+        this.referenciaDialogo.close(false);
         console.error('Error de Inicio de Sesión:', errorLogin);
       }
     });

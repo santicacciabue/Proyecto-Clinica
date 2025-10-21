@@ -4,7 +4,8 @@ mat-toolbar {
   color: white;
   padding: 0 24px; /* Aumenta el espaciado horizontal dentro del toolbar */
   height: 64px; /* Altura estándar de un toolbar */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Sombra para destacarlo */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  background-color: #34495e; /* Sombra para destacarlo */
 }
 
 .title {

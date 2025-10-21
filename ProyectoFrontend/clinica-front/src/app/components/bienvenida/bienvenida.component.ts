@@ -51,12 +51,11 @@ export class BienvenidaComponent implements OnInit {
         // La redirección ocurre SOLO después de que el diálogo está cerrado
         this.router.navigate(['/admin']); 
       } 
-      // Si quieres redirigir a otros roles:
-      /*
-      else if (rolUsuario === 'paciente') {
-        this.router.navigate(['/perfil']); 
+
+      else if (rolUsuario === 'medico') {
+        this.router.navigate(['/medico']); 
       }
-      */
+
     });
   }
 

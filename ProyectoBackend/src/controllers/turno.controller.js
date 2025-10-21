@@ -1,5 +1,6 @@
 import { getConnection } from "./../database/database";
 import { verificarToken } from "./usuario.controller.js";
+import { verificarRol } from "./usuario.controller.js";
 const secret = process.env.secret;
 const jwt = require ("jsonwebtoken");
 
@@ -41,6 +42,41 @@ const obtenerTurnosMedico = async (req, res) => {
         res.send(error.message);
     }
 }
+
+//metodo para el flujo de medico    
+const obtenerMisTurnos = async (req, res) => {
+    try{
+        // 1. Verificar el rol y obtener el ID (Seguridad y Autenticación)
+        const resultadoVerificarMedico = verificarRol(req, 'medico');
+
+        if(resultadoVerificarMedico.estado == false){
+            return res.send({codigo: -1, mensaje: resultadoVerificarMedico.error})
+        }
+        
+        // ID DEL MÉDICO EXTRAÍDO DEL TOKEN
+        const id_medico_autenticado = resultadoVerificarMedico.id;
+
+        // 2. Obtener la fecha del body (Único parámetro necesario del frontend)
+        const { fecha } = req.body; 
+
+        if (!fecha) {
+            return res.status(400).json({ codigo: -1, mensaje: "La fecha es obligatoria." });
+        }
+        
+        const connection = await getConnection();
+        
+        // 3. Ejecutar la misma consulta, usando el ID del TOKEN
+        const response = await connection.query("SELECT CONCAT(u_paciente.apellido,', ', u_paciente.nombre) AS nombre_paciente,u_paciente.fecha_nacimiento, CONCAT(u_medico.apellido, ', ', u_medico.nombre) AS nombre_medico,t.id as id_turno, t.fecha, t.hora, t.nota, c.nombre as cobertura FROM agenda a JOIN turno t ON a.id = t.id_agenda JOIN usuario u_paciente ON t.id_paciente = u_paciente.id AND u_paciente.rol = 'paciente' JOIN usuario u_medico ON a.id_medico = u_medico.id AND u_medico.rol = 'medico' JOIN cobertura c ON t.id_cobertura = c.id WHERE a.id_medico = ? AND t.fecha = ?", [id_medico_autenticado, fecha]);
+        
+        res.json({codigo: 200, mensaje: "OK", payload: response});
+        
+    }
+    catch(error){
+        // Usar un solo send
+        res.status(500).json({ codigo: 500, mensaje: "Error del servidor", error: error.message });
+    }
+}
+
 
 const obtenerHorasOcupadas = async (req, res) => {
     try {
@@ -149,5 +185,6 @@ export const methods = {
     obtenerHorasOcupadas,
     asignarTurnoPaciente,
     actualizarTurnoPaciente,
-    eliminarTurnoPaciente
+    eliminarTurnoPaciente,
+    obtenerMisTurnos
 };

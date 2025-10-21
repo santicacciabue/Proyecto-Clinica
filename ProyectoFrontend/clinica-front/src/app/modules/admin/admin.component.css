@@ -16,16 +16,15 @@
     border-right: 1px solid #dee2e6; 
     padding: 20px;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05); 
-    
+    background-color: #2c3e50;
 }
 
 .sidebar-title {
-    color: #3f51b5; 
-    font-size: 1.4em;
-    margin-top: 0;
-    margin-bottom: 30px;
-    padding-bottom: 10px;
-    border-bottom: 2px solid #e0e0e0;
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: bold;
+    color: white;
 }
 
 .admin-menu {
@@ -35,30 +34,28 @@
 }
 
 .admin-menu li {
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
 
 .admin-menu a {
     display: flex;
     align-items: center;
-    padding: 10px 15px;
+    gap: 10px;
     text-decoration: none;
-    color: #495057; 
+    color: #bdc3c7;
     font-weight: 500;
-    border-radius: 4px;
-    transition: background-color 0.2s, color 0.2s;
+    padding: 10px;
+    border-radius: 6px;
+    transition: background 0.3s, color 0.3s;
 }
 
-.admin-menu a:hover {
-    background-color: #e9ecef; 
-    color: #3f51b5;
+.admin-menu a:hover,
+.admin-menu a.active{
+    background-color: #34495e;
+    color: #fff;
+    
 }
 
-.admin-menu a.active {
-    background-color: #3f51b5; 
-    color: white; 
-    box-shadow: 0 2px 5px rgba(63, 81, 181, 0.3);
-}
 
 .menu-icon {
     margin-right: 10px;
@@ -82,7 +79,7 @@
 .welcome-card {
     padding: 40px;
     background-color: #f0f4ff;
-    border: 1px solid #3f51b5;
+    /* border: 1px solid #3f51b5; */
     border-radius: 8px;
     text-align: center;
     margin-top: 50px;

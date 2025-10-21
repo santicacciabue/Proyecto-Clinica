@@ -170,4 +170,15 @@ export class AuthService {
             return null;
         }
     }
+
+  /**
+   * Helper: devuelve el id del usuario actual (number) o null si no está disponible
+   */
+  getUserId(): number | null {
+    const datos = this.obtenerDatosUsuario();
+    if (!datos || !datos.id) return null;
+    // A veces el id puede venir como string en el token; forzamos a número si es posible
+    const idNum = Number(datos.id);
+    return Number.isNaN(idNum) ? null : idNum;
+  }
 }

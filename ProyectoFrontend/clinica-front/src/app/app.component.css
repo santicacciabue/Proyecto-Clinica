@@ -31,6 +31,12 @@ main:has(.admin-container) {
     margin: 0; 
     padding: 0; 
 }
+main:has(.layout) {
+    max-width: none;
+    width: 100%; 
+    margin: 0; 
+    padding: 0; 
+}
 
 
 /*Estilos de anulación para el módulo de administración*/
@@ -39,4 +45,8 @@ main.admin-layout-override {
     width: 100%;
     margin: 0;
     padding: 0;
+}
+
+button:hover{
+  cursor: pointer;
 }
