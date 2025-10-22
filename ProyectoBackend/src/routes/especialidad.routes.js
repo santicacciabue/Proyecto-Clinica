@@ -25,5 +25,8 @@ router.post("/:id/asociar", especialidadController.asociarCoberturas);
 // Obtener las coberturas NO asociadas (para el select de asociación)
 router.get("/:id/coberturas/no-asociadas", especialidadController.obtenerCoberturasNoAsociadas);
 
+//para el operador
+router.get("/obtenerEspecialidadesPorCobertura", especialidadController.obtenerEspecialidadesPorCobertura);
+
 
 export default router;

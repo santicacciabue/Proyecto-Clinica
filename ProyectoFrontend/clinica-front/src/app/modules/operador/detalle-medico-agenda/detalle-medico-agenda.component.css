@@ -1,0 +1,14 @@
+
+
+.detalle-agenda-container {
+    max-width: 1000px; 
+    margin: 0 auto;
+}
+
+.card-header {
+    font-size: 1.1rem;
+}
+
+.table tbody tr td {
+    vertical-align: middle;
+}

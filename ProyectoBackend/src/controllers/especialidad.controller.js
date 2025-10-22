@@ -69,6 +69,43 @@ const obtenerEspecialidadesMedico = async (req, res) => {
     
 }
 
+//nuevo metodo
+const obtenerEspecialidadesPorCobertura = async (req, res) => {
+    try {
+        const resultadoVerificar = verificarToken(req);
+        if(resultadoVerificar.estado == false){
+            return res.send({codigo: -1, mensaje: resultadoVerificar.error})
+        }
+        
+        const { id_cobertura } = req.query; 
+
+        if (!id_cobertura) {
+             return methods.obtenerEspecialidades(req, res);
+        }
+
+        const connection = await getConnection();
+        
+        // Query para obtener especialidades cubiertas por ese ID de cobertura
+        const query = `
+            SELECT 
+                E.id, 
+                E.descripcion
+            FROM especialidad E
+            JOIN cobertura_especialidad CE ON E.id = CE.id_especialidad
+            WHERE CE.id_cobertura = ?
+            ORDER BY E.descripcion;
+        `;
+
+        const response = await connection.query(query, id_cobertura);
+        
+        res.json({ codigo: 200, mensaje: "OK", payload: response });
+
+    } catch (error) {
+        console.error("Error en obtenerEspecialidadesPorCobertura:", error);
+        res.status(500).json({ codigo: 500, mensaje: "Error del servidor al obtener especialidades filtradas." });
+    }
+};
+
 const obtenerMedicoPorEspecialidad = async (req, res) => {
     try{
         const {id_especialidad } = req.params;
@@ -101,6 +138,7 @@ const obtenerMedicoPorEspecialidad = async (req, res) => {
     }
     
 }
+
 
 const crearEspecialidad = async (req, res) => {
     let connection;
@@ -458,5 +496,6 @@ export const methods = {
     crearEspecialidad,
     obtenerCoberturasPorEspecialidad,
     asociarCoberturas,
-    obtenerCoberturasNoAsociadas
+    obtenerCoberturasNoAsociadas,
+    obtenerEspecialidadesPorCobertura
 }

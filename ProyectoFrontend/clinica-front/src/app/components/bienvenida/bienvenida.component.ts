@@ -55,6 +55,9 @@ export class BienvenidaComponent implements OnInit {
       else if (rolUsuario === 'medico') {
         this.router.navigate(['/medico']); 
       }
+      else if (rolUsuario === 'operador') {
+        this.router.navigate(['/operador']); 
+      }
 
     });
   }

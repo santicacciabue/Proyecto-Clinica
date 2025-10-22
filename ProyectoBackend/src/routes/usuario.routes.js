@@ -10,6 +10,7 @@ router.post("/admin", usuarioController.adminCrearUsuario);
 router.put("/:id",usuarioController.actualizarUsuario);
 router.put("/admin/:id", usuarioController.actualizarUsuarioAdmin);
 router.get("/", usuarioController.obtenerUsuarios);
+router.post("/buscarPacientes", usuarioController.buscarPacientes);
 router.get("/:id", usuarioController.obtenerUsuario);
 
 export default router;

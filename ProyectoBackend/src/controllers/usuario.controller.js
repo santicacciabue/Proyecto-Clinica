@@ -370,6 +370,48 @@ const obtenerEspecialidadesPorCobertura = async (req, res) => {
     }
 };
 
+//Buscar paciente
+const buscarPacientes = async (req, res) => {
+    let connection;
+    try {
+        // La búsqueda se enviará en el cuerpo de la solicitud POST
+        const { termino } = req.body; 
+
+        if (!termino || termino.length < 3) {
+            return res.json({ codigo: 1, mensaje: "Debe ingresar al menos 3 caracteres para buscar.", payload: [] });
+        }
+
+        // (%) para buscar coincidencias parciales en DNI, Nombre o Apellido.
+        const terminoBusqueda = `%${termino}%`;
+
+        const query = `
+            SELECT 
+                u.id, 
+                u.dni, 
+                CONCAT(u.apellido, ', ', u.nombre) AS nombre_completo,
+                u.id_cobertura
+            FROM 
+                usuario u
+            WHERE 
+                u.rol = 'paciente' AND
+                (u.dni LIKE ? OR u.nombre LIKE ? OR u.apellido LIKE ?)
+            LIMIT 10;
+        `;
+
+        // Se pasa el término de búsqueda tres veces para cada condición LIKE
+        connection = await getConnection();
+        const response = await connection.query(query, [terminoBusqueda, terminoBusqueda, terminoBusqueda]);
+
+        res.json({ codigo: 200, mensaje: "Búsqueda exitosa", payload: response });
+
+    } catch (error) {
+        console.error("Error en buscarPacientes:", error);
+        res.status(500).send({ codigo: 500, mensaje: "Error del servidor al buscar pacientes." });
+    } finally {
+        // Aquí podrías manejar el cierre de la conexión si tu patrón lo requiere
+    }
+};
+
 // const eliminarUsuario = async (req, res) => {
     
 //     try {
@@ -425,5 +467,6 @@ export const methods = {
     obtenerEspecialidadesPorCobertura,
     actualizarUsuarioAdmin,
     adminCrearUsuario,
+    buscarPacientes
     // eliminarUsuario
 };

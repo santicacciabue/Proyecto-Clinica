@@ -1,0 +1,63 @@
+/* src/app/modules/operador/operador-layout/operador-layout.component.css */
+
+.layout {
+  display: flex;
+  height: 100vh;
+  background-color: #f5f6fa;
+  font-family: Arial, sans-serif;
+}
+
+.sidebar {
+  width: 240px;
+  background-color: #2c3e50; /* Gris Oscuro */
+  color: #ecf0f1;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.sidebar-title {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: bold;
+  color: white;
+}
+
+.menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menu li {
+  margin-bottom: 15px;
+}
+
+.menu a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: #bdc3c7; /* Gris claro */
+  font-weight: 500;
+  padding: 10px;
+  border-radius: 6px;
+  transition: background 0.3s, color 0.3s;
+}
+
+.menu a:hover,
+.menu a.active {
+  background-color: #34495e; /* Gris intermedio */
+  color: #fff;
+}
+
+.content {
+  flex-grow: 1;
+  padding: 30px;
+  overflow-y: auto;
+}
+
+i {
+  width: 18px;
+}   

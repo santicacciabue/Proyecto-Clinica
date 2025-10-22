@@ -1,0 +1,29 @@
+<div class="layout">
+  <aside class="sidebar">
+    <h2 class="sidebar-title">Panel Operador</h2>
+    <ul class="menu">
+      
+      <li>
+        <a routerLink="./agenda" routerLinkActive="active">
+          <i class="fas fa-calendar-alt"></i> Gestión de Agenda
+        </a>
+      </li>
+      
+      <li>
+        <a routerLink="./pacientes/crear" routerLinkActive="active">
+          <i class="fas fa-user-plus"></i> Crear Paciente
+        </a>
+      </li>
+      
+      <li>
+        <a routerLink="./turnos/asignar" routerLinkActive="active">
+          <i class="fas fa-clipboard-list"></i> Asignar Turno
+        </a>
+      </li>
+    </ul>
+  </aside>
+
+  <main class="content">
+    <router-outlet></router-outlet>
+  </main>
+</div>

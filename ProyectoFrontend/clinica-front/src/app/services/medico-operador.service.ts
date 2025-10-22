@@ -1,6 +1,23 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { HorarioAgenda } from '../modules/operador/detalle-medico-agenda/detalle-medico-agenda.models';
+
+export interface Cobertura {
+  id: number;
+  nombre: string;
+}
+
+export interface RegistroPaciente {
+  nombre: string;
+  apellido: string;
+  email: string;
+  password: string;
+  dni: string;
+  fecha_nacimiento: string;
+  telefono: string;
+  id_cobertura: number | null;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -44,18 +61,79 @@ export class MedicoOperadorService {
 
   // FUNCIONALIDADES DEL OPERADOR
 
-  //Obtiene la lista de médicos con agenda abierta para una fecha.
   obtenerMedicosConAgenda(fecha: string): Observable<any> {
-    // GET /api/medicos-abiertos?fecha=...
     return this.http.get(`${this.API_URL}/medicos-abiertos`, { params: { fecha } });
   }
 
-  // Obtener las especialidades asociadas a un médico
-  // GET /api/obtenerEspecialidadesMedico/:id_medico
   obtenerEspecialidadesMedico(id_medico: number): Observable<any> {
     return this.http.get(`${this.API_URL}/obtenerEspecialidadesMedico/${id_medico}`);
   }
   
-  // (Aquí van a ir otros métodos del operador: crear paciente, asignar turno, etc.)
+  obtenerTurnosMedicoOperador(id_medico: number, fecha: string): Observable<any> {
+    const body = { id_medico, fecha };
+    return this.http.post(`${this.API_URL}/obtenerTurnosMedico`, body);
+  }
+
+  modificarRangoHorario(data: HorarioAgenda): Observable<any> {
+    return this.http.put(`${this.API_URL}/modificarAgenda/${data.id}`, data);
+  }
+
+  obtenerCoberturas(): Observable<any> {
+    return this.http.get(`${this.API_URL}/obtenerCoberturas`);
+  }
+
+  registrarPaciente(data: any): Observable<any> {
+    return this.http.post(`${this.API_URL}/usuarios/crearUsuario`, data);
+  }
+
+  actualizarTurno(id_turno: number, data: any): Observable<any> {
+    return this.http.put(`${this.API_URL}actualizarTurnoPaciente/${id_turno}`, data);
+  }
+
+  eliminarTurno(id_turno: number): Observable<any> {
+    return this.http.delete(`${this.API_URL}/eliminarTurnoPaciente/${id_turno}`); 
+  }
   
+  //metodos para el componente asignar turno
+
+  //  Buscar Pacientes por DNI/Apellido
+  buscarPacientes(termino: string): Observable<any> {
+    const body = { termino };
+    return this.http.post(`${this.API_URL}/usuarios/buscarPacientes`, body);
+  }
+
+  //  Obtener la lista de Especialidades
+  obtenerEspecialidades(): Observable<any> {
+
+    return this.http.get(`${this.API_URL}/obtenerEspecialidades`);
+  }
+
+  //  Obtener Médicos por Especialidad (Nuevo método auxiliar para el Paso 2)
+  obtenerMedicosPorEspecialidad(id_especialidad: number): Observable<any> {
+    return this.http.get(`${this.API_URL}/obtenerMedicoPorEspecialidad/${id_especialidad}`);
+  }
+
+
+  //  Obtener Disponibilidad (Horas Ocupadas) (AJUSTADO)
+  obtenerHorasOcupadas(id_medico: number, fecha: string): Observable<any> {
+    const body = { id_medico, fecha };
+    return this.http.post(`${this.API_URL}/obtenerHorasOcupadas`, body);
+  }
+
+  // Asignar Turno Final
+  asignarTurno(data: any): Observable<any> {
+    return this.http.post(`${this.API_URL}/asignarTurnoPaciente`, data);
+  }
+
+  obtenerEspecialidadesPorCobertura(id_cobertura: number | null): Observable<any> {
+    let params = new HttpParams();
+    if (id_cobertura !== null) {
+        // HttpParams.set() convierte automáticamente a string, que es lo esperado.
+        params = params.set('id_cobertura', String(id_cobertura)); 
+    }
+   
+    // LLAMA A: GET /api/obtenerEspecialidadesPorCobertura (con o sin ?id_cobertura=X)
+    return this.http.get(`${this.API_URL}/obtenerEspecialidadesPorCobertura`, { params });
+  }
+
 }

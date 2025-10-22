@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router'; // Para que el Router funcione
 import { HeaderComponent } from '../components/header/header.component'; 
 import { FooterComponent } from '../components/footer/footer.component'; 
 import { MaterialModule } from './material.module'; // Importa el módulo de Material
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -17,6 +18,8 @@ import { MaterialModule } from './material.module'; // Importa el módulo de Mat
     CommonModule,
     RouterModule,
     MaterialModule,
+    FormsModule, 
+    ReactiveFormsModule
      
   ],
   exports: [
