@@ -1,0 +1,40 @@
+/* src/app/modules/auth/components/register/register.component.css */
+
+.register-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 0; /* Espacio superior e inferior */
+}
+
+.register-card {
+  max-width: 750px; 
+  width: 100%;
+  padding: 20px;
+}
+
+/* -------------------------------------- */
+/* IMPLEMENTACIÓN DE GRID para 2 COLUMNAS */
+/* -------------------------------------- */
+.grid-form {
+  display: grid;
+  /* Dos columnas de igual tamaño (1fr) con un espaciado (gap) de 20px */
+  grid-template-columns: 1fr 1fr; 
+  gap: 20px; 
+}
+
+.grid-form mat-form-field {
+  width: 100%; 
+}
+
+/* Media Query: Responsividad */
+@media (max-width: 768px) {
+  .register-card {
+    max-width: 95%;
+  }
+  .grid-form {
+    /* En pantallas pequeñas, volvemos a una sola columna */
+    grid-template-columns: 1fr; 
+    gap: 15px;
+  }
+}

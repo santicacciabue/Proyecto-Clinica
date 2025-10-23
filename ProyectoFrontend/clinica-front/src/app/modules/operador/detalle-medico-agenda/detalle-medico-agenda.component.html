@@ -1,0 +1,121 @@
+<div class="detalle-agenda-container py-4">
+  <button class="btn btn-outline-secondary mb-4" style="cursor: pointer;" (click)="volver()">
+    <i class="fas fa-arrow-left me-2"></i> Volver a Agenda
+  </button>
+
+  <h2
+    class="fw-bold mb-3"
+    [ngClass]="{ 'text-warning': modo === 'editar', 'text-info': modo === 'ver' }"
+  >
+    <i class="fas fa-{{ modo === 'editar' ? 'pencil-alt' : 'eye' }} me-2"></i>
+    {{ modo === 'editar' ? 'Gestionar Agenda' : 'Ver Turnos' }} para {{ medicoNombre }}
+  </h2>
+  <h5 class="text-muted mb-4">
+    Día: <span class="fw-semibold">{{ fechaSeleccionada | date: 'fullDate' }}</span>
+  </h5>
+
+  <div *ngIf="cargando" class="text-center p-5">
+    <i class="fas fa-spinner fa-spin fa-3x text-primary"></i>
+    <p class="mt-3 fs-5 text-secondary">Cargando datos del médico...</p>
+  </div>
+
+  <div *ngIf="mensajeError && !cargando" class="alert alert-danger text-center p-4">
+    {{ mensajeError }}
+  </div>
+
+  <div *ngIf="modo === 'editar' && !cargando && !mensajeError" class="card shadow-sm mb-5">
+    <div class="card-header bg-warning text-white d-flex justify-content-between align-items-center">
+      <strong class="HorDisponibilidad">Horarios de Disponibilidad</strong>
+      <button class="btn btn-sm btn-light btnAñadirTurno" style="cursor: pointer;" (click)="abrirAsignarTurno()">
+        <i class="fas fa-plus me-1"></i> Añadir Turno
+      </button>
+    </div>
+    <div class="card-body p-0">
+      <table class="table table-striped mb-0 align-middle">
+        <thead class="table-light">
+          <tr>
+            <th>Hora Entrada</th>
+            <th>Hora Salida</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody class="tablas-tbody">
+          <tr *ngFor="let horario of agendaHorarios">
+            <td>{{ horario.hora_entrada }}</td>
+            <td>{{ horario.hora_salida }}</td>
+            <td>
+              <button
+                class="btn btn-sm btn-outline-primary me-2"
+                (click)="modificarRangoHorario(horario)" style="cursor: pointer;"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button
+                class="btn btn-sm btn-outline-danger btnCancelar"
+                (click)="eliminarRangoHorario(horario.id)" style="cursor: pointer;"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div *ngIf="agendaHorarios.length === 0" class="alert alert-light text-center m-0">
+        El médico no tiene rangos de horario cargados para este día.
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!cargando && !mensajeError" class="card shadow-sm">
+    <div
+      class="card-header text-white d-flex justify-content-between align-items-center"
+      [ngClass]="modo === 'editar' ? 'bg-primary' : 'bg-info'"
+    >
+      <strong>Turnos Confirmados ({{ turnosConfirmados.length }})</strong>
+      <button
+        *ngIf="modo === 'ver'"
+        class="btn btn-sm btn-light btnAñadirTurno"
+        (click)="abrirAsignarTurno()" style="cursor: pointer;"
+      >
+        <i class="fas fa-plus me-1"></i> Asignar Nuevo Turno
+      </button>
+    </div>
+    <div class="card-body p-0">
+      <table class="table table-striped mb-0 align-middle">
+        <thead class="table-light">
+          <tr>
+            <th>Hora</th>
+            <th>Paciente</th>
+            <th>Cobertura</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody class="tablas-tbody">
+          <tr *ngFor="let turno of turnosConfirmados">
+            <td class="fw-bold">{{ turno.hora }}</td>
+            <td>{{ turno.nombre_paciente }}</td>
+            <td>{{ turno.cobertura }}</td>
+            <td>
+              <button
+                class="btn btn-sm btn-outline-danger btnCancelar"
+                (click)="cancelarTurno(turno.id_turno)" style="cursor: pointer;"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+              <button
+                *ngIf="modo === 'editar'"
+                class="btn btn-sm btn-outline-secondary ms-2"
+                (click)="editarTurno(turno)" style="cursor: pointer;"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div *ngIf="turnosConfirmados.length === 0" class="alert alert-light text-center m-0">
+        No hay turnos asignados para este médico el día seleccionado.
+      </div>
+    </div>
+  </div>
+</div>

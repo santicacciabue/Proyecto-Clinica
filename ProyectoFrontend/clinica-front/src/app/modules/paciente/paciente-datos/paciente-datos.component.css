@@ -1,0 +1,23 @@
+.datos-card {
+    position: relative ; /* Necesario para posicionar el botón */
+    padding-top: 40px; /* Aumentar el espacio superior */
+    padding-bottom: 20px;
+}
+
+.back-button {
+    position: absolute ;
+    top: 10px ;  /* Ajusta la altura */
+    left: 10px ; /* Ajusta la posición lateral */
+    z-index: 10 ; /* Para que esté por encima de otros elementos */
+}
+
+mat-card-title {
+    margin-top: 10px; /* Asegura un poco de separación si el título sigue muy cerca */
+    margin-left: 50px; /* Mueve el título para que no quede debajo del botón */
+}
+
+mat-card-subtitle {
+    margin-left: 50px;
+    margin-bottom: 20px;
+}
+

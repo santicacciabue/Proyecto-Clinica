@@ -1,0 +1,34 @@
+<h2 mat-dialog-title class="dialog-title">Iniciar Sesión</h2>
+
+<mat-dialog-content class="dialog-content">
+  <div *ngIf="mensajeError" class="error-message">
+    {{ mensajeError }}
+  </div>
+
+  <form [formGroup]="formularioLogin" (ngSubmit)="procesarLogin()">
+    
+    <mat-form-field appearance="outline" class="full-width-field">
+      <mat-label>Usuario (DNI)</mat-label>
+      <input matInput formControlName="usuario" required>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width-field">
+      <mat-label>Contraseña</mat-label>
+      <input matInput formControlName="password" [type]="ocultarPassword ? 'password' : 'text'" required>
+      <button type="button" mat-icon-button matSuffix (click)="ocultarPassword = !ocultarPassword">
+        <mat-icon>{{ocultarPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+      </button>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="cerrarDialogo()">Cancelar</button> 
+  <button 
+    mat-flat-button 
+    color="primary" 
+    [disabled]="formularioLogin.invalid" 
+    (click)="procesarLogin()">
+    Aceptar
+  </button>
+</mat-dialog-actions>

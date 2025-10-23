@@ -1,0 +1,13 @@
+.acciones-celdas{
+    display: flex;
+    align-items: center;
+    margin-top: 3px;
+}
+
+.btnGest{
+   margin: 12px;
+    font-size: 0.9rem;
+    border: none;
+    border-radius: 10px;
+    background-color: #84abd1 !important;
+}

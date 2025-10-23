@@ -1,0 +1,68 @@
+.crear-paciente-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 30px 40px;
+  text-align: center;
+}
+
+.crear-paciente-container h2 {
+  color: #2c3e50;
+  text-align: center;
+}
+
+.crear-paciente-container p {
+  text-align: center;
+  color: #6c757d;
+}
+
+.espacio-inputs{
+    padding: 20px
+}
+
+.crear-paciente-container .card {
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  border: none;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+}
+
+.crear-paciente-container .form-control,
+.crear-paciente-container .form-select {
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+  transition: all 0.3s ease;
+  padding: 10px 12px;
+  margin-left: 10px;
+}
+
+.crear-paciente-container .form-control:focus,
+.crear-paciente-container .form-select:focus {
+  border-color: #84abd1;
+  box-shadow: 0 0 0 3px rgba(132, 171, 209, 0.3);
+}
+
+.crear-paciente-container .btn-primary {
+  background-color: #84abd1;
+  border: none;
+  border-radius: 8px;
+  padding: 15px;
+}
+
+.crear-paciente-container .btn-primary:hover {
+  background-color: #6c9fc7;
+}
+
+.crear-paciente-container .invalid-feedback {
+  font-size: 0.9rem;
+      margin-left: 65px;
+      margin-top: 10px;
+}
+
+.crear-paciente-container .alert {
+  border-radius: 8px;
+}
+
+.crear-paciente-container .form-text {
+  color: #6c757d;
+  font-size: 0.9rem;
+}

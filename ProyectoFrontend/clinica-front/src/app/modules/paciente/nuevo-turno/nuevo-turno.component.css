@@ -1,0 +1,78 @@
+/* src/app/modules/paciente/nuevo-turno/nuevo-turno.component.css */
+
+.turno-container {
+    display: flex;
+    justify-content: center;
+    padding: 30px 15px;
+    background-color: #f4f4f4; /* Fondo suave para destacar la tarjeta */
+    min-height: 80vh; /* Altura para centrar mejor */
+}
+
+
+.back-button {
+    position: absolute ;
+    top: 10px ;  /* Ajusta la altura */
+    left: 10px ; /* Ajusta la posición lateral */
+    z-index: 10 ; /* Para que esté por encima de otros elementos */
+}
+
+
+.turno-card {
+    max-width: 800px;
+    width: 100%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    position: relative ; /* Necesario para posicionar el botón */
+    padding-top: 40px; /* Aumentar el espacio superior */
+    padding-bottom: 20px;
+}
+
+mat-card-title {
+    color: var(--color-primary, #1976D2); /* Color primario de Material */
+    font-size: 1.5em;
+    font-weight: 500;
+    margin-bottom: 5px;
+    margin-top: 10px; /* Asegura un poco de separación si el título sigue muy cerca */
+    margin-left: 50px;
+}
+
+mat-card-subtitle {
+    color: #666;
+    margin-bottom: 20px;
+    margin-left: 50px;
+}
+
+.turno-form {
+    display: grid;
+    /* Diseño responsivo: mínimo 300px por columna */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+    gap: 20px;
+    padding: 10px 0;
+}
+
+/* El campo de notas debe ocupar todo el ancho */
+.full-width {
+    grid-column: 1 / -1; /* Ocupa desde la primera columna hasta la última */
+}
+
+/* Ajustes para mat-form-field */
+mat-form-field {
+    width: 100%; /* Asegura que ocupen todo el espacio del grid */
+}
+
+/* Estilos para los botones */
+mat-card-actions {
+    padding: 20px 16px 16px;
+    /* Ajuste para separar los botones del borde */
+}
+
+mat-flat-button {
+    margin-left: 10px;
+}
+
+/* Media query para pantallas más pequeñas (ej. móviles) */
+@media (max-width: 650px) {
+    .turno-form {
+        grid-template-columns: 1fr; /* Una sola columna en móvil */
+        gap: 15px;
+    }
+}

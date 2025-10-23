@@ -1,0 +1,81 @@
+<div class="register-wrapper">
+    <mat-card class="register-card">
+        <mat-card-header>
+            <mat-card-title>Registro de usuario</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <form [formGroup]="formularioRegistro" (ngSubmit)="enviarRegistro()">
+                <div class="grid-form"> 
+                    
+                    <mat-form-field appearance="outline">
+                        <mat-label>Nombre</mat-label>
+                        <input matInput formControlName="nombre" required>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Apellido</mat-label>
+                        <input matInput formControlName="apellido" required>
+                    </mat-form-field>
+                    
+                    <mat-form-field appearance="outline">
+                        <mat-label>Número de documento</mat-label>
+                        <input matInput formControlName="dni" required>
+                    </mat-form-field>
+                    
+                    <mat-form-field appearance="outline">
+                        <mat-label>Correo</mat-label>
+                        <input matInput formControlName="email" type="email" required>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Teléfono</mat-label>
+                        <input matInput formControlName="telefono" required>
+                    </mat-form-field>
+                    
+                    <mat-form-field appearance="outline">
+                        <mat-label>Fecha de Nacimiento</mat-label>
+                        <input matInput [matDatepicker]="picker" formControlName="fechaNacimiento" required>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                    
+                    <mat-form-field appearance="outline">
+                        <mat-label>Cobertura (Obra Social)</mat-label>
+                        <mat-select formControlName="id_cobertura" required>
+                            <mat-option *ngFor="let os of obrasSociales" [value]="os.id">
+                                {{ os.nombre }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Contraseña</mat-label>
+                        <input matInput formControlName="password" [type]="ocultarPassword ? 'password' : 'text'" required>
+                        <button type="button" mat-icon-button matSuffix (click)="ocultarPassword = !ocultarPassword">
+                            <mat-icon>{{ocultarPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        </button>
+                    </mat-form-field>
+                    
+                    <mat-form-field appearance="outline">
+                        <mat-label>Repetir Contraseña</mat-label>
+                        <input matInput formControlName="repeatPassword" [type]="ocultarConfirmacion ? 'password' : 'text'" required>
+                        <button type="button" mat-icon-button matSuffix (click)="ocultarConfirmacion = !ocultarConfirmacion">
+                            <mat-icon>{{ocultarConfirmacion ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        </button>
+                    </mat-form-field>
+
+                </div>
+            </form>
+        </mat-card-content>
+        <mat-card-actions align="end">
+            <button mat-button (click)="volverAInicio()">Cancelar</button>
+            
+            <button 
+                mat-flat-button 
+                color="primary" 
+                [disabled]="formularioRegistro.invalid" 
+                (click)="enviarRegistro()">
+                Crear Usuario
+            </button>
+        </mat-card-actions>
+    </mat-card>
+</div>

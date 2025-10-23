@@ -1,0 +1,106 @@
+/* src/app/modules/paciente/mis-turnos/mis-turnos.component.css */
+
+.turnos-container {
+    display: flex;
+    justify-content: center;
+    padding: 30px 15px;
+}
+
+.turnos-card {
+    max-width: 800px;
+    width: 100%;
+    position: relative ;
+    padding-top: 40px; 
+    padding-bottom: 20px;
+}
+
+mat-card-title {
+    color: var(--color-primary, #1976D2);
+    margin-top: 10px; /* Asegura un poco de separación si el título sigue muy cerca */
+    margin-left: 50px;
+}
+mat-card-subtitle {
+    margin-left: 50px;
+}
+
+.no-turnos {
+    padding: 20px;
+    text-align: center;
+    color: #666;
+    font-style: italic;
+}
+
+.turno-item {
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+    padding: 10px 0;
+    padding-bottom: 0;
+    transition: background-color 0.2s;
+    display: block; /* Para que el div hijo ocupe el espacio */
+    height: auto !important;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.turno-item:hover {
+    background-color: #f0f0f0;
+}
+
+.turno-detalle {
+    margin-top: 10px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+    border-left: 5px solid var(--color-accent, #FFC107);
+    margin-left: -16px;
+    margin-right: -16px;
+    margin-bottom: -10px;
+    width: 100%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    display: flex; 
+    flex-direction: column;
+}
+
+.turno-detalle h4 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.turno-detalle p {
+    display: flex;
+    align-items: center;
+    margin: 5px 0;
+    font-size: 0.9em;
+    gap: 8px;
+}
+
+.turno-detalle mat-icon {
+    margin-right: 8px;
+    font-size: 18px;
+}
+.turno-detalle button {
+    margin-top: 15px;
+    align-self: flex-end;
+}
+
+.notas {
+    margin-top: 10px !important;
+    border-top: 1px dashed #ddd;
+    padding-top: 5px;
+}
+
+.cancelar-button {
+    margin-top: 15px;
+    background-color: var(--color-warn, #D32F2F);
+    color: white;
+}
+
+
+.back-button {
+    position: absolute ;
+    top: 5px ;  /* Ajusta la altura */
+    left: 10px ; /* Ajusta la posición lateral */
+    z-index: 10 ; /* Para que esté por encima de otros elementos */
+}

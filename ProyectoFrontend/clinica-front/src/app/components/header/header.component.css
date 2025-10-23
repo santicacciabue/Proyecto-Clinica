@@ -1,0 +1,71 @@
+/* src/app/components/header/header.component.css */
+
+mat-toolbar {
+  color: white;
+  padding: 0 24px; /* Aumenta el espaciado horizontal dentro del toolbar */
+  height: 64px; /* Altura estándar de un toolbar */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  background-color: #34495e; /* Sombra para destacarlo */
+}
+
+.title {
+  font-size: 1.6rem;
+  font-weight: 500;
+  margin-right: 30px; /* Espacio después del título */
+}
+
+/* El spacer es lo que empuja el contenido a los extremos */
+.spacer {
+  flex: 1 1 auto;
+}
+
+.welcome-text {
+  margin-right: 20px; /* Espacio antes de los botones */
+  font-style: italic;
+  opacity: 0.9;
+}
+
+/* Estilo para los botones */
+button {
+  margin-left: 10px; /* Espacio entre los botones */
+  font-weight: 500;
+  padding: 0 15px;
+}
+
+/* Estilo para el botón de iniciar sesión (flat) */
+button[mat-flat-button] {
+    background-color: var(--color-accent);
+    color: var(--color-text-dark); /* Texto oscuro para contraste */
+}
+
+/* Estilo para el botón de registrarse (stroked) */
+button[mat-stroked-button] {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    background-color: transparent;
+}
+
+
+/* Estilo para el contenedor de información del usuario logueado */
+.user-info {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+    font-size: 1.1rem;
+    font-weight: 400;
+}
+
+.user-info span {
+    margin-right: 10px; /* Espacio entre el nombre y el ícono */
+}
+
+/* Estilo para el botón de Cerrar Sesión (para que resalte un poco) */
+mat-toolbar button[mat-button] {
+    color: var(--color-accent); /* Color Naranja/Amarillo */
+    font-weight: 500;
+}
+
+/* Asegurar que el ícono de información sea blanco */
+.user-info mat-icon {
+    color: white;
+}

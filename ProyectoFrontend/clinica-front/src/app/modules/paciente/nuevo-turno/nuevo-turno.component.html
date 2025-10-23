@@ -1,0 +1,87 @@
+<div class="turno-container">
+    <mat-card class="turno-card">
+        <button mat-icon-button (click)="irAlHome()" class="back-button" title="Volver al inicio">
+            <mat-icon>arrow_back</mat-icon> 
+        </button>
+        <mat-card-title>Solicitar Nuevo Turno</mat-card-title>
+        <mat-card-subtitle>Completa los pasos para agendar tu cita.</mat-card-subtitle>
+        <mat-card-content>
+            <form [formGroup]="formTurno" class="turno-form">
+                
+                <mat-form-field appearance="outline">
+                    <mat-label>Tu Cobertura Médica</mat-label>
+                    <input matInput formControlName="cobertura" readonly>
+                </mat-form-field>
+                
+                <mat-form-field appearance="fill">
+                    <mat-label>Especialidad</mat-label>
+                    <mat-select formControlName="especialidad">
+
+                        <mat-option *ngFor="let item of (especialidades$ | async)" [value]="item.id">
+                            {{ item.nombre }} 
+                        </mat-option>
+                    </mat-select>
+                    
+                    <mat-error *ngIf="formTurno.get('especialidad')?.hasError('required')">
+                        La especialidad es obligatoria.
+                    </mat-error>
+                </mat-form-field>
+                
+                <mat-form-field appearance="outline">
+                    <mat-label>Profesional</mat-label>
+                    <mat-select formControlName="profesional" required>
+                        <mat-option>-- Seleccionar --</mat-option>
+                         <mat-option *ngFor="let item of (medicos$ | async)" [value]="item.id">
+                            {{ item.apellido }}, {{ item.nombre }} 
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="formTurno.get('profesional')?.hasError('required')">
+                        El profesional es requerido.
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill">
+                    <mat-label>Fecha</mat-label>
+                    <input matInput [matDatepicker]="picker" [formControl]="fechaControl" [matDatepickerFilter]="fechaFiltro">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Hora</mat-label>
+                    <mat-select formControlName="hora" required>
+                        <mat-option>-- Seleccionar --</mat-option>
+                        <mat-option *ngFor="let item of agendaOpciones" [value]="item.hora">
+                            {{ item.hora }}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="formTurno.get('hora')?.hasError('required')">
+                        La hora es requerida.
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Notas (Motivo del turno)</mat-label>
+                    <textarea matInput formControlName="notas" rows="3" required></textarea>
+                    <mat-hint>Indica el motivo de tu turno (revisión, continuación, etc.)</mat-hint>
+                    <mat-error *ngIf="formTurno.get('notas')?.hasError('required')">
+                        Este campo es obligatorio.
+                    </mat-error>
+                </mat-form-field>
+            </form>
+        </mat-card-content>
+        
+        <mat-card-actions align="end">
+            <button mat-button color="warn" (click)="cancelar()">
+                Cancelar
+            </button>
+            <button 
+                mat-flat-button 
+                color="primary" 
+                [disabled]="formTurno.invalid" 
+                (click)="enviarTurno()">
+                Aceptar y Confirmar Turno
+            </button>
+        </mat-card-actions>
+    </mat-card>
+</div>

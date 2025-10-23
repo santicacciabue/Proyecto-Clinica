@@ -1,0 +1,27 @@
+<div class="operador-container">
+
+  <aside class="operador-sidebar">
+    <h3 class="sidebar-title">Panel de Operador</h3>
+    <nav>
+      <ul class="operador-menu">
+        <li>
+          <a routerLink="agenda" routerLinkActive="active">
+            <mat-icon class="menu-icon">calendar_today</mat-icon>
+            Gestión de Agenda
+          </a>
+        </li>
+        <li>
+          <a routerLink="pacientes/crear" routerLinkActive="active">
+            <mat-icon class="menu-icon">person_add</mat-icon>
+            Crear Paciente
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </aside>
+
+  <main class="operador-content">
+    <router-outlet></router-outlet>
+  </main>
+
+</div>

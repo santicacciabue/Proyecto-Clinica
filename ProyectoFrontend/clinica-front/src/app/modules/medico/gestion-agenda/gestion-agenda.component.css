@@ -1,0 +1,129 @@
+.agenda-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+h2{
+    text-align: center;
+}
+
+/* Título y separación */
+.agenda-header {
+  margin-bottom: 2.5rem;
+}
+
+/* Label y datepicker */
+.agenda-header label {
+  font-size: 1.1rem;
+  margin-bottom: 0.6rem;
+}
+
+.agenda-header input[type="date"] {
+  width: 100%;
+  font-size: 1.1rem;
+  padding: 0.8rem 1rem;
+  margin-top: 10px;
+  border-radius: 7px;
+  border: none;
+}
+
+/* Aumentar separación entre datepicker y botón */
+.agenda-header .row {
+  row-gap: 1.5rem;
+}
+
+/* Botón agregar nuevo horario */
+.agenda-header button {
+  padding: 1rem;
+  font-size: 1.05rem;
+  margin-top: 20px;
+  border: none;
+  border-radius: 10px;
+  background-color: #84abd1;
+}
+
+/* Card de nuevo horario */
+.nuevo-horario {
+  margin-top: 2rem;
+}
+
+.nuevo-horario input[type="time"] {
+  padding: 0.8rem;
+  font-size: 1.1rem;
+  margin-left: 20px;
+  border-radius: 5px;
+  border: none;
+  width: 8%;
+}
+.nuevo-horario label {
+  font-size: 1.1rem;
+  margin-bottom: 0.6rem;
+  color: #333;
+}
+
+.nuevo-horario .form-control[type="time"] {
+  padding: 0.8rem 1rem;
+  font-size: 1rem;
+}
+
+.nuevo-horario .col-md-3 {
+  margin-bottom: 1rem;
+}
+
+.nuevo-horario button {
+  margin-top: 0.5rem;
+  padding: 0.8rem;
+  font-size: 1.05rem;
+  border: none;
+    border-radius: 10px;
+    background-color: #84abd1;
+}
+
+/* Tabla de horarios */
+.agenda-table {
+  margin-top: 2rem;
+}
+
+.agenda-table table {
+  font-size: 1rem;
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #dee2e6;
+}
+
+.agenda-table th,
+.agenda-table td {
+    border: 1px solid #dee2e6;
+  padding: 1rem;
+  vertical-align: middle !important;
+  text-align: center;
+}
+
+.agenda-table thead {
+  background-color: #2c3e50;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.agenda-table tbody tr:hover {
+  background-color: #f8f9fa;
+  transition: background-color 0.2s ease;
+}
+
+.agenda-table button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.agenda-table td button {
+  padding: 0.4rem 0.7rem;
+  font-size: 0.9rem;
+  border: none;
+  border-radius: 10px;
+  background-color: #84abd1;
+}
+
+button:hover{
+  cursor: pointer;
+}

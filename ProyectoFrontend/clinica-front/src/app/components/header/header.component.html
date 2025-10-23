@@ -1,0 +1,37 @@
+<mat-toolbar>
+    <span class="title" (click)="irAHome()">Clínica Virtual</span>
+    <span class="welcome-text">Bienvenido a la clínica virtual</span>
+
+    <span class="spacer"></span> 
+    
+    <ng-container *ngIf="(sesionIniciada$ | async) === false">
+        
+        
+        <button mat-flat-button color="accent" (click)="abrirLogin()">
+            Iniciar sesión
+        </button>
+        <button mat-stroked-button color="accent" routerLink="/auth/register">
+            Registrarse
+        </button>
+    </ng-container>
+
+    <ng-container *ngIf="(sesionIniciada$ | async) === true">
+        
+        <span class="user-info">
+            <span>Hola, {{ obtenerNombreUsuario() }}</span>
+            
+            <button 
+                mat-icon-button 
+                [matTooltip]="'Rol: ' +  obtenerRolUsuario()" 
+                matTooltipPosition="below" 
+                aria-label="Información del rol de usuario">
+                <mat-icon>info</mat-icon>
+            </button>
+        </span>
+
+        <button mat-button (click)="cerrarSesion()">
+            Cerrar sesión
+        </button>
+    </ng-container>
+
+</mat-toolbar>

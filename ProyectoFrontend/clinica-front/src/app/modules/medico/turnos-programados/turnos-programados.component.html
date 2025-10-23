@@ -1,0 +1,76 @@
+<div class="turnos-programados-container py-4">
+
+    <div class="turnos-header mb-5">
+        <h2 class="fw-bold mb-3 text-primary">
+            <i class="fas fa-calendar-check me-2"></i> Turnos Programados
+        </h2>
+    </div>
+
+    <div class="card shadow-sm mb-5 border-0">
+        <div class="card-body">
+            <div class="row align-items-end" style="text-align: center;"> 
+                <div class="col-md-6 col-lg-8">
+                    <label for="fechaTurnos" class="form-label fw-bold text-secondary mb-1 labelSelectFecha"> Seleccionar Día:</label>
+                    <input 
+                        type="date" 
+                        id="fechaTurnos" 
+                        class="form-control form-control-lg shadow-sm" 
+                        [value]="fechaSeleccionada" 
+                        (change)="onFechaChange($event)">
+                </div>
+
+                </div>
+
+            <div *ngIf="turnos.length > 0" class="col-md-6 col-lg-4 text-end">
+                <div class="col-12 text-secondary">
+                    <h3 class="mb-0 text-secondary">
+                        Turnos para el <span class="fw-bold text-dark">{{ fechaSeleccionada | date:'fullDate' }}</span>
+                    </h3>
+                    <p class="text-muted mt-1 fs-5">
+                        <span>
+                            Total de turnos: <strong>{{ turnos.length }}</strong>
+                        </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+  <div *ngIf="turnos.length > 0; else noTurnos">
+    
+    <div class="table-responsive card shadow-sm">
+        <table class="table table-hover table-bordered mb-0 text-center align-middle">
+        <thead class="bg-primary text-white">
+          <tr>
+            <th scope="col" class="text-center" style="width: 15%;">Hora</th>
+            <th scope="col" class="text-center" style="width: 20%;">Paciente</th>
+            <th scope="col" class="text-center" style="width: 25%;">Edad</th>
+            <th scope="col" class="text-center" style="width: 20%;">Cobertura</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let turno of turnos; let i = index" 
+              (click)="verNotas(turno)" 
+              class="clickable-row" 
+              [ngClass]="{'table-light': i % 2 === 0, 'table-secondary': i % 2 !== 0}">
+            
+            <td style="text-align: center;">{{ turno.hora | slice:0:5 }}</td>
+            <td style="text-align: center;">{{ turno.nombre_paciente }}</td>
+            <td style="text-align: center;">{{ calcularEdad(turno.fecha_nacimiento) }} años</td>
+            <td style="text-align: center;">
+              <span class="badge bg-info text-dark">{{ turno.cobertura }}</span>
+            </td>
+            
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
+  <ng-template #noTurnos>
+    <div class="alert alert-warning text-center p-4 border-warning shadow-sm" role="alert">
+      <p class="mb-0" style="margin-top: 50px; text-align: center;">No hay turnos programados para el <span class="fw-bold">{{ fechaSeleccionada | date:'fullDate' }}</span>.</p>
+    </div>
+  </ng-template>
+</div>

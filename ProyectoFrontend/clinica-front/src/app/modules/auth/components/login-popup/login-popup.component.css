@@ -1,0 +1,31 @@
+/* src/app/modules/auth/components/login-popup/login-popup.component.css */
+
+.dialog-title {
+  color: var(--color-primary); /* Azul de la clínica */
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+}
+
+.dialog-content {
+  padding-top: 15px;
+  min-width: 350px; /* Ancho mínimo para que se vea bien */
+  display: flex; /* Usamos flex para ordenar los campos verticalmente */
+  flex-direction: column;
+}
+
+.full-width-field {
+  width: 100%;
+  margin-bottom: 10px; /* Espacio entre los campos */
+}
+
+/* Estilo para el mensaje de error */
+.error-message {
+    color: #f44336; /* Rojo de Material Design */
+    background-color: #ffebee;
+    border: 1px solid #f44336;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    text-align: center;
+}

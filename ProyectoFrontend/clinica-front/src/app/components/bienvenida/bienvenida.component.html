@@ -1,0 +1,65 @@
+<div class="home-container">
+
+    <ng-container *ngIf="(sesionIniciada | async) === false">
+        <mat-card class="welcome-card">
+            <mat-card-header class="tituloClinica">
+                <mat-card-title>Bienvenido a la Clínica Virtual</mat-card-title>
+            </mat-card-header>
+
+            <mat-card-content>
+                <p>Inicia sesión para acceder a las funcionalidades principales.</p>
+                <p>Como paciente registrado puedes solicitar turnos, ver tus turnos agendados y modificar tus datos personales.</p>
+            </mat-card-content>
+
+            <mat-card-actions>
+                <button mat-flat-button style="background-color: #84abd1; margin: 5px;" (click)="abrirLogin()">Iniciar Sesión</button>
+                <button mat-stroked-button style="margin: 5px;" routerLink="/auth/register">Registrarse</button> 
+            </mat-card-actions>
+        </mat-card>
+    </ng-container>
+
+    <ng-container *ngIf="(sesionIniciada | async) === true && rolUsuario === 'paciente'">
+        
+        <h1 class="dashboard-title">Panel de Control del Paciente</h1>
+        <p class="dashboard-subtitle">Aquí tienes acceso a tus principales funciones.</p>
+        
+        <div class="dashboard-grid">
+            
+            <mat-card class="action-card" (click)="navegar('/paciente/nuevo-turno')">
+                <mat-card-header>
+                    <mat-icon mat-card-avatar color="primary">event_available</mat-icon>
+                    <mat-card-title>Solicitar Turno</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <p>Busca disponibilidad y agenda una cita con tu especialista.</p>
+                </mat-card-content>
+            </mat-card>
+
+            <mat-card class="action-card" (click)="navegar('/paciente/mis-turnos')">
+                <mat-card-header>
+                    <mat-icon mat-card-avatar color="accent">calendar_today</mat-icon>
+                    <mat-card-title>Mis Turnos</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <p>Consulta, modifica o cancela tus citas agendadas.</p>
+                </mat-card-content>
+            </mat-card>
+            
+            <mat-card class="action-card" (click)="navegar('/paciente/mis-datos')">
+                <mat-card-header>
+                    <mat-icon mat-card-avatar color="warn">person</mat-icon>
+                    <mat-card-title>Mis Datos Personales</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <p>Actualiza tu información, contraseña y cobertura médica.</p>
+                </mat-card-content>
+            </mat-card>
+
+        </div>
+    </ng-container>
+    
+    <ng-container *ngIf="(sesionIniciada | async) === true && rolUsuario !== 'paciente'">
+        <p>Dashboard de {{ rolUsuario }} en construcción...</p>
+    </ng-container>
+
+</div>
