@@ -97,7 +97,7 @@ export function verificarRol(req, rolRequerido) {
     }
 
     const rolUsuario = tokenResultado.payload.rol;
-    const idUsuario = tokenResultado.payload.id; // 🟢 ¡EL ID del usuario autenticado!
+    const idUsuario = tokenResultado.payload.id; // ¡EL ID del usuario autenticado!
 
     if (rolUsuario && rolUsuario.toLowerCase() === rolRequerido.toLowerCase()) {
         // Devuelve el estado OK y el ID del usuario para usarlo en la consulta

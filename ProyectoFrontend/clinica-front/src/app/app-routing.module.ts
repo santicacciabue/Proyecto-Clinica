@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { BienvenidaComponent } from './components/bienvenida/bienvenida.component';
-import { AuthGuard } from './modules/auth/guards/auth.guard'; // 👈 Asegúrate de que esta ruta sea correcta
+import { AuthGuard } from './modules/auth/guards/auth.guard';
 
 const routes: Routes = [
     
@@ -13,25 +13,33 @@ const routes: Routes = [
     { 
         path: 'paciente', 
         loadChildren: () => import('./modules/paciente/paciente.module').then(m => m.PacienteModule),
-        canLoad: [AuthGuard] // 👈 Previene la carga del módulo si no hay token (mejor para Lazy Loading)
+        canLoad: [AuthGuard],
+        canActivate: [AuthGuard], 
+        data: { roles: ['paciente', 'admin']}
     },
     
     { 
         path: 'admin', 
         loadChildren: () => import('./modules/admin/admin.module').then(m => m.AdminModule),
-        canLoad: [AuthGuard] 
+        canLoad: [AuthGuard],
+        canActivate: [AuthGuard],
+        data: { roles: ['admin'] }
     },
     
     { 
         path: 'medico', 
         loadChildren: () => import('./modules/medico/medico.module').then(m => m.MedicoModule),
-        canLoad: [AuthGuard] 
+        canLoad: [AuthGuard],
+        canActivate: [AuthGuard],
+        data: { roles: ['medico', 'admin'] }
     },
     
     { 
         path: 'operador', 
         loadChildren: () => import('./modules/operador/operador.module').then(m => m.OperadorModule),
-        canLoad: [AuthGuard] 
+        canLoad: [AuthGuard],
+        canActivate: [AuthGuard],
+        data: { roles: ['operador', 'admin'] } 
     },
     
 ];
