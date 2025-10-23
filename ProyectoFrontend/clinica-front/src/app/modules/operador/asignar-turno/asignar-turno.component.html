@@ -1,5 +1,5 @@
 <div class="asignar-turno-container py-4">
-    
+    <mat-icon (click)="cancelar()" style="cursor: pointer;">cancel</mat-icon>
     <h2 class="fw-bold mb-5 text-success">
         <i class="fas fa-calendar-plus me-2"></i> Asignar Turno
     </h2>
@@ -38,7 +38,7 @@
                 </button>
             </div>
 
-            <div *ngIf="!cargando && formularioAsignar.get('busquedaPaciente')?.value?.length >= 3 && pacientesEncontrados.length === 0" class="alert alert-warning mt-3">
+            <div *ngIf="busquedaRealizada && pacientesEncontrados.length === 0" class="alert alert-warning mt-3">
                 No se encontraron pacientes con ese criterio.
             </div>
             
@@ -56,21 +56,46 @@
             <hr>
 
             <div class="row">
+                
                 <div class="col-md-4 mb-3">
                     <label class="form-label">Especialidad</label>
-                    <select formControlName="id_especialidad" class="form-select">
-                        <option [ngValue]="null" disabled>Seleccione Especialidad</option>
-                        <option *ngFor="let esp of especialidades" [ngValue]="esp.id">{{ esp.descripcion }}</option>
-                    </select>
+                    
+                    <ng-container *ngIf="preIdMedico && formularioAsignar.get('id_especialidad')?.value; else selectEspecialidad">
+                        <input type="text" 
+                               class="form-control" 
+                               [value]="especialidadPreseleccionadaDescripcion" 
+                               readonly>
+                        <small class="form-text text-muted">Especialidad preseleccionada.</small>
+                        <input type="hidden" formControlName="id_especialidad">
+                    </ng-container>
+                    
+                    <ng-template #selectEspecialidad>
+                        <select formControlName="id_especialidad" class="form-select">
+                            <option [ngValue]="null" disabled>Seleccione Especialidad</option>
+                            <option *ngFor="let esp of especialidades" [ngValue]="esp.id">{{ esp.descripcion }}</option>
+                        </select>
+                    </ng-template>
                 </div>
 
                 <div class="col-md-4 mb-3">
                     <label class="form-label">Médico</label>
-                    <select formControlName="id_medico" class="form-select" [disabled]="formularioAsignar.get('id_especialidad')?.invalid || medicos.length === 0">
-                        <option [ngValue]="null" disabled>Seleccione Médico</option>
-                        <option *ngIf="medicos.length === 0" [ngValue]="null" disabled>Cargando...</option>
-                        <option *ngFor="let m of medicos" [ngValue]="m.id">{{ m.nombre_completo }}</option>
-                    </select>
+                    
+                    <ng-container *ngIf="preIdMedico; else selectMedico">
+                        <input type="text" 
+                               class="form-control" 
+                               [value]="medicoPreseleccionadoNombre" 
+                               readonly>
+                        <small class="form-text text-muted">Médico preseleccionado.</small>
+                        <input type="hidden" formControlName="id_medico">
+                    </ng-container>
+
+                    <ng-template #selectMedico>
+                        <select formControlName="id_medico" class="form-select" [disabled]="formularioAsignar.get('id_especialidad')?.invalid || medicos.length === 0">
+                            <option [ngValue]="null" disabled>Seleccione Médico</option>
+                            <option *ngIf="medicos.length === 0" [ngValue]="null" disabled>Cargando...</option>
+                            <option *ngFor="let m of medicos" [ngValue]="m.id">{{ m.nombre_completo }}</option>
+                        </select>
+                    </ng-template>
                 </div>
                 
                 <div class="col-md-4 mb-3">
@@ -120,7 +145,8 @@
             <div class="alert alert-success fw-bold p-3">
                 <p>Paciente: {{ pacienteSeleccionado?.nombre_completo }}</p>
                 <p>Fecha y Hora: {{ turnoSeleccionado?.fecha | date:'fullDate' }} a las {{ turnoSeleccionado?.hora_entrada }} hs.</p>
-                <p>Médico: ID {{ turnoSeleccionado?.id_medico }}</p>
+                <p>Médico: {{ medicoPreseleccionadoNombre || 'ID ' + turnoSeleccionado?.id_medico }}</p>
+                <p>Especialidad: {{ especialidadPreseleccionadaDescripcion || 'ID ' + formularioAsignar.get('id_especialidad')?.value }}</p>
             </div>
 
             <div class="mb-3">
@@ -135,9 +161,3 @@
                 <button class="btn btn-success" type="button" (click)="confirmarAsignacion()" [disabled]="cargando">
                     <i class="fas fa-check-circle me-2"></i> 
                     {{ cargando ? 'Asignando...' : 'Confirmar Asignación' }}
-                </button>
-            </div>
-        </div>
-
-    </form>
-</div>

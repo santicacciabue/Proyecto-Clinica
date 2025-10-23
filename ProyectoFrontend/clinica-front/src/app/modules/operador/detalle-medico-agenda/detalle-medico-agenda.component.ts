@@ -6,6 +6,8 @@ import { MedicoOperadorService } from '../../../services/medico-operador.service
 import { HorarioAgenda, Turno } from './detalle-medico-agenda.models';
 import { EditarHorarioModalComponent } from '../modals/editar-horario-modal/editar-horario-modal.component';
 import { MatDialog } from '@angular/material/dialog';
+import { AsignarTurnoComponent } from '../asignar-turno/asignar-turno.component';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -104,11 +106,7 @@ export class DetalleMedicoAgendaComponent implements OnInit {
               this.turnosConfirmados = resTurnos.payload || [];
               if (this.turnosConfirmados.length > 0) {
                  this.medicoNombre = this.turnosConfirmados[0].nombre_medico; 
-              } else {
-                 // Si no hay turnos, cargamos el nombre del médico desde la agenda, si es posible.
-                 // Como el endpoint de agenda (obtenerAgendaHorarios) no devuelve el nombre,
-                 // el nombre se mantendrá en 'Médico ID X' (o necesitarías un endpoint adicional).
-              }
+              } 
 
           } else {
               // Si el código no es 200 (error o no hay turnos)
@@ -130,7 +128,7 @@ export class DetalleMedicoAgendaComponent implements OnInit {
 
   // Métodos de Acción (Editar/Cancelar/Asignar)
   
-  // 🛑 LÓGICA DE EDICIÓN DE AGENDA (modo editar)
+  // LÓGICA DE EDICIÓN DE AGENDA (modo editar)
   modificarRangoHorario(horario: HorarioAgenda): void {
     //  Abrir el diálogo y pasarle el objeto de horario
     const dialogRef = this.dialog.open(EditarHorarioModalComponent, {
@@ -151,14 +149,27 @@ export class DetalleMedicoAgendaComponent implements OnInit {
     this.medicoOperadorService.modificarRangoHorario(horarioActualizado).subscribe({
         next: (res) => {
             if (res.codigo === 200) {
-                alert('Horario modificado con éxito.'); 
+                Swal.fire('Éxito', 'Horario modificado con éxito.', 'success'); 
                 this.cargarDatosMedico();
+            } else if (res.codigo === 2) {
+                // 🛑 Manejo del error de conflicto de turnos (Código 2 del backend)
+                 Swal.fire({
+                    icon: 'error',
+                    title: 'Conflicto de Turnos',
+                    text: res.mensaje, // Muestra el mensaje de la validación del backend
+                    confirmButtonText: 'Aceptar'
+                });
             } else if (res.codigo === -1 && res.mensaje.includes("token")){
-                alert('Sesión expirada o no autorizada. Por favor, vuelva a iniciar sesión.');
-                this.router.navigate(['/login']);
-            }
-            else {
-                alert('Error al modificar: ' + res.mensaje);
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Sesión Expirada',
+                    text: 'Sesión expirada o no autorizada. Por favor, vuelva a iniciar sesión.',
+                    confirmButtonText: 'Aceptar'
+                }).then(() => {
+                    this.router.navigate(['/login']);
+                });
+            } else {
+                Swal.fire('Error', 'Error al modificar: ' + res.mensaje, 'error');
             }
         },
         error: (err) => {
@@ -170,66 +181,105 @@ export class DetalleMedicoAgendaComponent implements OnInit {
 
 
   eliminarRangoHorario(id_horario: number): void {
-    if (confirm("¿Está seguro de eliminar este rango horario?")) {
-      this.medicoOperadorService.eliminarRangoHorario(id_horario).subscribe({
-        next: () => {
-          alert("Horario eliminado.");
-          this.cargarDatosMedico();
-        },
-        error: () => alert("Error al eliminar el horario.")
-      });
-    }
+    Swal.fire({
+        title: '¿Está seguro?',
+        text: "¿Desea eliminar este rango horario? Si tiene turnos asignados, fallará.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'No, cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            this.medicoOperadorService.eliminarRangoHorario(id_horario).subscribe({
+                next: (res) => {
+                    if (res.codigo === 200) {
+                        Swal.fire('Eliminado!', 'Horario eliminado correctamente.', 'success');
+                        this.cargarDatosMedico();
+                    } else if (res.codigo === -2) {
+                        Swal.fire('Error', res.mensaje, 'error');
+                    } else {
+                        Swal.fire('Error', 'Error al eliminar el horario: ' + res.mensaje, 'error');
+                    }
+                },
+                error: () => {
+                     Swal.fire('Error', 'Error de conexión al eliminar el horario.', 'error');
+                }
+            });
+        }
+    });
   }
 
   //LÓGICA DE GESTIÓN DE TURNOS (modo editar)
   abrirAsignarTurno(): void {
-    // Navegar al componente de asignar turno pasando el médico y la fecha preseleccionados
-    this.router.navigate(['/operador/turnos/asignar'], { 
-        queryParams: { 
-            id_medico: this.idMedico, 
-            fecha: this.fechaSeleccionada 
-        } 
+    const dialogRef = this.dialog.open(AsignarTurnoComponent, {
+    width: '900px', // Tamaño apropiado para el formulario
+    data: { 
+        id_medico: this.idMedico, 
+        fecha: this.fechaSeleccionada 
+    } 
+    });
+      dialogRef.afterClosed().subscribe(result => {
+      // Si se asignó un turno, recargar la lista de turnos en la vista principal
+      if (result && result.turnoAsignado) {
+          this.cargarTurnosConfirmados(); 
+      }
     });
   }
 
   editarTurno(turno: Turno): void {
-  alert(`Funcionalidad de Edición de Turno (Mover) en desarrollo. Cancelar el turno actual (${turno.id_turno}) y asignar uno nuevo es la opción más sencilla.`);
-  
-  // ⚠️ Lógica Compleja:
-  // 1. Abrir un modal o navegar a una vista con preselección.
-  // 2. Permitir seleccionar nueva fecha/hora.
-  // 3. Recopilar los datos del turno modificado (id_agenda, fecha, hora).
-  // 4. Llamar a this.medicoOperadorService.actualizarTurno(turno.id_turno, newData).
+    Swal.fire({
+        title: 'Mover Turno',
+        text: 'La edición de turno se gestiona cancelando el actual y asignando uno nuevo. ¿Desea continuar cancelando el turno?',
+        icon: 'info',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Sí, cancelar y reasignar',
+        cancelButtonText: 'Mantener turno'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            this.cancelarTurno(turno.id_turno); // Llama a la función de cancelación
+        }
+    });
   }
 
 
   cancelarTurno(id_turno: number): void {
-    // Asegúrate de que el id_turno sea válido antes de intentar cancelar
-    if (!id_turno) {
-      alert("Error: ID de turno inválido.");
-      return;
-    }
+    if (!id_turno) return;
     
-    if (confirm("¿Está seguro de CANCELAR este turno? Esta acción es irreversible.")) {
-        this.medicoOperadorService.eliminarTurno(id_turno).subscribe({
-          next: (res) => {
-            // Asumiendo que tu backend devuelve un resultado si se eliminó
-            if (res && res.affectedRows > 0) { 
-              alert("Turno cancelado correctamente.");
-              this.cargarTurnosConfirmados(); // Recargar la lista de turnos
-            } else if (res && res.mensaje) {
-              alert("Error al cancelar: " + res.mensaje);
-            } else {
-              // Asumimos éxito si la llamada no falla y no hay mensaje de error
-              alert("Turno cancelado correctamente."); 
-              this.cargarTurnosConfirmados(); 
-            }
-          },
-          error: (err) => {
-            console.error("Error de conexión al cancelar el turno:", err);
-            alert("Error de conexión con el servidor. No se pudo cancelar el turno.");
-          }
-        });
-      }
-    }
+    Swal.fire({
+        title: '¿Está seguro?',
+        text: "¡El turno será cancelado y liberado! ¿Confirma la cancelación?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Sí, cancelar turno',
+        cancelButtonText: 'Mantener'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            this.medicoOperadorService.eliminarTurno(id_turno).subscribe({
+                next: (res) => {
+                    if (res && res.affectedRows > 0) { 
+                        Swal.fire('Cancelado!', 'Turno cancelado correctamente.', 'success');
+                        this.cargarTurnosConfirmados(); 
+                    } else if (res && res.mensaje) {
+                        Swal.fire('Error', 'Error al cancelar: ' + res.mensaje, 'error');
+                    } else {
+                        Swal.fire('Cancelado!', 'Turno cancelado correctamente.', 'success'); 
+                        this.cargarTurnosConfirmados(); 
+                    }
+                },
+                error: (err) => {
+                    console.error("Error de conexión al cancelar el turno:", err);
+                    Swal.fire('Error', 'Error de conexión con el servidor. No se pudo cancelar el turno.', 'error');
+                }
+            });
+        }
+    });
+  }
+
+  
 }

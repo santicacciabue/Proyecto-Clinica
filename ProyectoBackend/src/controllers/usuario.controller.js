@@ -56,8 +56,9 @@ export function verificarToken(req){
     console.log("paso")
     try{
         const payload = jwt.verify(token, secret);
-        
-        const tiempoActualEnSegundos = Math.floor(Date.now() / 1000); 
+        console.log(payload.exp)
+        const tiempoActualEnSegundos = Math.floor(Date.now() / 1000)
+        console.log(tiempoActualEnSegundos); 
         
         if(tiempoActualEnSegundos > payload.exp){
             return {estado: false, error: "Token expirado"}

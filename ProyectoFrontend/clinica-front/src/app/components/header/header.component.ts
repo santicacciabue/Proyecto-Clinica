@@ -47,7 +47,6 @@ export class HeaderComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(resultado => {
       const rolUsuario = resultado; 
-
       if (rolUsuario === 'administrador') {
         this.router.navigate(['/admin']); 
       } 
@@ -58,6 +57,19 @@ export class HeaderComponent implements OnInit {
         this.router.navigate(['/operador']); 
       }
     });
+  }
+
+  irAHome(){
+    const rolUsuario = localStorage.getItem('rol_usuario');
+    if (rolUsuario === 'administrador') {
+        this.router.navigate(['/admin']); 
+      } 
+      else if (rolUsuario === 'medico') {
+        this.router.navigate(['/medico']); 
+      }
+      else if (rolUsuario === 'operador') {
+        this.router.navigate(['/operador']); 
+      }
   }
 
   cerrarSesion(): void {

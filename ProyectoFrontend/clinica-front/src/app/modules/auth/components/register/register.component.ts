@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service'; // Ruta al servicio
+import Swal from 'sweetalert2';
 
 interface Cobertura { // Definimos qué esperamos recibir del Back-end para las obras sociales
   id: number;
@@ -59,7 +60,8 @@ export class RegisterComponent implements OnInit {
         error: (errorCarga) => {
           // Si hay un error de conexión o en el Back-end
           console.error('Error al cargar las Obras Sociales:', errorCarga);
-          alert('No se pudo obtener la lista de obras sociales. Intente más tarde.');
+          Swal.fire('Error', 'No se pudo obtener la lista de obras sociales. Intente más tarde.','error');
+          
         }
       });
   }
@@ -68,7 +70,7 @@ export class RegisterComponent implements OnInit {
   enviarRegistro(): void { 
       // Primer filtro: si Angular detecta un validador que falló
       if (this.formularioRegistro.invalid) {
-        alert('Por favor, complete todos los campos requeridos correctamente.');
+        Swal.fire('Error', 'Por favor, complete todos los campos requeridos correctamente.','warning');
         return; 
       }
 
@@ -77,7 +79,7 @@ export class RegisterComponent implements OnInit {
       const confirmacion = this.formularioRegistro.get('repeatPassword')?.value;
       
       if (password !== confirmacion) {
-          alert('Las contraseñas ingresadas no coinciden.');
+          Swal.fire('Error', 'Las contraseñas ingresadas no coinciden.','warning');
           return;
       }
       
@@ -90,13 +92,13 @@ export class RegisterComponent implements OnInit {
       this.servicioAuth.registrarPaciente(datosParaEnvio).subscribe({
         next: (respuesta) => {
           // Éxito:
-          alert('¡Registro exitoso! Ya puedes iniciar sesión.');
+          Swal.fire('Exito','¡Registro exitoso! Ya puedes iniciar sesión.','success');
           this.enrutador.navigate(['/']); // Redirige al Home
         },
         error: (errorRegistro) => {
           // Error (ej. DNI/Email ya existe, error del servidor):
           const mensajeError = errorRegistro.error?.message || 'Error desconocido al intentar registrar.';
-          alert(`Falló el registro: ${mensajeError}`);
+          Swal.fire('Error', `Falló el registro: ${mensajeError}`, 'error');
           console.error('Error completo:', errorRegistro);
         }
       });

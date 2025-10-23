@@ -128,37 +128,47 @@ const modificarAgenda = async (req, res) => {
             hora_entrada,
             hora_salida,
          } = req.body;
-         const registroAgenda = {
-            id_medico,
-            id_especialidad,
-            fecha,
-            hora_entrada,
-            hora_salida,
-         };
         const resultadoVerificar = verificarToken(req);
         if(resultadoVerificar.estado == false){
             return res.send({codigo: -1, mensaje: resultadoVerificar.error})
         }
         connection = await getConnection();
-        const responseSelect = await connection.query("SELECT * FROM agenda where id = ?",id);
-        console.log(responseSelect)
-        if(responseSelect.length === 1){
-            console.log("entro")
-            const connection = await getConnection();
-            const response = await connection.query("UPDATE agenda SET ? where id = ?",[registroAgenda,id]);
-            if(response.affectedRows > 0){
-                res.json({codigo: 200, mensaje: "Agenda modificada", payload:  []});
-            }
-            else{
-                res.json({codigo: 1, mensaje: "Error modificando agenda", payload:  []});
-            }
+        // VERIFICAR INCONSISTENCIA DE TURNOS ASIGNADOS
+        const queryTurnosConflicto = `
+            SELECT COUNT(id) AS turnos_en_conflicto
+            FROM turno 
+            WHERE id_agenda = ? 
+            AND (
+                TIME(hora) < TIME(?) OR TIME(hora) >= TIME(?)
+            );
+        `;
+        // Utilizamos >= para la hora_salida ya que no queremos turnos EXACTAMENTE A la hora de salida.
+        
+        const [resultadoConflicto] = await connection.query(
+            queryTurnosConflicto, 
+            [id, hora_entrada, hora_salida]
+        );
+        
+        const turnosEnConflicto = resultadoConflicto.turnos_en_conflicto;
+
+        if (turnosEnConflicto > 0) {
+            // DEVOLVER ERROR CONTROLADO SI HAY CONFLICTO
+            return res.json({ 
+                codigo: 2, // Usamos un código de error específico para el frontend (ej: 2)
+                mensaje: `No se puede modificar el horario: ${turnosEnConflicto} turno(s) asignado(s) quedaría(n) fuera del nuevo rango. Cancele los turnos primero.` 
+            });
+        }
+
+        // Proceder con el UPDATE si no hay conflictos
+        const registroAgenda = { id_medico, id_especialidad, fecha, hora_entrada, hora_salida };
+        const response = await connection.query("UPDATE agenda SET ? WHERE id = ?",[registroAgenda, id]);
+        
+        if(response.affectedRows > 0){
+            res.json({codigo: 200, mensaje: "Agenda modificada con éxito.", payload:  []});
         }
         else{
-            res.json({codigo: -1, mensaje: "No existe agenda con el id proporcionado", payload: []});
+            res.json({codigo: 1, mensaje: "Error modificando agenda (0 filas afectadas).", payload:  []});
         }
-        
-
-        // res.json({codigo: 200, mensaje: "OK", payload:  response});
     }
     catch(error){
             res.status(500);
@@ -230,8 +240,14 @@ const eliminarHorarioAgenda = async (req, res) => {
         }
     }
     catch(error){
-            res.status(500);
-            res.send(error.message);
+        if (error.code === 'ER_ROW_IS_REFERENCED_2') {
+             return res.json({ 
+                 codigo: -2, 
+                 mensaje: "No se puede eliminar este rango horario porque tiene turnos asignados." 
+             });
+        }
+        res.status(500);
+        res.send(error.message);
     }
 }
 
@@ -264,7 +280,7 @@ const obtenerMedicosConAgendaAbierta = async (req, res) => {
             JOIN usuario U ON A.id_medico = U.id
             JOIN especialidad E ON A.id_especialidad = E.id
             WHERE A.fecha = ?
-            GROUP BY U.id, U.nombre, U.apellido, E.descripcion
+            GROUP BY U.id, U.nombre, U.apellido
             ORDER BY U.apellido
         `;
 

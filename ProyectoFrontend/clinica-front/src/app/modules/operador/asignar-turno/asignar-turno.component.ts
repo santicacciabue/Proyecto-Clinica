@@ -1,10 +1,12 @@
 // src/app/modules/operador/asignar-turno/asignar-turno.component.ts
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MedicoOperadorService } from '../../../services/medico-operador.service';
 import { HorarioAgenda } from '../detalle-medico-agenda/detalle-medico-agenda.models';
 import { Router, ActivatedRoute } from '@angular/router';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog'; 
+import Swal from 'sweetalert2';
 
 // Interfaz Paciente (asumo que tendrás un endpoint para buscar pacientes)
 export interface PacienteBusqueda {
@@ -26,11 +28,17 @@ export interface Especialidad {
   styleUrls: ['./asignar-turno.component.css']
 })
 export class AsignarTurnoComponent implements OnInit {
-
+  esModal = false;
   // --- PASOS Y ESTADOS ---
+  preIdMedico: number | null = null;
+  preFecha: string | null = null;
   pasoActual: number = 1;
   cargando = false;
   mensajeError = '';
+  busquedaRealizada: boolean = false;
+
+  medicoPreseleccionadoNombre: string = '';
+  especialidadPreseleccionadaDescripcion: string = '';
 
   // --- DATOS DEL FORMULARIO ---
   formularioAsignar!: FormGroup;
@@ -49,8 +57,15 @@ export class AsignarTurnoComponent implements OnInit {
     private fb: FormBuilder,
     private medicoOperadorService: MedicoOperadorService,
     private router: Router,
-    private route: ActivatedRoute
-  ) {}
+    private route: ActivatedRoute,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+        public dialogRef: MatDialogRef<AsignarTurnoComponent>
+  ) {
+
+        if (data && data.id_medico) {
+            this.esModal = true;
+        }
+  }
 
   ngOnInit(): void {
     this.formularioAsignar = this.fb.group({
@@ -65,7 +80,25 @@ export class AsignarTurnoComponent implements OnInit {
       nota: ['']
     });
 
-    this.checkPreselecciones();
+    if (this.esModal) {
+            this.checkPreseleccionesModal(this.data);
+        } else {
+            this.checkPreselecciones(); // Para cuando se navega directamente a /operador/turnos/asignar
+        }
+    if (this.preIdMedico) {
+             const especialidadControl = this.formularioAsignar.get('id_especialidad');
+             const medicoControl = this.formularioAsignar.get('id_medico');
+             
+             // Esto asegura que el formulario sea válido si tienen valores
+             if (especialidadControl) {
+                especialidadControl.setValidators(null);
+                especialidadControl.updateValueAndValidity();
+             }
+             if (medicoControl) {
+                medicoControl.setValidators(null);
+                medicoControl.updateValueAndValidity();
+             }
+    }
 
     this.formularioAsignar.get('id_especialidad')?.valueChanges.subscribe(id_especialidad => {
         if (id_especialidad) {
@@ -74,6 +107,16 @@ export class AsignarTurnoComponent implements OnInit {
         }
     });
   }
+
+    checkPreseleccionesModal(data: any): void {
+        this.preIdMedico = data.id_medico ? +data.id_medico : null;
+        this.preFecha = data.fecha;
+
+        if (this.preFecha) {
+            this.formularioAsignar.patchValue({ fecha: this.preFecha });
+        }
+        this.pasoActual = 1;
+    }
 
   cargarMedicos(id_especialidad: number): void {
       this.medicos = [];
@@ -86,30 +129,31 @@ export class AsignarTurnoComponent implements OnInit {
                   }));
                   
                   if (this.medicos.length === 0) {
-                      alert('No hay médicos para esta especialidad.');
+                      Swal.fire('Información', 'No hay médicos con agenda para esta especialidad.', 'info');
                   }
               }
           },
           error: () => { 
              this.medicos = [];
-             alert('Error al cargar médicos por especialidad.');
-          }
+             Swal.fire('Error', 'Error al cargar médicos por especialidad.', 'error');
+          } 
       });
   }
 
   // Verificar si vinimos desde DetalleMedicoAgendaComponent
   checkPreselecciones(): void {
     this.route.queryParams.subscribe(params => {
-        const preseleccionarMedico = params['id_medico'];
-        const preseleccionarFecha = params['fecha'];
+        const idMedicoStr = params['id_medico'];
+        const fechaStr = params['fecha'];
 
-        if (preseleccionarMedico) {
-                // Usamos setValue o patchValue para actualizar el formulario.
-                this.formularioAsignar.patchValue({
-                    id_medico: +preseleccionarMedico,
-                    fecha: preseleccionarFecha
-                });
-            }
+        this.preIdMedico = idMedicoStr ? +idMedicoStr : null;
+        this.preFecha = fechaStr;
+
+        if (this.preFecha) {
+            this.formularioAsignar.patchValue({
+                fecha: this.preFecha
+            });
+        }
     });
   }
 
@@ -128,8 +172,8 @@ export class AsignarTurnoComponent implements OnInit {
     this.medicoOperadorService.buscarPacientes(termino).subscribe({
       next: (res) => {
         this.cargando = false;
+        this.busquedaRealizada = true;
         if (res.codigo === 200) {
-          // La API devuelve: { id, dni, nombre_completo }
           this.pacientesEncontrados = res.payload || []; 
         } else {
           this.pacientesEncontrados = [];
@@ -138,7 +182,8 @@ export class AsignarTurnoComponent implements OnInit {
       },
       error: (err) => {
         this.cargando = false;
-        this.mensajeError = 'Error al buscar pacientes en el servidor.';
+        this.busquedaRealizada = true;
+        this.mensajeError = 'Error al buscar pacientes en el servidor.';  
         console.error('Error de API:', err);
       }
     });
@@ -146,59 +191,114 @@ export class AsignarTurnoComponent implements OnInit {
 
   seleccionarPaciente(paciente: PacienteBusqueda): void {
     this.pacienteSeleccionado = paciente;
-    this.pasoActual = 2
+    this.pasoActual = 2; 
     this.mensajeError = '';
     this.pacientesEncontrados = [];
-    this.cargarEspecialidades(paciente.id_cobertura);
-    const idMedicoPreseleccionado = this.formularioAsignar.get('id_medico')?.value;
     
-    if (idMedicoPreseleccionado) {  
-        this.buscarDisponibilidad();
-    }
-}
+    // 1. Cargar especialidades filtradas por cobertura
+    this.cargarEspecialidades(paciente.id_cobertura).then(() => {
+        
+        // 2. Si hay un médico preseleccionado, buscamos su especialidad
+        if (this.preIdMedico && this.preFecha) {
+            this.formularioAsignar.patchValue({ id_medico: this.preIdMedico });
+            
+            this.medicoOperadorService.obtenerEspecialidadPorMedico(this.preIdMedico).subscribe((res) => {
+                if (res.codigo === 200 && res.payload) {
+                  console.log(res.payload);
+                    const idEspecialidadMedico = res.payload[0].id_especialidad;
+                    
+                    // 3. Verificar si la especialidad del médico es VÁLIDA para la cobertura del paciente
+                    const esEspecialidadValida = this.especialidades.some(e => e.id === idEspecialidadMedico);
+                    
+                    if (esEspecialidadValida) {
+                        // 4. Preseleccionar y disparar la búsqueda
+                        this.formularioAsignar.patchValue({
+                            id_especialidad: idEspecialidadMedico 
+                        });
+                        this.buscarDisponibilidad();
 
-
-  cargarEspecialidades(id_cobertura: number | null): void {
-    this.especialidades = [];
-    
-    this.medicoOperadorService.obtenerEspecialidadesPorCobertura(id_cobertura).subscribe({
-        next: (res) => {
-            if (res.codigo === 200) {
-                this.especialidades = res.payload || [];
-            } else {
-                this.mensajeError = 'Error al cargar especialidades: ' + res.mensaje;
-            }
-        },
-        error: () => {
-            this.mensajeError = 'Error de conexión al obtener especialidades.';
+                        this.medicoOperadorService.buscarUsuario(this.preIdMedico!).subscribe((resMedico) => {
+                        if (resMedico.codigo === 200 && resMedico.payload) {
+                            const medico = resMedico.payload[0];
+                            // 🛑 ALMACENAR NOMBRE DEL MÉDICO
+                            this.medicoPreseleccionadoNombre = `${medico.apellido}, ${medico.nombre}`;
+                            // 🛑 ALMACENAR DESCRIPCIÓN DE LA ESPECIALIDAD
+                            this.especialidadPreseleccionadaDescripcion = res.payload[0].descripcion;
+                        }
+                    });
+                        
+                        Swal.fire({
+                            icon: 'info',
+                            title: 'Preselección Exitosa',
+                            text: `Médico y Especialidad (${res.payload[0].descripcion}) preseleccionados.`,
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000
+                        });
+                        
+                    } else {
+                        // 5. El médico no atiende esa especialidad con la cobertura del paciente
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Especialidad Incompatible',
+                            text: `El médico preseleccionado atiende la especialidad "${res.payload[0].descripcion}", pero no está cubierta para este paciente. Seleccione una especialidad válida.`,
+                            confirmButtonText: 'Entendido'
+                        });
+                        this.preIdMedico = null;
+                    }
+                }
+            });
         }
     });
-    
+  }
+
+
+  cargarEspecialidades(id_cobertura: number | null): Promise<void> {
+    return new Promise((resolve, reject) => {
+        this.especialidades = [];
+        this.medicoOperadorService.obtenerEspecialidadesPorCobertura(id_cobertura).subscribe({
+            next: (res) => {
+                if (res.codigo === 200) {
+                    this.especialidades = res.payload || [];
+                    resolve();
+                } else {
+                    this.mensajeError = 'Error al cargar especialidades: ' + res.mensaje;
+                    reject();
+                }
+            },
+            error: () => {
+                this.mensajeError = 'Error de conexión al obtener especialidades.';
+                reject();
+            }
+        });
+    });
   }
 
   buscarDisponibilidad(): void {
-    const { id_medico, fecha } = this.formularioAsignar.value;
-    
-    if (this.formularioAsignar.get('id_medico')?.invalid || this.formularioAsignar.get('fecha')?.invalid) {
-      alert('Seleccione Médico y Fecha.');
-      return;
-    }
+    const { fecha } = this.formularioAsignar.value;
+    // if (!id_medico || !fecha) {
+    //         Swal.fire('Atención', 'Seleccione Médico y Fecha.', 'warning');
+    //         return;
+    // }
+  
     
     this.cargando = true;
     this.horariosDisponibles = [];
+    this.turnoSeleccionado = null; // BORRAR ESTOOOOOOOOOOOOOO
     
     // 1. Obtener la agenda (rangos de trabajo) del médico para esa fecha
-    this.medicoOperadorService.obtenerAgendaHorarios(id_medico, fecha).subscribe({
+    this.medicoOperadorService.obtenerAgendaHorarios(this.preIdMedico!, fecha).subscribe({
         next: (resAgenda) => {
             if (resAgenda.codigo !== 200 || resAgenda.payload.length === 0) {
                 this.cargando = false;
-                alert('El médico no tiene agenda abierta en esa fecha.');
+                Swal.fire('Información', 'El médico no tiene agenda abierta en esa fecha.', 'info');
                 return;
             }
             const agenda = resAgenda.payload as HorarioAgenda[];
             
             // 2. Obtener las horas ya ocupadas (turnos confirmados)
-            this.medicoOperadorService.obtenerHorasOcupadas(id_medico, fecha).subscribe({
+            this.medicoOperadorService.obtenerHorasOcupadas(this.preIdMedico!, fecha).subscribe({
                 next: (resOcupadas) => {
                     this.cargando = false;
                     const horasOcupadas: string[] = resOcupadas.payload.map((t: any) => t.hora); // Asumo que devuelve { hora: 'HH:MM' }
@@ -207,18 +307,20 @@ export class AsignarTurnoComponent implements OnInit {
                     this.horariosDisponibles = this.calcularHorasLibres(agenda, horasOcupadas);
 
                     if (this.horariosDisponibles.length === 0) {
-                        alert('No hay turnos libres para los criterios seleccionados.');
+                            Swal.fire('Información', 'No hay turnos libres para los criterios seleccionados.', 'info');
                     }
                 },
                 error: () => {
                     this.cargando = false;
                     this.mensajeError = 'Error al obtener horas ocupadas.';
+                    Swal.fire('Error', 'Error al obtener horas ocupadas.', 'error');
                 }
             });
         },
         error: () => {
             this.cargando = false;
             this.mensajeError = 'Error al obtener agenda del médico.';
+            Swal.fire('Error', 'Error al obtener agenda del médico.', 'error');
         }
     });
   }
@@ -292,18 +394,45 @@ export class AsignarTurnoComponent implements OnInit {
       next: (res) => {
         this.cargando = false;
         if (res.codigo === 200) {
-          alert('Turno asignado con éxito! El paciente recibirá una notificación.');
-          this.router.navigate(['/operador/agenda']); 
-        } else {
-          this.mensajeError = res.mensaje;
-          alert(`Error al asignar turno: ${res.mensaje}`);
-        }
-      },
+                    Swal.fire({
+                        icon: 'success',
+                        title: '¡Turno Asignado!',
+                        text: 'El turno se registró con éxito y el paciente ha sido notificado.',
+                        confirmButtonText: 'Aceptar'
+                    });
+                    
+                    if (this.esModal) {
+                        this.dialogRef.close({ turnoAsignado: true }); // Cerrar y pasar resultado
+                    } else {
+                        this.router.navigate(['/operador/agenda']);
+                    }
+                } 
+                else if (res.codigo === 3) { // MANEJO DE DUPLICADO
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Turno Duplicado',
+                    text: res.mensaje, // Muestra el mensaje del backend
+                    confirmButtonText: 'Aceptar'
+                  })
+                }
+                else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error al Asignar Turno',
+                        text: res.mensaje,
+                        confirmButtonText: 'Aceptar'
+                    });
+                }
+            },
       error: () => {
-        this.cargando = false;
-        this.mensajeError = 'Error de conexión al asignar el turno.';
-        alert('Error de conexión con el servidor.');
-      }
+                this.cargando = false;
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error de Conexión',
+                    text: 'Error de conexión con el servidor. Intente nuevamente.',
+                    confirmButtonText: 'Aceptar'
+                });
+            }
     });
   }
 
@@ -316,6 +445,10 @@ export class AsignarTurnoComponent implements OnInit {
   }
 
   cancelar(): void {
-    this.router.navigate(['/operador/agenda']);
+    if (this.esModal) {
+            this.dialogRef.close();
+        } else {
+            this.router.navigate(['/operador/agenda']);
+        }
   }
 }

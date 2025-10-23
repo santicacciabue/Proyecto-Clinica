@@ -59,7 +59,7 @@ const obtenerEspecialidadesMedico = async (req, res) => {
             res.json({codigo: 200, mensaje:"OK", payload: response})
         }
         else{
-            res.json({codigo: 200, mensaje:"OK: Médico no tiene especialidades", payload: []})
+            res.json({codigo: 404, mensaje: "Especialidad no encontrada para este médico."})
         }
     }
     catch(error){
@@ -121,7 +121,7 @@ const obtenerMedicoPorEspecialidad = async (req, res) => {
                 U.apellido
             FROM medico_especialidad ME 
             JOIN usuario U ON ME.id_medico = U.id
-            JOIN agenda A ON ME.id_medico = A.id_medico    -- <--- AÑADIDO: VINCULA CON AGENDA
+            LEFT JOIN agenda A ON ME.id_medico = A.id_medico
             WHERE ME.id_especialidad = ?
         `;
         const response = await connection.query(query, id_especialidad);

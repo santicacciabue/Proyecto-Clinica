@@ -102,6 +102,11 @@ export class MedicoOperadorService {
     return this.http.post(`${this.API_URL}/usuarios/buscarPacientes`, body);
   }
 
+  //  Buscar Pacientes por id
+  buscarUsuario(id: number): Observable<any> {
+    return this.http.get(`${this.API_URL}/usuarios/${id}`);
+  }
+
   //  Obtener la lista de Especialidades
   obtenerEspecialidades(): Observable<any> {
 
@@ -122,7 +127,7 @@ export class MedicoOperadorService {
 
   // Asignar Turno Final
   asignarTurno(data: any): Observable<any> {
-    return this.http.post(`${this.API_URL}/asignarTurnoPaciente`, data);
+    return this.http.post(`${this.API_URL}/asignarTurnoPacienteOperador`, data);
   }
 
   obtenerEspecialidadesPorCobertura(id_cobertura: number | null): Observable<any> {
@@ -131,9 +136,12 @@ export class MedicoOperadorService {
         // HttpParams.set() convierte automáticamente a string, que es lo esperado.
         params = params.set('id_cobertura', String(id_cobertura)); 
     }
-   
     // LLAMA A: GET /api/obtenerEspecialidadesPorCobertura (con o sin ?id_cobertura=X)
     return this.http.get(`${this.API_URL}/obtenerEspecialidadesPorCobertura`, { params });
+  }
+
+  obtenerEspecialidadPorMedico(id_medico: number): Observable<any> {
+    return this.http.get(`${this.API_URL}/obtenerEspecialidadesMedico/${id_medico}`);
   }
 
 }

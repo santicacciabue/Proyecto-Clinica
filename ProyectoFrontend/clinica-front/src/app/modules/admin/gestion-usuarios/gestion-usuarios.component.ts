@@ -120,7 +120,9 @@ export class GestionUsuariosComponent implements OnInit {
     });
   }
 
+  verificarROl(){
 
+  }
 
   async crearUsuario(): Promise<void> {
     // Implementación detallada a continuación
@@ -136,12 +138,6 @@ export class GestionUsuariosComponent implements OnInit {
   private async mostrarFormularioUsuario(usuarioAEditar?: Usuario): Promise<void> {
     const title = usuarioAEditar ? `Editar Usuario: ${usuarioAEditar.nombre} ${usuarioAEditar.apellido}` : 'Nuevo Usuario Administrativo';
     
-  // Nota: ya no mostramos selección de cobertura ni al crear ni al editar.
-
-    // 2. SELECT de Especialidades 
-    //    NOTA: No podemos depender del rol en el HTML en este momento. 
-    //    Lo incluiremos siempre y lo mostraremos/ocultaremos con CSS/JS de SweetAlert si es necesario.
-    //    Por ahora, lo definimos sin lógica condicional compleja aquí.
         const especialidadSelect = `
           <select id="swal-especialidad" class="swal2-select">
             <option value="null">-- Sin Especialidad (Si no es médico) --</option>
@@ -154,11 +150,12 @@ export class GestionUsuariosComponent implements OnInit {
         `;
 
     // 3. Construcción del HTML
-    //    🛑 CORRECCIÓN: Para mostrar el select de especialidad en "Editar", usamos el rol de usuarioAEditar.
-    //    En "Crear", SweetAlert no puede saber el rol hasta que el usuario lo selecciona (requiere JS adicional, que omitimos por simplicidad de SweetAlert).
+    //  CORRECCIÓN: Para mostrar el select de especialidad en "Editar", usamos el rol de usuarioAEditar.
+    //   En "Crear", SweetAlert no puede saber el rol hasta que el usuario lo selecciona (requiere JS adicional, que omitimos por simplicidad de SweetAlert).
   const isMedico = usuarioAEditar?.rol === 'medico';
   const selectedRol = usuarioAEditar?.rol || '';
-
+  console.log(isMedico)
+  console.log(selectedRol)
   const htmlContent = `
         <input id="swal-dni" class="swal2-input" placeholder="DNI" value="${usuarioAEditar?.dni || ''}" required>
         <input id="swal-nombre" class="swal2-input" placeholder="Nombre" value="${usuarioAEditar?.nombre || ''}" required>
@@ -175,12 +172,10 @@ export class GestionUsuariosComponent implements OnInit {
               `<option value="${rol}" ${selectedRol === rol ? 'selected' : ''}>${rol.charAt(0).toUpperCase() + rol.slice(1)}</option>`
             ).join('')}
           </select>
-
-          <div id="especialidad-group" class="${isMedico ? '' : 'hidden-field'}">
-              <label for="swal-especialidad" class="swal2-label">Especialidad:</label>
-              ${especialidadSelect}
+         <div id="especialidad-group" class="${isMedico ? 'hidden-field' : ''}">
+                 <label for="swal-especialidad" class="swal2-label">Especialidad:</label>
+                 ${especialidadSelect}
           </div>
-
           <input id="swal-password" class="swal2-input" type="password" placeholder="Contraseña (requerido al crear)" required>
         ` : ''}
     `;

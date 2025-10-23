@@ -3,6 +3,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MedicoOperadorService } from '../../../services/medico-operador.service';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-gestion-agenda',
@@ -48,9 +49,23 @@ export class GestionAgendaComponent implements OnInit {
         this.cargando = false;
         if (res.codigo === 200) {
           this.medicosConAgenda = res.payload || [];
+          if (this.medicosConAgenda.length === 0) {
+                     Swal.fire({
+                        icon: 'info',
+                        title: 'Sin Agenda',
+                        text: 'No se encontró agenda cargada para ningún médico en esta fecha.',
+                        confirmButtonText: 'Aceptar'
+                    });
+                }
         } else {
           this.mensajeError = res.mensaje || 'Error al cargar la agenda.';
           this.medicosConAgenda = [];
+          Swal.fire({
+                    icon: 'warning',
+                    title: 'Error de Carga',
+                    text: res.mensaje || 'Hubo un error al cargar la agenda de médicos.',
+                    confirmButtonText: 'Aceptar'
+                });
         }
       },
       error: (err) => {
@@ -58,6 +73,12 @@ export class GestionAgendaComponent implements OnInit {
         this.mensajeError = 'Error de conexión con el servidor.';
         this.medicosConAgenda = [];
         console.error(err);
+        Swal.fire({
+                icon: 'error',
+                title: 'Error de Conexión',
+                text: 'Error de conexión con el servidor al intentar cargar la agenda.',
+                confirmButtonText: 'Aceptar'
+            });
       }
     });
   }

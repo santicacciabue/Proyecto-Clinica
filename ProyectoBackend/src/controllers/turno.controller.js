@@ -138,6 +138,78 @@ const asignarTurnoPaciente = async (req, res) => {
     }
 }
 
+//asignacion de turno de parte del operador
+
+const asignarTurnoPacienteOperador = async (req, res) => {
+    try{
+        const resultadoVerificar = verificarToken(req);
+        if(resultadoVerificar.estado == false){
+            return res.send({codigo: -1, mensaje: resultadoVerificar.error})
+        }
+        const { id_paciente, id_agenda, fecha, hora, nota, id_cobertura } = req.body;
+        
+        const connection = await getConnection();
+        
+        const [agendaInfo] = await connection.query("SELECT id_medico FROM agenda WHERE id = ?", id_agenda);
+        if (!agendaInfo) {
+            return res.json({ codigo: 404, mensaje: "Agenda no encontrada." });
+        }
+        const id_medico = agendaInfo.id_medico;
+        
+        // 🛑 1. VALIDACIÓN: Turno duplicado para el mismo paciente en la misma fecha/hora/médico.
+        const queryCheckTurnoDiarioMedico = `
+        SELECT COUNT(T.id) AS count
+        FROM turno T
+        JOIN agenda A ON T.id_agenda = A.id
+        WHERE T.id_paciente = ? 
+          AND T.fecha = ? 
+          AND A.id_medico = ?
+        `;
+        const [resultadoDiarioMedico] = await connection.query(
+            queryCheckTurnoDiarioMedico, 
+            [id_paciente, fecha, id_medico]
+        );
+        
+        if (resultadoDiarioMedico.count > 0) {
+            return res.json({ 
+                codigo: 4, // Código de error para el frontend
+                mensaje: "El paciente ya tiene un turno asignado con este médico en esta fecha. Solo se permite un turno por médico por día." 
+            });
+        }
+    
+        // 3. VALIDACIÓN: Turno ya ocupado por otro paciente (hora/fecha/médico)
+        const queryCheckOcupado = `
+            SELECT COUNT(T.id) AS count
+            FROM turno T
+            WHERE T.fecha = ? 
+            AND T.hora = ?
+            AND T.id_agenda IN (SELECT id FROM agenda WHERE id_medico = ?)
+        `;
+        const [resultadoOcupado] = await connection.query(
+            queryCheckOcupado, 
+            [fecha, hora, id_medico]
+        );
+
+        if (resultadoOcupado.count > 0) {
+            return res.json({ 
+                codigo: 5, 
+                mensaje: "Este horario acaba de ser ocupado. Intente con otro horario." 
+            });
+        }
+        
+        
+        // 3. Proceder con la inserción si las validaciones pasan
+        const turno = { id_paciente, id_agenda, fecha, hora, nota, id_cobertura };
+        const response = await connection.query("INSERT INTO turno SET ?", turno);
+
+        res.json ({codigo: 200, mensaje: "Turno asignado con éxito", payload: { id: response.insertId }});
+    }
+    catch(error){
+        console.error("Error asignando turno:", error);
+        res.status(500).send(error.message);
+    }
+}
+
 //UPDATE turno de un paciente
 const actualizarTurnoPaciente = async (req, res) => {
     try{
@@ -186,5 +258,6 @@ export const methods = {
     asignarTurnoPaciente,
     actualizarTurnoPaciente,
     eliminarTurnoPaciente,
-    obtenerMisTurnos
+    obtenerMisTurnos,
+    asignarTurnoPacienteOperador
 };

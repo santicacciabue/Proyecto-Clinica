@@ -3,17 +3,24 @@
 /* Estilo para ocultar el grupo de especialidad cuando no se necesita */
 .hidden-field {
     display: none !important;
+    visibility: hidden;
 }
 /* Estilo para que los inputs en SweetAlert se vean mejor */
 .swal2-content-admin input, 
 .swal2-content-admin select {
     margin-bottom: 10px;
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #d9d9d9;
 }
 .swal2-content-admin .swal2-label {
     display: block;
     text-align: left;
     margin-top: 5px;
     font-weight: bold;
+    margin-bottom: 5px;
+    font-weight: 600;
 }
 
 .btnGest{

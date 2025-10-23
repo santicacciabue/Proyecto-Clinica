@@ -12,6 +12,7 @@ import { EditarHorarioModalComponent } from './modals/editar-horario-modal/edita
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
+
 @NgModule({
   declarations: [
     OperadorLayoutComponent,
@@ -19,7 +20,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     DetalleMedicoAgendaComponent,
     AsignarTurnoComponent,
     CrearPacienteComponent,
-    EditarHorarioModalComponent
+    EditarHorarioModalComponent,
   ],
   imports: [
     CommonModule,

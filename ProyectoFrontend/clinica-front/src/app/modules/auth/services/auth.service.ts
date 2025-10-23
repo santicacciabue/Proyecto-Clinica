@@ -115,10 +115,8 @@ export class AuthService {
  
 
   // 4. CERRAR SESIÓN
-  cerrarSesion(): void {
-    localStorage.removeItem('token_acceso');
-    localStorage.removeItem('rol_usuario');
-    localStorage.removeItem('nombre_usuario');
+   cerrarSesion(): void {
+    localStorage.clear();
     this.estadoSesion.next(false);
   }
 
