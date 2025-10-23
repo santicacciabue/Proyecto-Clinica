@@ -5,6 +5,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service'; 
 import { Router } from '@angular/router'; // Lo necesitamos para redirigir
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login-popup',
@@ -18,19 +19,17 @@ export class LoginPopupComponent {
   mensajeError: string = '';
 
   constructor(
-    public referenciaDialogo: MatDialogRef<LoginPopupComponent>, // Para cerrar el pop-up
+    public referenciaDialogo: MatDialogRef<LoginPopupComponent>,
     private constructorFormulario: FormBuilder,
-    private servicioAuth: AuthService, // Para iniciar sesión
-    private enrutador: Router
+    private servicioAuth: AuthService,
   ) {
     this.formularioLogin = this.constructorFormulario.group({
-      usuario: ['', Validators.required], // El Back-end espera este campo para DNI/Email
+      usuario: ['', Validators.required], // El Back-end espera este campo para DNI
       password: ['', Validators.required]
     });
   }
 
-  // Se ejecuta al hacer click en Aceptar
-  procesarLogin(): void {
+ procesarLogin(): void {
     this.mensajeError = ''; // Limpiamos errores anteriores
     if (this.formularioLogin.invalid) return;
 
@@ -38,14 +37,22 @@ export class LoginPopupComponent {
 
     this.servicioAuth.iniciarSesion(credenciales).subscribe({
       next: (respuesta) => {
-        // Éxito: El token ya fue guardado en LocalStorage por el AuthService
         this.referenciaDialogo.close(respuesta.usuario.rol);
-
       },
       error: (errorLogin) => {
-        // Fallo: Muestra el mensaje de error del servidor
-        this.mensajeError = errorLogin.message || 'Error al conectar con el servidor.';
+        const mensajeUsuario = errorLogin.message || 'Credenciales incorrectas.'; 
+ 
+        Swal.fire({
+            icon: 'error',
+            title: 'Error de Acceso',
+            text: mensajeUsuario,
+            confirmButtonText: 'Aceptar'
+        });
+
+        this.mensajeError = mensajeUsuario; 
+
         this.referenciaDialogo.close(false);
+        
         console.error('Error de Inicio de Sesión:', errorLogin);
       }
     });

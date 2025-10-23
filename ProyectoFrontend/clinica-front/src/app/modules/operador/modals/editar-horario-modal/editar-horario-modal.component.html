@@ -1,12 +1,16 @@
-<h2 mat-dialog-title>Editar Rango Horario</h2>
+<h2 mat-dialog-title class="fw-bold text-primary">
+  <i class="fas fa-clock me-2"></i> Editar Rango Horario
+</h2>
 
-<mat-dialog-content class="mat-typography">
+<mat-dialog-content class="mat-typography mt-3">
   <form [formGroup]="horarioForm">
-    <p>Médico ID: {{ horarioOriginal.id_medico }} | Fecha: {{ horarioOriginal.fecha }}</p>
+    <p class="text-muted mb-3">
+      Médico ID: {{ horarioOriginal.id_medico }} | Fecha: {{ horarioOriginal.fecha }}
+    </p>
 
-    <mat-form-field appearance="outline" class="w-100">
+    <mat-form-field appearance="outline" class="w-100 mb-3">
       <mat-label>Hora de Entrada</mat-label>
-      <input matInput type="time" formControlName="hora_entrada">
+      <input matInput type="time" formControlName="hora_entrada" />
       <mat-error *ngIf="horarioForm.get('hora_entrada')?.hasError('required')">
         La hora de entrada es obligatoria.
       </mat-error>
@@ -14,7 +18,7 @@
 
     <mat-form-field appearance="outline" class="w-100">
       <mat-label>Hora de Salida</mat-label>
-      <input matInput type="time" formControlName="hora_salida">
+      <input matInput type="time" formControlName="hora_salida" />
       <mat-error *ngIf="horarioForm.get('hora_salida')?.hasError('required')">
         La hora de salida es obligatoria.
       </mat-error>
@@ -22,9 +26,14 @@
   </form>
 </mat-dialog-content>
 
-<mat-dialog-actions align="end">
+<mat-dialog-actions align="end" class="pt-3">
   <button mat-button (click)="cancelar()">Cancelar</button>
-  <button mat-raised-button color="primary" [disabled]="horarioForm.invalid" (click)="guardar()">
+  <button
+    mat-raised-button
+    color="primary"
+    [disabled]="horarioForm.invalid"
+    (click)="guardar()"
+  >
     <i class="fas fa-save me-2"></i> Guardar Cambios
   </button>
 </mat-dialog-actions>

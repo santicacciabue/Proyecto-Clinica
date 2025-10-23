@@ -5,6 +5,9 @@ import { AdminComponent } from './admin.component';
 import { GestionCoberturasComponent } from './gestion-coberturas/gestion-coberturas.component';
 import { GestionEspecialidadesComponent } from './gestion-especialidades/gestion-especialidades.component';
 import { GestionUsuariosComponent } from './gestion-usuarios/gestion-usuarios.component';
+import { BienvenidaComponent } from 'src/app/components/bienvenida/bienvenida.component';
+import { AdminBienvenidaComponent } from './admin-bienvenida/admin-bienvenida.component';
+
 
 
 const routes: Routes = [
@@ -26,12 +29,15 @@ const routes: Routes = [
         path: 'usuarios', 
         component: GestionUsuariosComponent 
       },
+      { 
+         path: 'bienvenida', component: AdminBienvenidaComponent
+      },
       
       // 4. Ruta de Redirección por defecto al dashboard o a coberturas
       { 
         path: '', 
         redirectTo: 'admin', 
-        pathMatch: 'full' 
+        pathMatch: 'full',
       }
     ]
   }

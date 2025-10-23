@@ -29,7 +29,9 @@
     </aside>
 
     <main class="admin-content">
-        <router-outlet></router-outlet> 
+        <app-admin-bienvenida *ngIf="showWelcomeModal"></app-admin-bienvenida>
+        <router-outlet></router-outlet>
     </main>
 
 </div>
+

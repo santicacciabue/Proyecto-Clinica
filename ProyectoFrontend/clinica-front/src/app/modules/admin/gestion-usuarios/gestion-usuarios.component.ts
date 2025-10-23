@@ -157,62 +157,58 @@ export class GestionUsuariosComponent implements OnInit {
   console.log(isMedico)
   console.log(selectedRol)
   const htmlContent = `
-        <input id="swal-dni" class="swal2-input" placeholder="DNI" value="${usuarioAEditar?.dni || ''}" required>
-        <input id="swal-nombre" class="swal2-input" placeholder="Nombre" value="${usuarioAEditar?.nombre || ''}" required>
-        <input id="swal-apellido" class="swal2-input" placeholder="Apellido" value="${usuarioAEditar?.apellido || ''}" required>
-        <input id="swal-email" class="swal2-input" type="email" placeholder="Email" value="${usuarioAEditar?.email || ''}" required>
-        <input id="swal-telefono" class="swal2-input" placeholder="Teléfono" value="${usuarioAEditar?.telefono || ''}">
-        <input id="swal-fecha_nac" class="swal2-input" type="date" placeholder="Fecha Nacimiento" value="${usuarioAEditar?.fecha_nacimiento ? (usuarioAEditar.fecha_nacimiento as any).substring(0, 10) : ''}">
-        
-        ${!usuarioAEditar ? `
-          <label for="swal-rol" class="swal2-label">Rol:</label>
-          <select id="swal-rol" class="swal2-select">
-            <option value="">-- Seleccionar Rol --</option>
-            ${this.rolesDisponibles.map(rol => 
-              `<option value="${rol}" ${selectedRol === rol ? 'selected' : ''}>${rol.charAt(0).toUpperCase() + rol.slice(1)}</option>`
-            ).join('')}
-          </select>
-         <div id="especialidad-group" class="${isMedico ? 'hidden-field' : ''}">
-                 <label for="swal-especialidad" class="swal2-label">Especialidad:</label>
-                 ${especialidadSelect}
-          </div>
-          <input id="swal-password" class="swal2-input" type="password" placeholder="Contraseña (requerido al crear)" required>
-        ` : ''}
-    `;
+                      <input id="swal-dni" class="swal2-input" placeholder="DNI" value="${usuarioAEditar?.dni || ''}" required>
+                      <input id="swal-nombre" class="swal2-input" placeholder="Nombre" value="${usuarioAEditar?.nombre || ''}" required>
+                      <input id="swal-apellido" class="swal2-input" placeholder="Apellido" value="${usuarioAEditar?.apellido || ''}" required>
+                      <input id="swal-email" class="swal2-input" type="email" placeholder="Email" value="${usuarioAEditar?.email || ''}" required>
+                      <input id="swal-telefono" class="swal2-input" placeholder="Teléfono" value="${usuarioAEditar?.telefono || ''}">
+                      <input id="swal-fecha_nac" class="swal2-input" type="date" placeholder="Fecha Nacimiento" value="${usuarioAEditar?.fecha_nacimiento ? (usuarioAEditar.fecha_nacimiento as any).substring(0,10) : ''}">
+
+                      <label for="swal-rol" class="swal2-label">Rol:</label>
+                      <select id="swal-rol" class="swal2-select">
+                        <option value="">-- Seleccionar Rol --</option>
+                        ${this.rolesDisponibles.map(rol => `<option value="${rol}" ${selectedRol === rol ? 'selected' : ''}>${rol.charAt(0).toUpperCase()+rol.slice(1)}</option>`).join('')}
+                      </select>
+
+                      <!-- ocultación por inline-style: funciona dentro del modal -->
+                      <div id="especialidad-group" style="${isMedico ? '' : 'display:none;'}">
+                        <label for="swal-especialidad" class="swal2-label">Especialidad:</label>
+                        ${especialidadSelect}
+                      </div>
+
+                      ${!usuarioAEditar
+                        ? '<input id="swal-password" class="swal2-input" type="password" placeholder="Contraseña (requerido al crear)" required>'
+                        : '<input id="swal-password" class="swal2-input" type="password" placeholder="Nueva contraseña (opcional)">' }
+                    `;
         
     // 4. Ejecución del SweetAlert y Recolección de Datos
-    const { value: formValues } = await Swal.fire({
-        title: title,
-        html: htmlContent,
-        focusConfirm: false,
-        showCancelButton: true,
-        width: 600,
-        // Añadir una clase CSS al contenedor de SweetAlert para ocultar el campo de especialidad inicialmente si es necesario.
-        customClass: {
-            htmlContainer: 'swal2-content-admin',
+        const { value: formValues } = await Swal.fire({
+          title: title,
+          html: htmlContent,
+          focusConfirm: false,
+          showCancelButton: true,
+          width: 600,
+          // Añadir una clase CSS al contenedor de SweetAlert para ocultar el campo de especialidad inicialmente si es necesario.
+          customClass: {
+              htmlContainer: 'swal2-content-admin',
         },
-        // Opcional: Hook para mostrar/ocultar campos al cambiar el rol
         didOpen: () => {
-             const rolSelect = document.getElementById('swal-rol') as HTMLSelectElement;
-             const especialidadGroup = document.getElementById('especialidad-group') as HTMLDivElement;
+          const rolSelect = document.getElementById('swal-rol') as HTMLSelectElement | null;
+          const especialidadGroup = document.getElementById('especialidad-group') as HTMLDivElement | null;
 
-             // Función para alternar la visibilidad
-             if (rolSelect && especialidadGroup) {
-              // Función para alternar la visibilidad
-                const toggleEspecialidad = () => {
-                  if (rolSelect.value === 'medico') {
-                    especialidadGroup.classList.remove('hidden-field');
-                  } else {
-                    especialidadGroup.classList.add('hidden-field');
-                  }
-                };
+          if (!rolSelect || !especialidadGroup) return;
 
-                rolSelect.addEventListener('change', toggleEspecialidad);
-                // Ejecutar una vez al abrir
-                toggleEspecialidad(); 
-              }
+          const toggleEspecialidad = () => {
+            if (rolSelect.value === 'medico') {
+              especialidadGroup.style.display = ''; // deja que el CSS por defecto muestre
+            } else {
+              especialidadGroup.style.display = 'none';
+            }
+          };
+
+          rolSelect.addEventListener('change', toggleEspecialidad);
+          toggleEspecialidad(); // estado inicial
         },
-
         preConfirm: () => {
           const dni = (document.getElementById('swal-dni') as HTMLInputElement).value.trim();
           const nombre = (document.getElementById('swal-nombre') as HTMLInputElement).value.trim();

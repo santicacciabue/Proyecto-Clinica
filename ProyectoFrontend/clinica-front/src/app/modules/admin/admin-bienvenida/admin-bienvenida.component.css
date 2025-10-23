@@ -1,3 +1,49 @@
+/* Estilo para la página de inicio del admin */
+.welcome-card {
+    padding: 40px;
+    background-color: #f0f4ff;
+    /* border: 1px solid #3f51b5; */
+    border-radius: 8px;
+    text-align: center;
+    margin-top: 50px;
+}
+
+.welcome-card h1 {
+    color: white;
+    font-size: 2em;
+}
+
+.welcome-modal-overlay {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeInModal 0.3s ease forwards;
+}
+
+.welcome-modal-card {
+  background: #2c3e50;
+  border-radius: 12px;
+  padding: 150px 195px;;
+  max-width: 450px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(63, 81, 181, 0.3);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.welcome-modal-card h2 {
+  color: white;
+  font-weight: 700;
+  margin-bottom: 15px;
+  font-size: 1.8rem;
+}
+
+.welcome-modal-card p {
+  color: white;
+  font-size: 1.1rem;
+  margin-bottom: 25px;
+  line-height: 1.4;
+}
 
 
 .admin-container {
@@ -82,13 +128,3 @@
   background-color: #2c3e50;
 }
 
-/* @keyframes fadeInModal {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-} */

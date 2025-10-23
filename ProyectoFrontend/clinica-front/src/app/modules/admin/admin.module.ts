@@ -8,6 +8,7 @@ import { CompartidoModule } from '../../components/compartido.module';
 import { GestionEspecialidadesComponent } from './gestion-especialidades/gestion-especialidades.component';
 import { GestionUsuariosComponent } from './gestion-usuarios/gestion-usuarios.component';
 import { FormsModule } from '@angular/forms';
+import { AdminBienvenidaComponent } from './admin-bienvenida/admin-bienvenida.component';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { FormsModule } from '@angular/forms';
     AdminComponent,
     GestionCoberturasComponent,
     GestionEspecialidadesComponent,
-    GestionUsuariosComponent
+    GestionUsuariosComponent,
+    AdminBienvenidaComponent
   ],
   imports: [
     CommonModule,

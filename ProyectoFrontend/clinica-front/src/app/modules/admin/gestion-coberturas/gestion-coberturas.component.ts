@@ -49,7 +49,7 @@ export class GestionCoberturasComponent implements OnInit {
   }
 
   goBack(): void {
-      this.router.navigateByUrl('/admin');
+      this.router.navigateByUrl('');
   }
 
   // Lógica de AGREGAR (Crea un nuevo registro)

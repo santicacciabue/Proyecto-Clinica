@@ -1,22 +1,21 @@
 <div class="asignar-turno-container py-4">
-    <mat-icon (click)="cancelar()" style="cursor: pointer;">cancel</mat-icon>
-    <h2 class="fw-bold mb-5 text-success">
+    <mat-icon (click)="cancelar()" class="text-danger cursor-pointer mb-2" style="cursor: pointer;">cancel</mat-icon>
+
+    <h2 class="fw-bold mb-4 text-success">
         <i class="fas fa-calendar-plus me-2"></i> Asignar Turno
     </h2>
 
-    <div class="progress mb-4" style="height: 10px;">
-        <div class="progress-bar" role="progressbar" 
-             [style.width]="pasoActual === 1 ? '33%' : pasoActual === 2 ? '66%' : '100%'" 
-             aria-valuenow="pasoActual" aria-valuemin="1" aria-valuemax="3"></div>
+   
+
+    <div *ngIf="mensajeError" class="alert alert-danger text-center shadow-sm">
+        {{ mensajeError }}
     </div>
 
-    <div *ngIf="mensajeError" class="alert alert-danger text-center">{{ mensajeError }}</div>
-
-    <form [formGroup]="formularioAsignar">
+    <form [formGroup]="formularioAsignar" class="formulario">
 
         <div *ngIf="pasoActual === 1" class="card shadow p-4 mb-4">
-            <h4 class="card-title text-success">Paso 1: Seleccionar Paciente</h4>
-            <hr>
+            <h4 class="card-title text-success">Seleccionar Paciente</h4>
+        
             
             <div class="input-group mb-3">
                 <input type="text" formControlName="busquedaPaciente" class="form-control" 
@@ -32,7 +31,7 @@
             <div *ngIf="pacientesEncontrados.length > 0" class="list-group">
                 <p class="text-muted small mt-2">Resultados encontrados ({{ pacientesEncontrados.length }}):</p>
                 <button *ngFor="let p of pacientesEncontrados" type="button" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
-                        (click)="seleccionarPaciente(p)">
+                        (click)="seleccionarPaciente(p)" style="cursor: pointer;">
                     <span>{{ p.nombre_completo }}</span>
                     <span class="badge bg-secondary">DNI: {{ p.dni }}</span>
                 </button>
@@ -41,17 +40,11 @@
             <div *ngIf="busquedaRealizada && pacientesEncontrados.length === 0" class="alert alert-warning mt-3">
                 No se encontraron pacientes con ese criterio.
             </div>
-            
-            <div class="mt-4 text-end">
-                <button class="btn btn-outline-secondary" disabled>Anterior</button>
-                <button class="btn btn-success ms-2" [disabled]="!pacienteSeleccionado" (click)="pasoActual = 2">
-                    Siguiente <i class="fas fa-arrow-right ms-2"></i>
-                </button>
-            </div>
+        
         </div>
         
         <div *ngIf="pasoActual === 2" class="card shadow p-4 mb-4">
-            <h4 class="card-title text-success">Paso 2: Buscar Disponibilidad</h4>
+            <h4 class="card-title text-success">Buscar Disponibilidad</h4>
             <p class="text-info fw-bold">Paciente Seleccionado: {{ pacienteSeleccionado?.nombre_completo }} (DNI: {{ pacienteSeleccionado?.dni }})</p>
             <hr>
 
@@ -65,7 +58,6 @@
                                class="form-control" 
                                [value]="especialidadPreseleccionadaDescripcion" 
                                readonly>
-                        <small class="form-text text-muted">Especialidad preseleccionada.</small>
                         <input type="hidden" formControlName="id_especialidad">
                     </ng-container>
                     
@@ -85,7 +77,6 @@
                                class="form-control" 
                                [value]="medicoPreseleccionadoNombre" 
                                readonly>
-                        <small class="form-text text-muted">Médico preseleccionado.</small>
                         <input type="hidden" formControlName="id_medico">
                     </ng-container>
 
@@ -116,7 +107,7 @@
                 <p class="fw-bold">Seleccione un horario (Hora de inicio del turno):</p>
                 <div class="list-group list-group-horizontal-md flex-wrap">
                     <button *ngFor="let turno of horariosDisponibles" type="button" 
-                            class="list-group-item list-group-item-action me-2 mb-2"
+                            class="list-group-item list-group-item-action me-2 mb-2" style="cursor: pointer;"
                             [class.active]="turnoSeleccionado?.hora_entrada === turno.hora_entrada && turnoSeleccionado?.id === turno.id"
                             (click)="seleccionarTurno(turno)">
                         {{ turno.hora_entrada }}
@@ -132,14 +123,14 @@
                 <button class="btn btn-outline-secondary" type="button" (click)="volverAPaso(1)">
                     <i class="fas fa-arrow-left me-2"></i> Anterior
                 </button>
-                <button class="btn btn-success" [disabled]="!turnoSeleccionado" (click)="pasoActual = 3">
+                <button class="btn btn-success btnSiguiente" [disabled]="!turnoSeleccionado" (click)="pasoActual = 3">
                     Siguiente <i class="fas fa-arrow-right ms-2"></i>
                 </button>
             </div>
         </div>
 
         <div *ngIf="pasoActual === 3" class="card shadow p-4 mb-4">
-            <h4 class="card-title text-success">Paso 3: Confirmar Turno</h4>
+            <h4 class="card-title text-success">Confirmar Turno</h4>
             <hr>
             
             <div class="alert alert-success fw-bold p-3">
