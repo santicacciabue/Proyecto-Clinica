@@ -125,7 +125,8 @@ The application is fully functional and covers all core use cases requested in t
 
 👨‍💻 Author
 
-Lautaro Aiello, Santiago Cacciabue
+Lautaro Aiello and Santiago Cacciabue
+
 Highers Technicians in Software Development
 
 📌 Notes
