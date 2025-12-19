@@ -34,7 +34,7 @@ npm run dev
 ✨ Features
 👤 User Roles
 
-Guest
+- Guest
 
 Browse products
 
@@ -42,7 +42,7 @@ Search and filter catalog
 
 Register and log in
 
-Authenticated User
+- Authenticated User
 
 Add products to cart and favorites
 
@@ -50,7 +50,7 @@ Edit personal information
 
 View cart and favorites
 
-Administrator
+- Administrator
 
 Product management (create, edit, search)
 
