@@ -1,12 +1,13 @@
 🧵 Lana & Lino – E-commerce Web Application
-📌 Description
 
-Lana & Lino is a web application developed as an academic project for a fictional clothing company.
-The system allows product catalog visualization, user management, shopping cart, favorites, and product administration, with different permission levels depending on the user role.
+Web application developed as an academic project for a fictional clothing company, focused on online product sales, user management, and shopping cart functionality, using only core web technologies.
 
-The main goal of this project was to build a complete web solution using core web technologies only, integrating with a backend provided externally.
+🚀 Overview
 
-🛠️ Technologies Used
+Lana & Lino allows users to browse a clothing catalog, manage favorites, add products to a shopping cart, and simulate a checkout process.
+The application includes role-based access with specific features for guests, registered users, and administrators.
+
+🛠️ Tech Stack
 
 HTML5
 
@@ -16,132 +17,97 @@ JavaScript (Vanilla JS)
 
 Backend provided by the course (not modifiable)
 
-⚠️ No frameworks or external libraries were used, as required by the assignment.
+No frameworks or external libraries were used, as required by the assignment.
 
-👥 User Roles
-Guest User (Not logged in)
+⚙️ Environment & Setup
+Node.js Version
 
-Browse product catalog
+This project was developed using Node.js v16.14.0.
+Using this version is recommended for proper execution.
 
-Search and filter products
+Run the Project
+
+From the root directory:
+
+npm run dev
+
+✨ Features
+👤 User Roles
+
+Guest
+
+Browse products
+
+Search and filter catalog
 
 Register and log in
 
-Logged-in User
+Authenticated User
 
-Add products to the shopping cart
+Add products to cart and favorites
 
-Add products to favorites
-
-Edit personal user data
+Edit personal information
 
 View cart and favorites
 
 Administrator
 
-Access to Product Management section
+Product management (create, edit, search)
 
-Create, search, and update products
+Stock and price control
 
-Manage stock, pricing, and availability
+🛍️ Shopping Experience
 
-🧩 Main Features
-🛍️ Products
+Product details (image, description, sizes, color, stock, price)
 
-Product image, description, sizes, color, stock, and price
+Installment calculation (1, 3, 6, 9, 12 payments)
 
-Installment selector (1, 3, 6, 9, or 12 installments)
+Stock validation (out-of-stock protection)
 
-Purchase disabled when stock is unavailable
+Favorites management
 
-Filters by gender, category, and color
+🛒 Cart & Payment
 
-🔎 Search and Navigation
-
-Product search by name
-
-Category-based navigation
-
-Fixed header visible at all times
-
-❤️ Favorites
-
-Add and remove products from favorites
-
-Favorites list with product details
-
-Direct access to product detail view
-
-🛒 Shopping Cart
-
-View added products
-
-Remove products from the cart
+Add and remove products from cart
 
 Automatic total calculation
 
-Access to the payment screen
+Payment method selection
 
-💳 Payment Screen
+Payment success simulation (no real transaction)
 
-Payment method selection (bank transfer, debit, credit)
+🌗 UI & UX
 
-Required field validation
+Light mode / Dark mode toggle
 
-Successful payment simulation (no real transaction)
+Fixed header and footer
 
-🌗 User Interface
+Footer with contact information and credits
 
-Light mode and dark mode
-
-Responsive design
-
-Persistent header and footer
-
-Footer with company contact information and project credits
-
-🔐 Security and Permissions
+🔐 Security & Permissions
 
 Role-based access control
 
-Restricted access to admin features
+Restricted admin functionality
 
-Session validation for sensitive actions
-
-🚀 Installation and Usage
-
-Clone the repository
-
-Open the index.html file in your browser
-
-Ensure the backend provided by the course is running and accessible
-
-⚙️ Environment & Execution
-Node.js Version
-
-This project was developed using Node.js v16.14.0.
-It is recommended to use this version to ensure correct execution.
-
-Run the Project
-
-From the root directory of the project, run: npm run dev
+Session validation for protected actions
 
 🎓 Academic Context
 
-This project was developed as Practical Assignment 1, fully complying with all technical and functional requirements defined by the course.
+This project was developed as Practical Assignment 1, following all technical and functional requirements defined by the course.
 
-✍️ Author
+👨‍💻 Author
 
-Developed by Lautaro Aiello and Santiago Cacciabue
+Lautaro Aiello, Santiago Cacciabue
 Highers Technicians in Software Development
 
-📎 Final Notes
+📌 Notes
 
-This project was built for educational purposes, focusing on:
-
-Business logic implementation
+This project focuses on:
 
 DOM manipulation
+
+Business logic implementation
 
 User state management
 
