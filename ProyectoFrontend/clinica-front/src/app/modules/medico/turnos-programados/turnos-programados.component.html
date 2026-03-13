@@ -1,7 +1,7 @@
-<div class="turnos-programados-container py-4">
+<div class="turnos-programados-container py-4 px-2 md:px-4">
 
     <div class="turnos-header mb-5">
-        <h2 class="fw-bold mb-3 text-primary">
+        <h2 class="fw-bold mb-3 text-primary text-xl md:text-2xl">
             <i class="fas fa-calendar-check me-2"></i> Turnos Programados
         </h2>
     </div>
@@ -9,7 +9,7 @@
     <div class="card shadow-sm mb-5 border-0">
         <div class="card-body">
             <div class="row align-items-end" style="text-align: center;"> 
-                <div class="col-md-6 col-lg-8">
+                <div class="col-12 col-md-6 col-lg-8 mb-3 md:mb-0">
                     <label for="fechaTurnos" class="form-label fw-bold text-secondary mb-1 labelSelectFecha"> Seleccionar Día:</label>
                     <input 
                         type="date" 
@@ -21,12 +21,12 @@
 
                 </div>
 
-            <div *ngIf="turnos.length > 0" class="col-md-6 col-lg-4 text-end">
+            <div *ngIf="turnos.length > 0" class="col-12 col-md-6 col-lg-4 mt-3 md:mt-0">
                 <div class="col-12 text-secondary">
-                    <h3 class="mb-0 text-secondary">
+                    <h3 class="mb-0 text-secondary text-sm md:text-base">
                         Turnos para el <span class="fw-bold text-dark">{{ fechaSeleccionada | date:'fullDate' }}</span>
                     </h3>
-                    <p class="text-muted mt-1 fs-5">
+                    <p class="text-muted mt-1 text-sm md:text-base">
                         <span>
                             Total de turnos: <strong>{{ turnos.length }}</strong>
                         </span>

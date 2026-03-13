@@ -14,8 +14,8 @@ import { Router } from '@angular/router';
 })
 export class HeaderComponent implements OnInit {
 
-  // SOLO necesitamos el Observable para el *ngIf en el HTML
-  sesionIniciada$: Observable<boolean>; 
+  sesionIniciada$: Observable<boolean>;
+  menuAbierto = false; 
   
   constructor(
     private dialogo: MatDialog, 
@@ -27,7 +27,10 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // No necesitamos suscribirnos aquí. La pipe async en el HTML lo hace.
+  }
+
+  toggleMenu(): void {
+    this.menuAbierto = !this.menuAbierto;
   }
 
   // Métodos de acceso para el HTML
@@ -69,6 +72,12 @@ export class HeaderComponent implements OnInit {
       }
       else if (rolUsuario === 'operador') {
         this.router.navigate(['/operador']); 
+      }
+      else if (rolUsuario === 'paciente') {
+        this.router.navigate(['/paciente']); 
+      }
+      else {
+        this.router.navigate(['/']); 
       }
   }
 

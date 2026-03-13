@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 import { MedicoRoutingModule } from './medico-routing.module';
 import { TurnosProgramadosComponent } from './turnos-programados/turnos-programados.component';
@@ -17,7 +19,9 @@ import { MedicoLayoutComponent } from './medico-layout/medico-layout.component';
   imports: [
     CommonModule,
     MedicoRoutingModule,
-    FormsModule
+    FormsModule,
+    MatIconModule,
+    MatButtonModule
   ]
 })
 export class MedicoModule { }

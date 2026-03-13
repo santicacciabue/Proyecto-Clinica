@@ -1,25 +1,20 @@
-/* src/app/components/footer/footer.component.css */
-
 .app-footer {
-  /* CAMBIADO: Usar el color primario (Azul Fuerte) */
   background-color: #34495e; 
-  
-  /* Ajustar el color del texto para que contraste con el azul oscuro */
   color: white; 
   padding: 1px 0;
   text-align: center;
   width: 100%;
-  /* La sombra superior puede ser más tenue o eliminarse, ya que el color es oscuro */
   box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.2); 
 }
 
 .footer-content {
   max-width: 1200px;
-  margin: 0 auto; /* Centra el contenido */
+  margin: 0 auto;
+  padding: 10px 15px;
 }
 
 .footer-content p {
-  margin: 4px 0; /* Reduce el espacio entre líneas de texto */
+  margin: 4px 0;
   font-size: 0.9rem;
 }
 
@@ -30,6 +25,26 @@
 .social-icons mat-icon {
   margin: 0 10px;
   font-size: 20px;
-  color: var(--color-primary); /* Colorear los íconos */
+  color: #1976D2;
   cursor: pointer;
+}
+
+@media (max-width: 767px) {
+  .footer-content {
+    padding: 8px 10px;
+  }
+
+  .footer-content p {
+    font-size: 0.75rem;
+    margin: 3px 0;
+  }
+
+  .social-icons {
+    margin-top: 8px;
+  }
+
+  .social-icons mat-icon {
+    font-size: 18px;
+    margin: 0 8px;
+  }
 }

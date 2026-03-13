@@ -1,71 +1,171 @@
-/* src/app/components/header/header.component.css */
-
-mat-toolbar {
+.header-toolbar {
   color: white;
-  padding: 0 24px; /* Aumenta el espaciado horizontal dentro del toolbar */
-  height: 64px; /* Altura estándar de un toolbar */
+  padding: 0 16px;
+  height: 64px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  background-color: #34495e; /* Sombra para destacarlo */
+  background-color: #34495e;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.menu-button {
+  margin-right: 8px;
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .menu-button {
+    display: flex;
+  }
 }
 
 .title {
-  font-size: 1.6rem;
+  font-size: 1.4rem;
   font-weight: 500;
-  margin-right: 30px; /* Espacio después del título */
-}
-
-/* El spacer es lo que empuja el contenido a los extremos */
-.spacer {
-  flex: 1 1 auto;
+  margin-right: 16px;
 }
 
 .welcome-text {
-  margin-right: 20px; /* Espacio antes de los botones */
+  margin-right: 20px;
   font-style: italic;
   opacity: 0.9;
 }
 
-/* Estilo para los botones */
-button {
-  margin-left: 10px; /* Espacio entre los botones */
+.spacer {
+  flex: 1 1 auto;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.header-actions button {
+  margin-left: 8px;
+}
+
+.header-btn {
   font-weight: 500;
-  padding: 0 15px;
+  padding: 0 12px;
 }
 
-/* Estilo para el botón de iniciar sesión (flat) */
 button[mat-flat-button] {
-    background-color: var(--color-accent);
-    color: var(--color-text-dark); /* Texto oscuro para contraste */
+  background-color: var(--color-accent);
+  color: var(--color-text-dark);
 }
 
-/* Estilo para el botón de registrarse (stroked) */
 button[mat-stroked-button] {
-    border-color: var(--color-accent);
-    color: var(--color-accent);
-    background-color: transparent;
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  background-color: transparent;
 }
 
-
-/* Estilo para el contenedor de información del usuario logueado */
 .user-info {
-    display: flex;
-    align-items: center;
-    margin-right: 20px;
-    font-size: 1.1rem;
-    font-weight: 400;
+  display: flex;
+  align-items: center;
+  margin-right: 16px;
+  font-size: 1rem;
+  font-weight: 400;
 }
 
 .user-info span {
-    margin-right: 10px; /* Espacio entre el nombre y el ícono */
+  margin-right: 8px;
 }
 
-/* Estilo para el botón de Cerrar Sesión (para que resalte un poco) */
 mat-toolbar button[mat-button] {
-    color: var(--color-accent); /* Color Naranja/Amarillo */
-    font-weight: 500;
+  color: var(--color-accent);
+  font-weight: 500;
 }
 
-/* Asegurar que el ícono de información sea blanco */
 .user-info mat-icon {
-    color: white;
+  color: white;
+}
+
+@media (max-width: 767px) {
+  .header-toolbar {
+    padding: 0 12px;
+  }
+
+  .title {
+    font-size: 1.1rem;
+    margin-right: 8px;
+  }
+
+  .header-actions {
+    position: fixed;
+    top: 64px;
+    left: 0;
+    right: 0;
+    background-color: #2c3e50;
+    flex-direction: column;
+    padding: 16px;
+    gap: 12px;
+    transform: translateY(-100%);
+    opacity: 0;
+    visibility: hidden;
+    transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.3s;
+    z-index: 1000;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  }
+
+  .header-actions.mobile-open {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .header-actions button {
+    width: 100%;
+    margin-left: 0;
+    margin-bottom: 8px;
+  }
+
+  .header-btn {
+    width: 100%;
+  }
+
+  .user-info {
+    flex-direction: column;
+    margin-right: 0;
+    margin-bottom: 8px;
+  }
+
+  .user-info span {
+    margin-right: 0;
+    margin-bottom: 8px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .header-toolbar {
+    padding: 0 20px;
+  }
+
+  .title {
+    font-size: 1.3rem;
+  }
+
+  .welcome-text {
+    display: none;
+  }
+
+  .header-actions {
+    gap: 4px;
+  }
+
+  .header-actions button {
+    margin-left: 4px;
+    font-size: 0.9rem;
+  }
+
+  .header-btn {
+    padding: 0 8px;
+    font-size: 0.85rem;
+  }
+
+  .user-info {
+    font-size: 0.9rem;
+    margin-right: 12px;
+  }
 }

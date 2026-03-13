@@ -1,37 +1,41 @@
-<mat-toolbar>
-    <span class="title" (click)="irAHome()">Clínica Virtual</span>
-    <span class="welcome-text">Bienvenido a la clínica virtual</span>
+<mat-toolbar class="header-toolbar">
+    <button mat-icon-button class="menu-button" (click)="toggleMenu()" aria-label="Menú">
+        <mat-icon>menu</mat-icon>
+    </button>
+    
+    <span class="title cursor-pointer" (click)="irAHome()">Clínica Virtual</span>
+    
+    <span class="welcome-text hidden lg:inline">Bienvenido a la clínica virtual</span>
 
     <span class="spacer"></span> 
     
-    <ng-container *ngIf="(sesionIniciada$ | async) === false">
-        
-        
-        <button mat-flat-button color="accent" (click)="abrirLogin()">
-            Iniciar sesión
-        </button>
-        <button mat-stroked-button color="accent" routerLink="/auth/register">
-            Registrarse
-        </button>
-    </ng-container>
-
-    <ng-container *ngIf="(sesionIniciada$ | async) === true">
-        
-        <span class="user-info">
-            <span>Hola, {{ obtenerNombreUsuario() }}</span>
-            
-            <button 
-                mat-icon-button 
-                [matTooltip]="'Rol: ' +  obtenerRolUsuario()" 
-                matTooltipPosition="below" 
-                aria-label="Información del rol de usuario">
-                <mat-icon>info</mat-icon>
+    <div class="header-actions" [class.mobile-open]="menuAbierto">
+        <ng-container *ngIf="(sesionIniciada$ | async) === false">
+            <button mat-flat-button color="accent" (click)="abrirLogin()" class="header-btn">
+                Iniciar sesión
             </button>
-        </span>
+            <button mat-stroked-button color="accent" routerLink="/auth/register" class="header-btn">
+                Registrase
+            </button>
+        </ng-container>
 
-        <button mat-button (click)="cerrarSesion()">
-            Cerrar sesión
-        </button>
-    </ng-container>
+        <ng-container *ngIf="(sesionIniciada$ | async) === true">
+            <div class="user-info">
+                <span>Hola, {{ obtenerNombreUsuario() }}</span>
+                
+                <button 
+                    mat-icon-button 
+                    [matTooltip]="'Rol: ' +  obtenerRolUsuario()" 
+                    matTooltipPosition="below" 
+                    aria-label="Información del rol de usuario">
+                    <mat-icon>info</mat-icon>
+                </button>
+            </div>
+
+            <button mat-button (click)="cerrarSesion()">
+                Cerrar sesión
+            </button>
+        </ng-container>
+    </div>
 
 </mat-toolbar>

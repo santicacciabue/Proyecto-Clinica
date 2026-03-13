@@ -5,15 +5,26 @@
   width: 100%;
   margin: 0;
   max-width: none;
+  position: relative;
 }
 
-/* --- SIDEBAR --- */
+.sidebar-toggle {
+  position: fixed;
+  top: 80px;
+  left: 10px;
+  z-index: 1001;
+  background-color: #2c3e50;
+  color: white;
+  display: none;
+}
+
 .operador-sidebar {
   width: 250px;
   background-color: #2c3e50;
   border-right: 1px solid #dee2e6;
   padding: 20px;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease;
 }
 
 .sidebar-title {
@@ -57,17 +68,20 @@
   font-size: 20px;
 }
 
-/* --- CONTENIDO PRINCIPAL --- */
+.menu-text {
+  white-space: nowrap;
+}
+
 .operador-content {
   flex-grow: 1;
-  padding: 20px 40px;
+  padding: 20px;
   background-color: white;
   margin-left: 20px;
   border-radius: 8px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
+  width: calc(100% - 270px);
 }
 
-/* --- BIENVENIDA (opcional) --- */
 .welcome-card {
   padding: 40px;
   background-color: #f0f4ff;
@@ -79,4 +93,53 @@
 .welcome-card h1 {
   color: #3f51b5;
   font-size: 2em;
+}
+
+@media (max-width: 767px) {
+  .sidebar-toggle {
+    display: flex;
+  }
+
+  .operador-sidebar {
+    position: fixed;
+    top: 64px;
+    left: 0;
+    bottom: 0;
+    width: 250px;
+    transform: translateX(-100%);
+    z-index: 1000;
+    padding-top: 60px;
+  }
+
+  .operador-sidebar.open {
+    transform: translateX(0);
+  }
+
+  .operador-content {
+    margin-left: 0;
+    padding: 15px;
+    width: 100%;
+    border-radius: 0;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .operador-sidebar {
+    width: 200px;
+  }
+
+  .operador-content {
+    margin-left: 10px;
+    padding: 15px;
+    width: calc(100% - 210px);
+  }
+
+  .sidebar-title {
+    font-size: 1rem;
+  }
+
+  .operador-menu a {
+    padding: 8px;
+    font-size: 0.9rem;
+  }
 }

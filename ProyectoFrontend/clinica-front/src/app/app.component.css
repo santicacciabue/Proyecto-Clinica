@@ -1,51 +1,36 @@
 /* src/styles.css (o styles.scss) */
 
-/* Configuración básica para el layout */
-
 html, body {
   height: 100%;
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
-  background-color: #f4f4f4; /* Fondo general muy claro */
+  background-color: #f4f4f4;
 }
 
-/* Aplicar CSS Grid al contenedor principal */
 .app-container {
-  display: grid;
-  /* Define las filas: auto para el header, 1fr para el contenido principal (que ocupa todo el espacio restante), y auto para el footer */
-  grid-template-rows: auto 1fr auto; 
-  min-height: 100vh; /* Asegura que el contenedor principal ocupe toda la altura de la vista */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
-/* Estilos para el contenido principal */
 main {
+  flex: 1;
   padding: 20px;
   max-width: 1200px;
   width: 100%;
-  margin: 0 auto; /* Centrar el contenido principal */
+  margin: 0 auto;
+  box-sizing: border-box;
 }
 
-main:has(.admin-container) {
-    max-width: none;
-    width: 100%; 
-    margin: 0; 
-    padding: 0; 
-}
-main:has(.layout) {
-    max-width: none;
-    width: 100%; 
-    margin: 0; 
-    padding: 0; 
-}
+main:has(.admin-container),
+main:has(.layout),
 main:has(.operador-container) {
     max-width: none;
-    width: 100%; 
-    margin: 0; 
-    padding: 0; 
+    width: 100%;
+    margin: 0;
+    padding: 0;
 }
 
-
-/*Estilos de anulación para el módulo de administración*/
 main.admin-layout-override {
     max-width: none;
     width: 100%;
@@ -53,7 +38,6 @@ main.admin-layout-override {
     padding: 0;
 }
 
-
-button:hover{
+button:hover {
   cursor: pointer;
 }

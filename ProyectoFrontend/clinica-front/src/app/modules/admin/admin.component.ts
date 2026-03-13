@@ -8,6 +8,17 @@ import { NavigationStart, Router } from '@angular/router';
 })
 export class AdminComponent {
   showWelcomeModal = true;
+  sidebarAbierto = false;
+
+  toggleSidebar(): void {
+    this.sidebarAbierto = !this.sidebarAbierto;
+  }
+
+  closeSidebarOnMobile(): void {
+    if (window.innerWidth < 768) {
+      this.sidebarAbierto = false;
+    }
+  }
 
   cerrarBienvenida() {
     this.showWelcomeModal = false;
