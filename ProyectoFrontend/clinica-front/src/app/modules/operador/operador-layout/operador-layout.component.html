@@ -1,19 +1,23 @@
 <div class="operador-container">
 
-  <aside class="operador-sidebar">
+  <button mat-icon-button class="sidebar-toggle md:hidden" (click)="toggleSidebar()" aria-label="Toggle sidebar">
+      <mat-icon>menu</mat-icon>
+  </button>
+
+  <aside class="operador-sidebar" [class.open]="sidebarAbierto">
     <h3 class="sidebar-title">Panel de Operador</h3>
     <nav>
       <ul class="operador-menu">
         <li>
-          <a routerLink="agenda" routerLinkActive="active">
+          <a routerLink="agenda" routerLinkActive="active" (click)="closeSidebarOnMobile()">
             <mat-icon class="menu-icon">calendar_today</mat-icon>
-            Gestión de Agenda
+            <span class="menu-text">Gestión de Agenda</span>
           </a>
         </li>
         <li>
-          <a routerLink="pacientes/crear" routerLinkActive="active">
+          <a routerLink="pacientes/crear" routerLinkActive="active" (click)="closeSidebarOnMobile()">
             <mat-icon class="menu-icon">person_add</mat-icon>
-            Crear Paciente
+            <span class="menu-text">Crear Paciente</span>
           </a>
         </li>
       </ul>

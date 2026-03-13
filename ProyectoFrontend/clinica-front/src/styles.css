@@ -1,4 +1,38 @@
-/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html, body { height: 100%; margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-color: #f4f4f4; }
+
+.mat-mdc-form-field-subscript-wrapper {
+    display: none;
+}
+
+.mat-mdc-text-field-wrapper {
+    background-color: transparent !important;
+}
+
+.mdc-text-field--outlined .mdc-notched-outline__leading,
+.mdc-text-field--outlined .mdc-notched-outline__trailing {
+    border-color: rgba(0, 0, 0, 0.15) !important;
+    border-width: 1px !important;
+}
+
+.mdc-text-field--outlined .mdc-notched-outline__notch {
+    border-color: rgba(0, 0, 0, 0.15) !important;
+    border-width: 1px 0 1px 1px !important;
+}
+
+.mdc-text-field--outlined:not(.mdc-text-field--disabled):hover .mdc-notched-outline__leading,
+.mdc-text-field--outlined:not(.mdc-text-field--disabled):hover .mdc-notched-outline__trailing,
+.mdc-text-field--outlined:not(.mdc-text-field--disabled):hover .mdc-notched-outline__notch {
+    border-color: rgba(0, 0, 0, 0.3) !important;
+}
+
+.mdc-text-field--filled:not(.mdc-text-field--disabled) {
+    background-color: transparent !important;
+}
+
+.mat-mdc-form-field-flex {
+    background-color: transparent !important;
+}

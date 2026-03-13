@@ -1,22 +1,25 @@
 <div class="layout">
-  <!-- Sidebar -->
-  <aside class="sidebar">
+  
+  <button mat-icon-button class="sidebar-toggle md:hidden" (click)="toggleSidebar()" aria-label="Toggle sidebar">
+      <mat-icon>menu</mat-icon>
+  </button>
+
+  <aside class="sidebar" [class.open]="sidebarAbierto">
     <h2 class="sidebar-title">Panel Médico</h2>
     <ul class="menu">
       <li>
-        <a routerLink="./turnos" routerLinkActive="active">
-          <i class="fas fa-calendar-check"></i> Mis Turnos
+        <a routerLink="./turnos" routerLinkActive="active" (click)="closeSidebarOnMobile()">
+          <i class="fas fa-calendar-check"></i> <span class="menu-text">Mis Turnos</span>
         </a>
       </li>
       <li>
-        <a routerLink="./agenda" routerLinkActive="active">
-          <i class="fas fa-clock"></i> Gestionar Agenda
+        <a routerLink="./agenda" routerLinkActive="active" (click)="closeSidebarOnMobile()">
+          <i class="fas fa-clock"></i> <span class="menu-text">Gestionar Agenda</span>
         </a>
       </li>
     </ul>
   </aside>
 
-  <!-- Contenido principal -->
   <main class="content">
     <router-outlet></router-outlet>
   </main>

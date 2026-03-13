@@ -1,19 +1,19 @@
-<div class="turno-container">
+<div class="turno-container p-2 md:p-4">
     <mat-card class="turno-card">
         <button mat-icon-button (click)="irAlHome()" class="back-button" title="Volver al inicio">
             <mat-icon>arrow_back</mat-icon> 
         </button>
-        <mat-card-title>Solicitar Nuevo Turno</mat-card-title>
-        <mat-card-subtitle>Completa los pasos para agendar tu cita.</mat-card-subtitle>
+        <mat-card-title class="text-lg md:text-xl">Solicitar Nuevo Turno</mat-card-title>
+        <mat-card-subtitle class="text-sm md:text-base">Completa los pasos para agendar tu cita.</mat-card-subtitle>
         <mat-card-content>
             <form [formGroup]="formTurno" class="turno-form">
                 
-                <mat-form-field appearance="outline">
+                <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Tu Cobertura Médica</mat-label>
                     <input matInput formControlName="cobertura" readonly>
                 </mat-form-field>
                 
-                <mat-form-field appearance="fill">
+                <mat-form-field appearance="fill" class="full-width">
                     <mat-label>Especialidad</mat-label>
                     <mat-select formControlName="especialidad">
 
@@ -27,7 +27,7 @@
                     </mat-error>
                 </mat-form-field>
                 
-                <mat-form-field appearance="outline">
+                <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Profesional</mat-label>
                     <mat-select formControlName="profesional" required>
                         <mat-option>-- Seleccionar --</mat-option>
@@ -40,14 +40,14 @@
                     </mat-error>
                 </mat-form-field>
 
-                <mat-form-field appearance="fill">
+                <mat-form-field appearance="fill" class="full-width">
                     <mat-label>Fecha</mat-label>
                     <input matInput [matDatepicker]="picker" [formControl]="fechaControl" [matDatepickerFilter]="fechaFiltro">
                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker></mat-datepicker>
                 </mat-form-field>
 
-                <mat-form-field appearance="outline">
+                <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Hora</mat-label>
                     <mat-select formControlName="hora" required>
                         <mat-option>-- Seleccionar --</mat-option>
@@ -71,15 +71,16 @@
             </form>
         </mat-card-content>
         
-        <mat-card-actions align="end">
-            <button mat-button color="warn" (click)="cancelar()">
+        <mat-card-actions align="end" class="flex-col-reverse md:flex-row">
+            <button mat-button color="warn" (click)="cancelar()" class="w-full md:w-auto">
                 Cancelar
             </button>
             <button 
                 mat-flat-button 
                 color="primary" 
                 [disabled]="formTurno.invalid" 
-                (click)="enviarTurno()">
+                (click)="enviarTurno()"
+                class="w-full md:w-auto">
                 Aceptar y Confirmar Turno
             </button>
         </mat-card-actions>

@@ -1,30 +1,34 @@
 <div class="admin-container">
     
-    <aside class="admin-sidebar">
+    <button mat-icon-button class="sidebar-toggle md:hidden" (click)="toggleSidebar()" aria-label="Toggle sidebar">
+        <mat-icon>menu</mat-icon>
+    </button>
+
+    <aside class="admin-sidebar" [class.open]="sidebarAbierto">
         <h3 class="sidebar-title">Panel de Administración</h3>
         <nav>
             <ul class="admin-menu">
                 <li>
-                    <a routerLink="usuarios" routerLinkActive="active">
+                    <a routerLink="usuarios" routerLinkActive="active" (click)="closeSidebarOnMobile()">
                         <mat-icon class="menu-icon">people</mat-icon>
-                        Gestión de Usuarios
+                        <span class="menu-text">Gestión de Usuarios</span>
                     </a>
                 </li>
                 <li>
-                    <a routerLink="coberturas" routerLinkActive="active">
+                    <a routerLink="coberturas" routerLinkActive="active" (click)="closeSidebarOnMobile()">
                         <mat-icon class="menu-icon">local_hospital</mat-icon>
-                        Gestión de Coberturas
+                        <span class="menu-text">Gestión de Coberturas</span>
                     </a>
                 </li>
                 
                 <li>
-                    <a routerLink="especialidades" routerLinkActive="active">
+                    <a routerLink="especialidades" routerLinkActive="active" (click)="closeSidebarOnMobile()">
                         <mat-icon class="menu-icon">science</mat-icon>
-                        Gestión de Especialidades
+                        <span class="menu-text">Gestión de Especialidades</span>
                     </a>
                 </li>
                 
-                </ul>
+            </ul>
         </nav>
     </aside>
 
@@ -34,4 +38,3 @@
     </main>
 
 </div>
-

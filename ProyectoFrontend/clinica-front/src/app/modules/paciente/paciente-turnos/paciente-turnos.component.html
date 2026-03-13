@@ -1,10 +1,10 @@
-<div class="turnos-container">
+<div class="turnos-container p-2 md:p-4">
     <mat-card class="turnos-card">
         <button mat-icon-button (click)="irAlHome()" class="back-button" title="Volver al inicio">
             <mat-icon>arrow_back</mat-icon> 
         </button>
-        <mat-card-title>Mis Turnos Programados</mat-card-title>
-        <mat-card-subtitle>A continuación, se listan tus turnos desde el más próximo.</mat-card-subtitle>
+        <mat-card-title class="text-lg md:text-xl">Mis Turnos Programados</mat-card-title>
+        <mat-card-subtitle class="text-sm md:text-base">A continuación, se listan tus turnos desde el más próximo.</mat-card-subtitle>
         
         <mat-list>
             <div *ngIf="(turnos$ | async)?.length === 0">
@@ -16,33 +16,33 @@
                 (click)="mostrarDetalle(turno)" 
                 class="turno-item">
                 
-                <h3 matListItemTitle>
+                <h3 matListItemTitle class="text-base md:text-lg">
                     Turno: {{ turno.fecha | date: 'dd/MM/yyyy' }} a las {{ turno.hora }} hs
                 </h3>
-                <p matListItemLine>
+                <p matListItemLine class="text-sm md:text-base">
                     {{ turno.especialidad }} con {{ turno.nombre_medico }} {{ turno.apellido_medico }}
                 </p>
                 
                 <div *ngIf="turnoSeleccionado === turno" class="turno-detalle">
                     <mat-divider></mat-divider>
-                    <h4>Detalle Completo:</h4>
+                    <h4 class="text-base md:text-lg">Detalle Completo:</h4>
                     
-                    <p>
+                    <p class="text-sm md:text-base">
                         <mat-icon color="primary">event</mat-icon> 
                         Turno: {{ turno.fecha | date: 'dd/MM/yyyy' }} a las {{ turno.hora }} hs
                     </p>
                     
-                    <p>
+                    <p class="text-sm md:text-base">
                         <mat-icon color="primary">local_hospital</mat-icon> 
                         Especialista: {{ turno.nombre_medico }} {{ turno.apellido_medico }}
                     </p>
                     
-                    <p>
+                    <p class="text-sm md:text-base">
                         <mat-icon color="primary">medical_services</mat-icon> 
                         Especialidad: {{ turno.especialidad }}
                     </p>
                     
-                    <p class="notas">
+                    <p class="notas text-sm md:text-base">
                         <mat-icon color="accent">description</mat-icon> 
                         Notas: {{ turno.nota || 'No hay notas asociadas.' }}
                     </p>
@@ -50,7 +50,8 @@
                     <button 
                         mat-raised-button 
                         color="warn" 
-                        (click)="$event.stopPropagation(); cancelarTurno(turno)">
+                        (click)="$event.stopPropagation(); cancelarTurno(turno)"
+                        class="text-sm">
                         <mat-icon>cancel</mat-icon> Cancelar Turno
                     </button>
                 </div>
