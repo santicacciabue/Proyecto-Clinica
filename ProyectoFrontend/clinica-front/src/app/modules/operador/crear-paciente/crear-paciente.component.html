@@ -1,107 +1,101 @@
-<div class="crear-paciente-container py-4">
-  <h2 class="fw-bold mb-3 text-primary">
-    <i class="fas fa-user-plus me-2"></i> Registro de Nuevo Paciente
-  </h2>
-  <p class="text-muted mb-4">Complete los datos personales para crear una cuenta de paciente.</p>
+<div class="crear-container animate-slide-up">
+    <button class="back-btn-premium" (click)="cancelar()">
+        <mat-icon>arrow_back</mat-icon> Volver
+    </button>
 
-  <div class="card shadow-sm border-0 p-4">
-    <form [formGroup]="pacienteForm" (ngSubmit)="onSubmit()">
+    <div class="page-header">
+        <mat-icon>person_add</mat-icon>
+        <div>
+            <h2>Crear Nuevo Paciente</h2>
+            <p class="page-subtitle">Complete los datos del paciente. La contraseña inicial será "123456".</p>
+        </div>
+    </div>
 
-            <div class="row">
-                <div class="col-md-6 mb-3 espacio-inputs">
-                    <label for="nombre" class="form-label">Nombre</label>
-                    <input type="text" id="nombre" formControlName="nombre" class="form-control" 
-                           [ngClass]="{ 'is-invalid': f['nombre'].invalid && f['nombre'].touched }">
-                    <div *ngIf="f['nombre'].errors" class="invalid-feedback">
-                        <div *ngIf="f['nombre'].errors['required']">El nombre es obligatorio.</div>
-                        <div *ngIf="f['nombre'].errors['minlength']">Mínimo 3 caracteres.</div>
-                    </div>
+    <div *ngIf="mensajeError" class="error-alert premium-card">
+        <mat-icon>error_outline</mat-icon>
+        <p>{{ mensajeError }}</p>
+    </div>
+
+    <div class="premium-card form-card">
+        <form [formGroup]="pacienteForm" (ngSubmit)="onSubmit()">
+            <div class="form-grid">
+                <div class="field-group">
+                    <label class="field-label" for="nombre">Nombre *</label>
+                    <input type="text" id="nombre" formControlName="nombre" class="form-input" placeholder="Nombre del paciente"
+                        [class.input-error]="f['nombre'].invalid && f['nombre'].touched">
+                    <span *ngIf="f['nombre'].invalid && f['nombre'].touched" class="field-error">
+                        El nombre es obligatorio (mín. 3 caracteres).
+                    </span>
                 </div>
 
-                <div class="col-md-6 mb-3 espacio-inputs">
-                    <label for="apellido" class="form-label">Apellido</label>
-                    <input type="text" id="apellido" formControlName="apellido" class="form-control"
-                           [ngClass]="{ 'is-invalid': f['apellido'].invalid && f['apellido'].touched }">
-                    <div *ngIf="f['apellido'].errors" class="invalid-feedback">
-                        <div *ngIf="f['apellido'].errors['required']">El apellido es obligatorio.</div>
-                        <div *ngIf="f['apellido'].errors['minlength']">Mínimo 3 caracteres.</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-4 mb-3 espacio-inputs">
-                    <label for="dni" class="form-label">DNI</label>
-                    <input type="number" id="dni" formControlName="dni" class="form-control"
-                           [ngClass]="{ 'is-invalid': f['dni'].invalid && f['dni'].touched }">
-                    <div *ngIf="f['dni'].errors" class="invalid-feedback">
-                        <div *ngIf="f['dni'].errors['required']">El DNI es obligatorio.</div>
-                        <div *ngIf="f['dni'].errors['pattern']">Formato de DNI inválido.</div>
-                    </div>
+                <div class="field-group">
+                    <label class="field-label" for="apellido">Apellido *</label>
+                    <input type="text" id="apellido" formControlName="apellido" class="form-input" placeholder="Apellido del paciente"
+                        [class.input-error]="f['apellido'].invalid && f['apellido'].touched">
+                    <span *ngIf="f['apellido'].invalid && f['apellido'].touched" class="field-error">
+                        El apellido es obligatorio (mín. 3 caracteres).
+                    </span>
                 </div>
 
-                <div class="col-md-4 mb-3 espacio-inputs">
-                    <label for="fecha_nacimiento" class="form-label">F. Nacimiento</label>
-                    <input type="date" id="fecha_nacimiento" formControlName="fecha_nacimiento" class="form-control"
-                           [ngClass]="{ 'is-invalid': f['fecha_nacimiento'].invalid && f['fecha_nacimiento'].touched }">
-                    <div *ngIf="f['fecha_nacimiento'].errors" class="invalid-feedback">
-                        El campo es obligatorio.
-                    </div>
+                <div class="field-group">
+                    <label class="field-label" for="dni">DNI *</label>
+                    <input type="text" id="dni" formControlName="dni" class="form-input" placeholder="Número de documento (7-9 dígitos)"
+                        [class.input-error]="f['dni'].invalid && f['dni'].touched">
+                    <span *ngIf="f['dni'].invalid && f['dni'].touched" class="field-error">
+                        Ingrese un DNI válido (7-9 dígitos).
+                    </span>
                 </div>
 
-                <div class="col-md-4 mb-3 espacio-inputs">
-                    <label for="telefono" class="form-label">Teléfono</label>
-                    <input type="tel" id="telefono" formControlName="telefono" class="form-control"
-                           [ngClass]="{ 'is-invalid': f['telefono'].invalid && f['telefono'].touched }">
-                    <div *ngIf="f['telefono'].errors" class="invalid-feedback">
-                        <div *ngIf="f['telefono'].errors['required']">El teléfono es obligatorio.</div>
-                        <div *ngIf="f['telefono'].errors['pattern']">Teléfono inválido (mín. 8 dígitos).</div>
-                    </div>
+                <div class="field-group">
+                    <label class="field-label" for="email">Email *</label>
+                    <input type="email" id="email" formControlName="email" class="form-input" placeholder="correo@ejemplo.com"
+                        [class.input-error]="f['email'].invalid && f['email'].touched">
+                    <span *ngIf="f['email'].invalid && f['email'].touched" class="field-error">
+                        Ingrese un email válido.
+                    </span>
                 </div>
-            </div>
 
-            <div class="row">
-                <div class="col-md-6 mb-3 espacio-inputs">
-                    <label for="email" class="form-label">Correo Electrónico</label>
-                    <input type="email" id="email" formControlName="email" class="form-control"
-                           [ngClass]="{ 'is-invalid': f['email'].invalid && f['email'].touched }">
-                    <div *ngIf="f['email'].errors" class="invalid-feedback">
-                        <div *ngIf="f['email'].errors['required']">El email es obligatorio.</div>
-                        <div *ngIf="f['email'].errors['email']">Debe ser un correo válido.</div>
-                    </div>
+                <div class="field-group">
+                    <label class="field-label" for="telefono">Teléfono *</label>
+                    <input type="text" id="telefono" formControlName="telefono" class="form-input" placeholder="342-1234567"
+                        [class.input-error]="f['telefono'].invalid && f['telefono'].touched">
+                    <span *ngIf="f['telefono'].invalid && f['telefono'].touched" class="field-error">
+                        El teléfono es obligatorio (mín. 8 dígitos).
+                    </span>
                 </div>
-                
-                <div class="col-md-6 mb-3 espacio-inputs">
-                    <label for="id_cobertura" class="form-label">Cobertura Médica</label>
-                    <select id="id_cobertura" formControlName="id_cobertura" class="form-select">
-                        <option [ngValue]="null">--- Sin Cobertura (Particular) ---</option>
-                        <option *ngIf="cargandoCoberturas" [ngValue]="null" disabled>Cargando coberturas...</option>
-                        <option *ngFor="let cob of coberturas" [ngValue]="cob.id">
-                            {{ cob.nombre }}
-                        </option>
+
+                <div class="field-group">
+                    <label class="field-label" for="fecha_nacimiento">Fecha de Nacimiento *</label>
+                    <input type="date" id="fecha_nacimiento" formControlName="fecha_nacimiento" class="form-input"
+                        [class.input-error]="f['fecha_nacimiento'].invalid && f['fecha_nacimiento'].touched">
+                    <span *ngIf="f['fecha_nacimiento'].invalid && f['fecha_nacimiento'].touched" class="field-error">
+                        La fecha de nacimiento es obligatoria.
+                    </span>
+                </div>
+
+                <div class="field-group">
+                    <label class="field-label" for="id_cobertura">Cobertura Médica</label>
+                    <select id="id_cobertura" formControlName="id_cobertura" class="form-input">
+                        <option [ngValue]="null">Sin cobertura</option>
+                        <option *ngFor="let c of coberturas" [ngValue]="c.id">{{ c.nombre }}</option>
                     </select>
                 </div>
+
+                <div class="field-group">
+                    <label class="field-label" for="password">Contraseña Inicial</label>
+                    <input type="text" id="password" formControlName="password" readonly class="form-input readonly-field">
+                    <span class="field-hint">Se asigna automáticamente (123456).</span>
+                </div>
             </div>
 
-            <div class="mb-4">
-                <label for="password" class="form-label espacio-inputs">Contraseña Inicial (por defecto: 123456)</label>
-                <input type="password" id="password" formControlName="password" class="form-control" readonly
-                       [ngClass]="{ 'is-invalid': f['password'].invalid && f['password'].touched }">
-                <div class="form-text">El paciente deberá cambiarla al iniciar sesión por primera vez.</div>
+            <div class="form-actions">
+                <button type="button" class="btn-premium btn-outline-premium" (click)="cancelar()">
+                    Cancelar
+                </button>
+                <button type="submit" class="btn-premium btn-primary-premium" [disabled]="pacienteForm.invalid || enviando">
+                    <mat-icon>check</mat-icon> {{ enviando ? 'Creando...' : 'Crear Paciente' }}
+                </button>
             </div>
-
-            <div *ngIf="mensajeError" class="alert alert-danger mt-3">
-                {{ mensajeError }}
-            </div>
-
-            <button
-        type="submit"
-        class="btn btn-primary w-100 mt-3"
-        [disabled]="pacienteForm.invalid || enviando"
-      >
-        <i class="fas fa-user-plus me-2"></i>
-        {{ enviando ? 'Registrando...' : 'Registrar Paciente' }}
-      </button>
-    </form>
-  </div>
+        </form>
+    </div>
 </div>

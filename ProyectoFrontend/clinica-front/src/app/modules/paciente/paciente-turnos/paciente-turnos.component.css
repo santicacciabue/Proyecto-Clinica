@@ -1,166 +1,163 @@
 .turnos-container {
-    display: flex;
-    justify-content: center;
-    padding: 20px 10px;
+  display: flex;
+  justify-content: center;
+  padding: 24px 16px;
+  animation: slideUp 0.5s ease;
 }
 
 .turnos-card {
-    max-width: 800px;
-    width: 100%;
-    position: relative;
-    padding-top: 40px; 
-    padding-bottom: 20px;
-    padding-left: 10px;
-    padding-right: 10px;
+  max-width: 860px;
+  width: 100%;
+  position: relative;
+  padding: 36px 28px 24px;
+  border-radius: var(--radius-lg) !important;
+  box-shadow: var(--shadow-lg) !important;
+  border: 1px solid var(--border-light) !important;
 }
 
 mat-card-title {
-    color: var(--color-primary, #1976D2);
-    margin-top: 10px;
-    margin-left: 40px;
+  color: var(--primary) !important;
+  margin-top: 4px;
+  margin-left: 48px;
+  font-weight: 700 !important;
+  font-size: 1.35rem !important;
 }
 
 mat-card-subtitle {
-    margin-left: 40px;
+  margin-left: 48px;
+  color: var(--text-secondary) !important;
+  font-size: 0.88rem;
+  margin-bottom: 16px;
 }
 
 .no-turnos {
-    padding: 20px;
-    text-align: center;
-    color: #666;
-    font-style: italic;
+  padding: 40px 20px;
+  text-align: center;
+  color: var(--text-secondary);
+  font-style: italic;
+  font-size: 0.95rem;
 }
 
 .turno-item {
-    cursor: pointer;
-    border-bottom: 1px solid #eee;
-    padding: 10px 0;
-    padding-bottom: 0;
-    transition: background-color 0.2s;
-    display: block;
-    height: auto !important;
-    flex-direction: column;
-    align-items: flex-start;
+  cursor: pointer;
+  border-bottom: 1px solid var(--border-light);
+  padding: 14px 0;
+  padding-bottom: 0;
+  transition: background-color var(--transition-fast), transform var(--transition-fast);
+  display: block;
+  height: auto !important;
+  flex-direction: column;
+  align-items: flex-start;
+  border-radius: var(--radius-md);
+  margin-bottom: 4px;
 }
 
 .turno-item:hover {
-    background-color: #f0f0f0;
+  background-color: rgba(var(--accent-rgb), 0.04);
 }
 
 .turno-detalle {
-    margin-top: 10px;
-    padding: 15px;
-    background-color: #f9f9f9;
-    border-radius: 4px;
-    border-left: 5px solid var(--color-accent, #FFC107);
-    margin-left: -16px;
-    margin-right: -16px;
-    margin-bottom: -10px;
-    width: 100%;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    display: flex; 
-    flex-direction: column;
+  margin-top: 12px;
+  padding: 20px;
+  background-color: var(--surface-hover);
+  border-radius: var(--radius-md);
+  border-left: 4px solid var(--accent);
+  margin-left: -16px;
+  margin-right: -16px;
+  margin-bottom: -10px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  animation: slideUp 0.3s ease;
 }
 
 .turno-detalle h4 {
-    margin-top: 0;
-    margin-bottom: 10px;
-    color: #333;
+  margin-top: 0;
+  margin-bottom: 12px;
+  color: var(--primary);
+  font-weight: 600;
+  font-size: 1rem;
 }
 
 .turno-detalle p {
-    display: flex;
-    align-items: center;
-    margin: 5px 0;
-    font-size: 0.9em;
-    gap: 8px;
+  display: flex;
+  align-items: center;
+  margin: 6px 0;
+  font-size: 0.88rem;
+  gap: 8px;
+  color: var(--text-primary);
 }
 
 .turno-detalle mat-icon {
-    margin-right: 8px;
-    font-size: 18px;
+  margin-right: 4px;
+  font-size: 18px;
+  color: var(--accent) !important;
 }
 
 .turno-detalle button {
-    margin-top: 15px;
-    align-self: flex-end;
+  margin-top: 16px;
+  align-self: flex-end;
+  border-radius: var(--radius-md) !important;
+  transition: all var(--transition-base) !important;
 }
 
 .notas {
-    margin-top: 10px !important;
-    border-top: 1px dashed #ddd;
-    padding-top: 5px;
-}
-
-.cancelar-button {
-    margin-top: 15px;
-    background-color: var(--color-warn, #D32F2F);
-    color: white;
+  margin-top: 12px !important;
+  border-top: 1px dashed var(--border);
+  padding-top: 8px;
+  color: var(--text-secondary);
 }
 
 .back-button {
-    position: absolute;
-    top: 5px;
-    left: 10px;
-    z-index: 10;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 10;
+  color: var(--text-secondary) !important;
+  transition: all var(--transition-base) !important;
+}
+.back-button:hover {
+  color: var(--accent) !important;
+  background: rgba(var(--accent-rgb), 0.08) !important;
 }
 
 @media (max-width: 767px) {
-    .turnos-container {
-        padding: 10px 5px;
-    }
-
-    .turnos-card {
-        padding-top: 35px;
-        padding-left: 8px;
-        padding-right: 8px;
-    }
-
-    mat-card-title {
-        font-size: 1.1rem;
-        margin-left: 35px;
-    }
-
-    mat-card-subtitle {
-        margin-left: 35px;
-        font-size: 0.85rem;
-    }
-
-    .turno-item {
-        padding: 8px 0;
-    }
-
-    .turno-detalle {
-        padding: 12px;
-        margin-left: -8px;
-        margin-right: -8px;
-    }
-
-    .turno-detalle p {
-        font-size: 0.8rem;
-    }
-
-    .turno-detalle h4 {
-        font-size: 1rem;
-    }
-
-    .turno-detalle button {
-        width: 100%;
-        margin-top: 10px;
-    }
+  .turnos-container {
+    padding: 12px 8px;
+  }
+  .turnos-card {
+    padding: 32px 12px 16px;
+  }
+  mat-card-title {
+    font-size: 1.15rem !important;
+    margin-left: 40px;
+  }
+  mat-card-subtitle {
+    margin-left: 40px;
+    font-size: 0.82rem;
+  }
+  .turno-item {
+    padding: 10px 0;
+  }
+  .turno-detalle {
+    padding: 14px;
+    margin-left: -8px;
+    margin-right: -8px;
+  }
+  .turno-detalle p {
+    font-size: 0.82rem;
+  }
+  .turno-detalle button {
+    width: 100%;
+    margin-top: 12px;
+  }
 }
 
 @media (min-width: 768px) and (max-width: 1023px) {
-    .turnos-container {
-        padding: 20px 15px;
-    }
-
-    .turnos-card {
-        padding-left: 15px;
-    }
-
-    mat-card-title {
-        font-size: 1.3rem;
-    }
+  .turnos-container {
+    padding: 20px 16px;
+  }
+  mat-card-title {
+    font-size: 1.25rem !important;
+  }
 }

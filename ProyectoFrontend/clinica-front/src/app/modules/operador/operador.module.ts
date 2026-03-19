@@ -10,7 +10,8 @@ import { CrearPacienteComponent } from './crear-paciente/crear-paciente.componen
 import { CompartidoModule } from "src/app/components/compartido.module";
 import { EditarHorarioModalComponent } from './modals/editar-horario-modal/editar-horario-modal.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import { LayoutModule } from '@angular/cdk/layout';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 
 @NgModule({
@@ -28,6 +29,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     CompartidoModule,
     FormsModule, 
     ReactiveFormsModule,
-]
+    LayoutModule,
+    MatSidenavModule
+  ]
 })
 export class OperadorModule { }

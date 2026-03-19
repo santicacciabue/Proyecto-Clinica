@@ -1,87 +1,88 @@
-<div class="asignar-turno-container py-4">
-    <mat-icon (click)="cancelar()" class="text-danger cursor-pointer mb-2" style="cursor: pointer;">cancel</mat-icon>
+<div class="asignar-container animate-slide-up">
+    <button class="back-btn-premium" (click)="cancelar()">
+        <mat-icon>close</mat-icon> Cancelar
+    </button>
 
-    <h2 class="fw-bold mb-4 text-success">
-        <i class="fas fa-calendar-plus me-2"></i> Asignar Turno
-    </h2>
-
-   
-
-    <div *ngIf="mensajeError" class="alert alert-danger text-center shadow-sm">
-        {{ mensajeError }}
+    <div class="page-header">
+        <mat-icon>event_available</mat-icon>
+        <div>
+            <h2>Asignar Turno</h2>
+        </div>
     </div>
 
-    <form [formGroup]="formularioAsignar" class="formulario">
+    <div *ngIf="mensajeError" class="error-alert premium-card">
+        <mat-icon>error_outline</mat-icon>
+        <p>{{ mensajeError }}</p>
+    </div>
 
-        <div *ngIf="pasoActual === 1" class="card shadow p-4 mb-4">
-            <h4 class="card-title text-success">Seleccionar Paciente</h4>
+    <form [formGroup]="formularioAsignar">
+
+        <!-- Paso 1: Seleccionar Paciente -->
+        <div *ngIf="pasoActual === 1" class="premium-card step-card">
+            <h4 class="step-title">
+                <span class="step-number">1</span> Seleccionar Paciente
+            </h4>
         
-            
-            <div class="input-group mb-3">
-                <input type="text" formControlName="busquedaPaciente" class="form-control" 
+            <div class="search-bar">
+                <input type="text" formControlName="busquedaPaciente" class="search-input"
                        placeholder="Buscar por DNI o Apellido (mín. 3 caracteres)"
                        (keyup.enter)="buscarPacientes()">
-                <button class="btn btn-primary" type="button" (click)="buscarPacientes()" [disabled]="cargando || formularioAsignar.get('busquedaPaciente')?.value?.length < 3">
-                    <i class="fas fa-search"></i> Buscar
+                <button class="btn-premium btn-primary-premium" type="button" (click)="buscarPacientes()" 
+                    [disabled]="cargando || formularioAsignar.get('busquedaPaciente')?.value?.length < 3">
+                    <mat-icon>search</mat-icon> Buscar
                 </button>
             </div>
             
-            <div *ngIf="cargando" class="text-center py-3"><i class="fas fa-spinner fa-spin me-2"></i> Buscando...</div>
+            <div *ngIf="cargando" class="loading-inline">
+                <mat-spinner diameter="24"></mat-spinner> Buscando...
+            </div>
             
-            <div *ngIf="pacientesEncontrados.length > 0" class="list-group">
-                <p class="text-muted small mt-2">Resultados encontrados ({{ pacientesEncontrados.length }}):</p>
-                <button *ngFor="let p of pacientesEncontrados" type="button" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
-                        (click)="seleccionarPaciente(p)" style="cursor: pointer;">
+            <div *ngIf="pacientesEncontrados.length > 0" class="results-list">
+                <p class="results-count">Resultados encontrados ({{ pacientesEncontrados.length }}):</p>
+                <button *ngFor="let p of pacientesEncontrados" type="button" class="result-item"
+                        (click)="seleccionarPaciente(p)">
                     <span>{{ p.nombre_completo }}</span>
-                    <span class="badge bg-secondary">DNI: {{ p.dni }}</span>
+                    <span class="premium-badge info">DNI: {{ p.dni }}</span>
                 </button>
             </div>
 
-            <div *ngIf="busquedaRealizada && pacientesEncontrados.length === 0" class="alert alert-warning mt-3">
-                No se encontraron pacientes con ese criterio.
+            <div *ngIf="busquedaRealizada && pacientesEncontrados.length === 0" class="warning-msg">
+                <mat-icon>search_off</mat-icon> No se encontraron pacientes con ese criterio.
             </div>
-        
         </div>
         
-        <div *ngIf="pasoActual === 2" class="card shadow p-4 mb-4">
-            <h4 class="card-title text-success">Buscar Disponibilidad</h4>
-            <p class="text-info fw-bold">Paciente Seleccionado: {{ pacienteSeleccionado?.nombre_completo }} (DNI: {{ pacienteSeleccionado?.dni }})</p>
-            <hr>
+        <!-- Paso 2: Buscar Disponibilidad -->
+        <div *ngIf="pasoActual === 2" class="premium-card step-card">
+            <h4 class="step-title">
+                <span class="step-number">2</span> Buscar Disponibilidad
+            </h4>
+            <p class="paciente-info">
+                <mat-icon>person</mat-icon> Paciente: <strong>{{ pacienteSeleccionado?.nombre_completo }}</strong> (DNI: {{ pacienteSeleccionado?.dni }})
+            </p>
 
-            <div class="row">
-                
-                <div class="col-md-4 mb-3">
-                    <label class="form-label">Especialidad</label>
-                    
+            <div class="form-grid step-form">
+                <div>
+                    <label class="field-label">Especialidad</label>
                     <ng-container *ngIf="preIdMedico && formularioAsignar.get('id_especialidad')?.value; else selectEspecialidad">
-                        <input type="text" 
-                               class="form-control" 
-                               [value]="especialidadPreseleccionadaDescripcion" 
-                               readonly>
+                        <input type="text" class="form-input" [value]="especialidadPreseleccionadaDescripcion" readonly>
                         <input type="hidden" formControlName="id_especialidad">
                     </ng-container>
-                    
                     <ng-template #selectEspecialidad>
-                        <select formControlName="id_especialidad" class="form-select">
+                        <select formControlName="id_especialidad" class="form-input">
                             <option [ngValue]="null" disabled>Seleccione Especialidad</option>
                             <option *ngFor="let esp of especialidades" [ngValue]="esp.id">{{ esp.descripcion }}</option>
                         </select>
                     </ng-template>
                 </div>
 
-                <div class="col-md-4 mb-3">
-                    <label class="form-label">Médico</label>
-                    
+                <div>
+                    <label class="field-label">Médico</label>
                     <ng-container *ngIf="preIdMedico; else selectMedico">
-                        <input type="text" 
-                               class="form-control" 
-                               [value]="medicoPreseleccionadoNombre" 
-                               readonly>
+                        <input type="text" class="form-input" [value]="medicoPreseleccionadoNombre" readonly>
                         <input type="hidden" formControlName="id_medico">
                     </ng-container>
-
                     <ng-template #selectMedico>
-                        <select formControlName="id_medico" class="form-select" [disabled]="formularioAsignar.get('id_especialidad')?.invalid || medicos.length === 0">
+                        <select formControlName="id_medico" class="form-input" [disabled]="formularioAsignar.get('id_especialidad')?.invalid || medicos.length === 0">
                             <option [ngValue]="null" disabled>Seleccione Médico</option>
                             <option *ngIf="medicos.length === 0" [ngValue]="null" disabled>Cargando...</option>
                             <option *ngFor="let m of medicos" [ngValue]="m.id">{{ m.nombre_completo }}</option>
@@ -89,66 +90,71 @@
                     </ng-template>
                 </div>
                 
-                <div class="col-md-4 mb-3">
-                    <label class="form-label">Fecha</label>
-                    <input type="date" formControlName="fecha" class="form-control">
+                <div>
+                    <label class="field-label">Fecha</label>
+                    <input type="date" formControlName="fecha" class="form-input">
                 </div>
             </div>
 
-            <div class="d-grid mb-4">
-                <button class="btn btn-info" type="button" (click)="buscarDisponibilidad()" 
-                        [disabled]="formularioAsignar.invalid || cargando">
-                    <i class="fas fa-calendar-day me-2"></i> 
-                    {{ cargando ? 'Buscando...' : 'Ver Horarios Libres' }}
-                </button>
-            </div>
+            <button class="btn-premium btn-accent-premium full-width-btn" type="button" (click)="buscarDisponibilidad()" 
+                    [disabled]="formularioAsignar.invalid || cargando">
+                <mat-icon>calendar_today</mat-icon>
+                {{ cargando ? 'Buscando...' : 'Ver Horarios Libres' }}
+            </button>
 
-            <div *ngIf="horariosDisponibles.length > 0" class="mt-3">
-                <p class="fw-bold">Seleccione un horario (Hora de inicio del turno):</p>
-                <div class="list-group list-group-horizontal-md flex-wrap">
+            <div *ngIf="horariosDisponibles.length > 0" class="horarios-grid">
+                <p class="field-label">Seleccione un horario:</p>
+                <div class="horarios-options">
                     <button *ngFor="let turno of horariosDisponibles" type="button" 
-                            class="list-group-item list-group-item-action me-2 mb-2" style="cursor: pointer;"
-                            [class.active]="turnoSeleccionado?.hora_entrada === turno.hora_entrada && turnoSeleccionado?.id === turno.id"
+                            class="horario-option"
+                            [class.selected]="turnoSeleccionado?.hora_entrada === turno.hora_entrada && turnoSeleccionado?.id === turno.id"
                             (click)="seleccionarTurno(turno)">
                         {{ turno.hora_entrada }}
                     </button>
                 </div>
             </div>
 
-            <div *ngIf="!cargando && horariosDisponibles.length === 0 && formularioAsignar.get('fecha')?.valid" class="alert alert-warning mt-3">
-                No se encontraron horarios libres para la fecha y especialidad.
+            <div *ngIf="!cargando && horariosDisponibles.length === 0 && formularioAsignar.get('fecha')?.valid" class="warning-msg">
+                <mat-icon>event_busy</mat-icon> No se encontraron horarios libres.
             </div>
 
-            <div class="mt-4 d-flex justify-content-between">
-                <button class="btn btn-outline-secondary" type="button" (click)="volverAPaso(1)">
-                    <i class="fas fa-arrow-left me-2"></i> Anterior
+            <div class="step-actions">
+                <button class="btn-premium btn-outline-premium" type="button" (click)="volverAPaso(1)">
+                    <mat-icon>arrow_back</mat-icon> Anterior
                 </button>
-                <button class="btn btn-success btnSiguiente" [disabled]="!turnoSeleccionado" (click)="pasoActual = 3">
-                    Siguiente <i class="fas fa-arrow-right ms-2"></i>
+                <button class="btn-premium btn-success-premium" [disabled]="!turnoSeleccionado" (click)="pasoActual = 3">
+                    Siguiente <mat-icon>arrow_forward</mat-icon>
                 </button>
             </div>
         </div>
 
-        <div *ngIf="pasoActual === 3" class="card shadow p-4 mb-4">
-            <h4 class="card-title text-success">Confirmar Turno</h4>
-            <hr>
-            
-            <div class="alert alert-success fw-bold p-3">
-                <p>Paciente: {{ pacienteSeleccionado?.nombre_completo }}</p>
-                <p>Fecha y Hora: {{ turnoSeleccionado?.fecha | date:'fullDate' }} a las {{ turnoSeleccionado?.hora_entrada }} hs.</p>
-                <p>Médico: {{ medicoPreseleccionadoNombre || 'ID ' + turnoSeleccionado?.id_medico }}</p>
-                <p>Especialidad: {{ especialidadPreseleccionadaDescripcion || 'ID ' + formularioAsignar.get('id_especialidad')?.value }}</p>
+        <!-- Paso 3: Confirmar -->
+        <div *ngIf="pasoActual === 3" class="premium-card step-card">
+            <h4 class="step-title">
+                <span class="step-number">3</span> Confirmar Turno
+            </h4>
+
+            <div class="confirmation-summary">
+                <p><mat-icon>person</mat-icon> <strong>Paciente:</strong> {{ pacienteSeleccionado?.nombre_completo }}</p>
+                <p><mat-icon>event</mat-icon> <strong>Fecha y Hora:</strong> {{ turnoSeleccionado?.fecha | date:'fullDate' }} a las {{ turnoSeleccionado?.hora_entrada }} hs.</p>
+                <p><mat-icon>local_hospital</mat-icon> <strong>Médico:</strong> {{ medicoPreseleccionadoNombre || 'ID ' + turnoSeleccionado?.id_medico }}</p>
+                <p><mat-icon>medical_services</mat-icon> <strong>Especialidad:</strong> {{ especialidadPreseleccionadaDescripcion || 'ID ' + formularioAsignar.get('id_especialidad')?.value }}</p>
             </div>
 
-            <div class="mb-3">
-                <label for="nota" class="form-label">Nota Adicional (Opcional)</label>
-                <textarea id="nota" formControlName="nota" class="form-control" rows="3" placeholder="Ej: Es un control, traer estudios previos."></textarea>
+            <div class="nota-field">
+                <label for="nota" class="field-label">Nota Adicional (Opcional)</label>
+                <textarea id="nota" formControlName="nota" class="form-input textarea" rows="3" placeholder="Ej: Es un control, traer estudios previos."></textarea>
             </div>
 
-            <div class="mt-4 d-flex justify-content-between">
-                <button class="btn btn-outline-secondary" type="button" (click)="volverAPaso(2)">
-                    <i class="fas fa-arrow-left me-2"></i> Anterior
+            <div class="step-actions">
+                <button class="btn-premium btn-outline-premium" type="button" (click)="volverAPaso(2)">
+                    <mat-icon>arrow_back</mat-icon> Anterior
                 </button>
-                <button class="btn btn-success" type="button" (click)="confirmarAsignacion()" [disabled]="cargando">
-                    <i class="fas fa-check-circle me-2"></i> 
+                <button class="btn-premium btn-success-premium" type="button" (click)="confirmarAsignacion()" [disabled]="cargando">
+                    <mat-icon>check_circle</mat-icon>
                     {{ cargando ? 'Asignando...' : 'Confirmar Asignación' }}
+                </button>
+            </div>
+        </div>
+    </form>
+</div>

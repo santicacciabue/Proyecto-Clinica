@@ -1,31 +1,33 @@
-<div class="operador-container">
+<mat-sidenav-container class="min-h-screen w-full bg-transparent">
 
-  <button mat-icon-button class="sidebar-toggle md:hidden" (click)="toggleSidebar()" aria-label="Toggle sidebar">
-      <mat-icon>menu</mat-icon>
-  </button>
-
-  <aside class="operador-sidebar" [class.open]="sidebarAbierto">
+  <mat-sidenav #sidenav [mode]="isMobile ? 'over' : 'side'" [opened]="!isMobile" class="sidenav-panel">
     <h3 class="sidebar-title">Panel de Operador</h3>
-    <nav>
-      <ul class="operador-menu">
-        <li>
-          <a routerLink="agenda" routerLinkActive="active" (click)="closeSidebarOnMobile()">
-            <mat-icon class="menu-icon">calendar_today</mat-icon>
-            <span class="menu-text">Gestión de Agenda</span>
-          </a>
-        </li>
-        <li>
-          <a routerLink="pacientes/crear" routerLinkActive="active" (click)="closeSidebarOnMobile()">
-            <mat-icon class="menu-icon">person_add</mat-icon>
-            <span class="menu-text">Crear Paciente</span>
-          </a>
-        </li>
-      </ul>
-    </nav>
-  </aside>
+    <ul class="sidebar-menu">
+      <li>
+        <a routerLink="agenda" routerLinkActive="active" (click)="isMobile ? sidenav.close() : null">
+          <mat-icon>calendar_today</mat-icon>
+          <span class="menu-text">Gestión de Agenda</span>
+        </a>
+      </li>
+      <li>
+        <a routerLink="pacientes/crear" routerLinkActive="active" (click)="isMobile ? sidenav.close() : null">
+          <mat-icon>person_add</mat-icon>
+          <span class="menu-text">Crear Paciente</span>
+        </a>
+      </li>
+    </ul>
+  </mat-sidenav>
 
-  <main class="operador-content">
+  <mat-sidenav-content class="p-6">
+    <!-- Hamburger button visible ONLY on mobile -->
+    <div class="block md:hidden mb-6">
+      <button mat-icon-button (click)="sidenav.toggle()" aria-label="Toggle sidebar" class="bg-[var(--primary)] text-white shadow-md" style="background-color: var(--primary);">
+        <mat-icon>menu</mat-icon>
+      </button>
+    </div>
+
+    <!-- Main Content -->
     <router-outlet></router-outlet>
-  </main>
+  </mat-sidenav-content>
 
-</div>
+</mat-sidenav-container>

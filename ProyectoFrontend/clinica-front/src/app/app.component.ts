@@ -9,15 +9,19 @@ import { Router } from '@angular/router';
 })
 export class AppComponent implements OnInit{
   title = 'clinica-front';
-  isAdminRoute: boolean = false;
+  isSidebarRoute: boolean = false;
     
     constructor(private router: Router) {}
 
     ngOnInit(): void {
         // Suscribirse a los eventos de navegación
-        this.router.events.subscribe(() => {
-            // Verificar si la URL actual comienza con '/admin'
-            this.isAdminRoute = this.router.url.startsWith('/admin');
+        this.router.events.subscribe((event: any) => {
+            if (event && event.urlAfterRedirects) {
+                const url = event.urlAfterRedirects;
+                this.isSidebarRoute = url.startsWith('/admin') || 
+                                      url.startsWith('/medico') || 
+                                      url.startsWith('/operador');
+            }
         });
     }
 }

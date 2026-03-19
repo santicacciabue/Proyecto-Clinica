@@ -1,129 +1,102 @@
 .agenda-container {
-  max-width: 1200px;
+  max-width: 1100px;
   margin: 0 auto;
-}
-h2{
-    text-align: center;
+  padding: 8px;
 }
 
-/* Título y separación */
-.agenda-header {
-  margin-bottom: 2.5rem;
+/* Date card */
+.fecha-card {
+  margin-bottom: 24px;
 }
 
-/* Label y datepicker */
-.agenda-header label {
-  font-size: 1.1rem;
-  margin-bottom: 0.6rem;
+.fecha-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 24px;
+  flex-wrap: wrap;
 }
 
-.agenda-header input[type="date"] {
+.fecha-field,
+.fecha-action {
+  flex: 1;
+  min-width: 200px;
+}
+
+.fecha-label {
+  display: block;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+}
+
+.fecha-input {
   width: 100%;
-  font-size: 1.1rem;
-  padding: 0.8rem 1rem;
-  margin-top: 10px;
-  border-radius: 7px;
-  border: none;
-}
-
-/* Aumentar separación entre datepicker y botón */
-.agenda-header .row {
-  row-gap: 1.5rem;
-}
-
-/* Botón agregar nuevo horario */
-.agenda-header button {
-  padding: 1rem;
-  font-size: 1.05rem;
-  margin-top: 20px;
-  border: none;
-  border-radius: 10px;
-  background-color: #84abd1;
-}
-
-/* Card de nuevo horario */
-.nuevo-horario {
-  margin-top: 2rem;
-}
-
-.nuevo-horario input[type="time"] {
-  padding: 0.8rem;
-  font-size: 1.1rem;
-  margin-left: 20px;
-  border-radius: 5px;
-  border: none;
-  width: 8%;
-}
-.nuevo-horario label {
-  font-size: 1.1rem;
-  margin-bottom: 0.6rem;
-  color: #333;
-}
-
-.nuevo-horario .form-control[type="time"] {
-  padding: 0.8rem 1rem;
+  max-width: 320px;
+  padding: 12px 16px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  font-family: inherit;
   font-size: 1rem;
+  background: var(--surface);
+  transition: all var(--transition-base);
+  color: var(--text-primary);
+}
+.fecha-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.12);
 }
 
-.nuevo-horario .col-md-3 {
-  margin-bottom: 1rem;
+/* New schedule card */
+.nuevo-horario-card {
+  margin-bottom: 24px;
+  animation: slideUp 0.3s ease;
 }
 
-.nuevo-horario button {
-  margin-top: 0.5rem;
-  padding: 0.8rem;
+.section-title {
   font-size: 1.05rem;
-  border: none;
-    border-radius: 10px;
-    background-color: #84abd1;
+  font-weight: 600;
+  color: var(--primary);
+  margin: 0 0 16px 0;
 }
 
-/* Tabla de horarios */
+.horario-fields {
+  display: flex;
+  align-items: flex-end;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.horario-field {
+  flex: 1;
+  min-width: 160px;
+}
+
+.horario-action {
+  display: flex;
+  align-items: flex-end;
+}
+
+/* Table */
 .agenda-table {
-  margin-top: 2rem;
-}
-
-.agenda-table table {
-  font-size: 1rem;
   width: 100%;
   border-collapse: collapse;
-  border: 1px solid #dee2e6;
 }
 
-.agenda-table th,
-.agenda-table td {
-    border: 1px solid #dee2e6;
-  padding: 1rem;
-  vertical-align: middle !important;
-  text-align: center;
-}
-
-.agenda-table thead {
-  background-color: #2c3e50;
-  color: #fff;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.agenda-table tbody tr:hover {
-  background-color: #f8f9fa;
-  transition: background-color 0.2s ease;
-}
-
-.agenda-table button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.agenda-table td button {
-  padding: 0.4rem 0.7rem;
-  font-size: 0.9rem;
-  border: none;
-  border-radius: 10px;
-  background-color: #84abd1;
-}
-
-button:hover{
-  cursor: pointer;
+@media (max-width: 767px) {
+  .agenda-container {
+    padding: 4px;
+  }
+  .fecha-row {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .fecha-input {
+    max-width: 100%;
+  }
+  .horario-fields {
+    flex-direction: column;
+    gap: 12px;
+  }
 }

@@ -1,23 +1,82 @@
+.datos-container {
+  display: flex;
+  justify-content: center;
+  padding: 24px 16px;
+  animation: slideUp 0.5s ease;
+}
+
 .datos-card {
-    position: relative ; /* Necesario para posicionar el botón */
-    padding-top: 40px; /* Aumentar el espacio superior */
-    padding-bottom: 20px;
+  position: relative;
+  max-width: 860px;
+  width: 100%;
+  padding: 36px 32px 24px;
+  border-radius: var(--radius-lg) !important;
+  box-shadow: var(--shadow-lg) !important;
+  border: 1px solid var(--border-light) !important;
 }
 
 .back-button {
-    position: absolute ;
-    top: 10px ;  /* Ajusta la altura */
-    left: 10px ; /* Ajusta la posición lateral */
-    z-index: 10 ; /* Para que esté por encima de otros elementos */
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 10;
+  color: var(--text-secondary) !important;
+  transition: all var(--transition-base) !important;
+}
+.back-button:hover {
+  color: var(--accent) !important;
+  background: rgba(var(--accent-rgb), 0.08) !important;
 }
 
 mat-card-title {
-    margin-top: 10px; /* Asegura un poco de separación si el título sigue muy cerca */
-    margin-left: 50px; /* Mueve el título para que no quede debajo del botón */
+  margin-top: 4px;
+  margin-left: 48px;
+  color: var(--primary) !important;
+  font-weight: 700 !important;
+  font-size: 1.35rem !important;
 }
 
 mat-card-subtitle {
-    margin-left: 50px;
-    margin-bottom: 20px;
+  margin-left: 48px;
+  margin-bottom: 24px;
+  color: var(--text-secondary) !important;
+  font-size: 0.88rem;
 }
 
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  padding: 8px 0;
+}
+
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 60px;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 767px) {
+  .datos-container {
+    padding: 12px 8px;
+  }
+  .datos-card {
+    padding: 32px 16px 20px;
+  }
+  mat-card-title {
+    margin-left: 40px;
+    font-size: 1.15rem !important;
+  }
+  mat-card-subtitle {
+    margin-left: 40px;
+    font-size: 0.82rem;
+  }
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}

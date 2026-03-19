@@ -1,139 +1,119 @@
-.operador-container {
+.operador-agenda-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px 40px;
+  padding: 8px;
 }
 
-/* Encabezado principal */
-.operador-header h2 {
-  text-align: center;
-  color: #2c3e50;
+/* Date card */
+.fecha-card {
+  margin-bottom: 24px;
 }
 
-.operador-header p {
-  text-align: center;
-  font-size: 1.05rem;
-  color: #6c757d;
+.fecha-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 24px;
+  flex-wrap: wrap;
 }
 
-/* Card principal */
-.operador-card {
-  background-color: #f8f9fa;
-  border-radius: 10px;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+.fecha-field {
+  flex: 1;
+  min-width: 240px;
 }
 
-.operador-fecha-row {
-  row-gap: 1.5rem;
+.fecha-label {
+  display: block;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
 }
 
-.operador-input-fecha {
-  border: none;
-  border-radius: 8px;
-  padding: 0.8rem 1rem;
-  font-size: 1.05rem;
-  transition: box-shadow 0.3s ease;
-      width: 75%;
-    margin-left: 25px;
-    margin-top: 35px;
+.fecha-input {
+  width: 100%;
+  max-width: 300px;
+  padding: 12px 16px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  font-family: inherit;
+  font-size: 1rem;
+  background: var(--surface);
+  transition: all var(--transition-base);
+  color: var(--text-primary);
 }
-
-.operador-input-fecha:focus {
+.fecha-input:focus {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(132, 171, 209, 0.4);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.12);
 }
 
-.operador-fecha-texto h3 {
-  font-size: 1.25rem;
-  margin-top: 10px;
+.fecha-texto h3 {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  font-weight: 400;
+  margin: 0;
 }
 
-/* Mensajes y alertas */
-.operador-alert {
-  border-radius: 8px;
-  font-size: 1rem;
+.fecha-display {
+  font-weight: 600;
+  color: var(--primary);
 }
 
-/* Card vacía */
-.operador-card-vacia {
-  background-color: #fefefe;
-  border-radius: 8px;
-  text-align: center;
-  color: #6c757d;
+/* Error alert */
+.error-alert {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(231, 76, 60, 0.06) !important;
+  border-color: rgba(231, 76, 60, 0.15) !important;
+  color: var(--warn);
+  margin-bottom: 24px;
+}
+.error-alert mat-icon {
+  color: var(--warn);
+  font-size: 24px;
+}
+.error-alert p {
+  margin: 0;
+  font-size: 0.92rem;
+  font-weight: 500;
 }
 
-/* Tabla */
-.operador-tabla {
-  margin-top: 2rem;
-  border: none;
-  border-radius: 10px;
-  overflow: hidden;
-}
-
-.operador-tabla table {
-  font-size: 1rem;
+/* Table */
+.medicos-table {
+  width: 100%;
   border-collapse: collapse;
 }
 
-.operador-tabla thead {
-  background-color: #2c3e50;
-  color: #fff;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+.fw-medium {
+  font-weight: 500;
 }
 
-.operador-tabla th,
-.operador-tabla td {
-  border: 1px solid #dee2e6;
-  padding: 1rem;
-  vertical-align: middle !important;
-  text-align: center;
-}
-
-.operador-tabla tbody tr:hover {
-  background-color: #f8f9fa;
-  transition: background-color 0.2s ease;
-}
-
-/* Botones */
-.operador-tabla button {
-  display: inline-flex;
+.acciones-cell {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
-  border-radius: 10px;
-  font-size: 0.9rem;
-  transition: all 0.3s ease;
-  padding: 10px;
-    margin: 20px;
 }
 
-.operador-btn-editar {
-  border: none;
-  background-color: #84abd1;
-  color: white;
+.btn-sm {
+  padding: 6px 14px !important;
+  font-size: 0.82rem !important;
 }
 
-.operador-btn-editar:hover {
-  background-color: #6c9fc7;
-}
-
-.operador-btn-ver {
-  border: none;
-  background-color: #a1bcd8;
-  color: white;
-}
-
-.operador-btn-ver:hover {
-  background-color: #84abd1;
-}
-
-/* Íconos */
-.operador-tabla mat-icon {
-  font-size: 18px;
-  margin-right: 4px;
-}
-
-/* Spinner */
-.fa-spinner {
-  color: #84abd1 !important;
+@media (max-width: 767px) {
+  .operador-agenda-container {
+    padding: 4px;
+  }
+  .fecha-row {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .fecha-input {
+    max-width: 100%;
+  }
+  .acciones-cell {
+    flex-direction: column;
+    gap: 6px;
+  }
 }

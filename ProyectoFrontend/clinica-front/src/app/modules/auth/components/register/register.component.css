@@ -1,40 +1,44 @@
-/* src/app/modules/auth/components/register/register.component.css */
-
 .register-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 40px 0; /* Espacio superior e inferior */
+  padding: 40px 16px;
+  animation: slideUp 0.5s ease;
 }
 
 .register-card {
-  max-width: 750px; 
+  max-width: 760px;
   width: 100%;
-  padding: 20px;
+  padding: 32px;
+  border-radius: var(--radius-lg) !important;
+  box-shadow: var(--shadow-lg) !important;
+  border: 1px solid var(--border-light) !important;
 }
 
-/* -------------------------------------- */
-/* IMPLEMENTACIÓN DE GRID para 2 COLUMNAS */
-/* -------------------------------------- */
+.register-card mat-card-title {
+  color: var(--primary) !important;
+  font-weight: 700 !important;
+  font-size: 1.4rem;
+}
+
 .grid-form {
   display: grid;
-  /* Dos columnas de igual tamaño (1fr) con un espaciado (gap) de 20px */
-  grid-template-columns: 1fr 1fr; 
-  gap: 20px; 
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 8px;
 }
 
 .grid-form mat-form-field {
-  width: 100%; 
+  width: 100%;
 }
 
-/* Media Query: Responsividad */
 @media (max-width: 768px) {
   .register-card {
     max-width: 95%;
+    padding: 24px 16px;
   }
   .grid-form {
-    /* En pantallas pequeñas, volvemos a una sola columna */
-    grid-template-columns: 1fr; 
-    gap: 15px;
+    grid-template-columns: 1fr;
+    gap: 12px;
   }
 }
