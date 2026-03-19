@@ -1,0 +1,33 @@
+/* Premium confirmation dialog */
+:host {
+  display: block;
+}
+
+h2[mat-dialog-title] {
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 1.25rem;
+  border-bottom: 2px solid var(--border-light);
+  padding-bottom: 12px;
+}
+
+[mat-dialog-content] p {
+  color: var(--text-secondary);
+  font-size: 0.92rem;
+  margin-bottom: 12px;
+}
+
+mat-list-item {
+  font-size: 0.9rem;
+  padding: 8px 0;
+}
+
+mat-list-item strong {
+  color: var(--primary);
+  margin-right: 8px;
+}
+
+[mat-dialog-actions] button {
+  border-radius: var(--radius-md) !important;
+  transition: all var(--transition-base) !important;
+}

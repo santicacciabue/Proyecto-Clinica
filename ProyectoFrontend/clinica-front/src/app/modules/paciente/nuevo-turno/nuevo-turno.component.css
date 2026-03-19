@@ -1,113 +1,110 @@
 .turno-container {
-    display: flex;
-    justify-content: center;
-    padding: 20px 10px;
-    background-color: #f4f4f4;
-    min-height: 80vh;
+  display: flex;
+  justify-content: center;
+  padding: 24px 16px;
+  min-height: 80vh;
+  animation: slideUp 0.5s ease;
 }
 
 .back-button {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    z-index: 10;
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 10;
+  color: var(--text-secondary) !important;
+  transition: all var(--transition-base) !important;
+}
+.back-button:hover {
+  color: var(--accent) !important;
+  background: rgba(var(--accent-rgb), 0.08) !important;
 }
 
 .turno-card {
-    max-width: 800px;
-    width: 100%;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    position: relative;
-    padding-top: 40px;
-    padding-bottom: 20px;
-    padding-left: 10px;
-    padding-right: 10px;
+  max-width: 860px;
+  width: 100%;
+  position: relative;
+  padding: 36px 32px 24px;
+  border-radius: var(--radius-lg) !important;
+  box-shadow: var(--shadow-lg) !important;
+  border: 1px solid var(--border-light) !important;
 }
 
 mat-card-title {
-    color: var(--color-primary, #1976D2);
-    font-size: 1.3rem;
-    font-weight: 500;
-    margin-bottom: 5px;
-    margin-top: 10px;
-    margin-left: 40px;
+  color: var(--primary) !important;
+  font-size: 1.35rem !important;
+  font-weight: 700 !important;
+  margin-bottom: 4px;
+  margin-top: 4px;
+  margin-left: 48px;
 }
 
 mat-card-subtitle {
-    color: #666;
-    margin-bottom: 20px;
-    margin-left: 40px;
-    font-size: 0.9rem;
+  color: var(--text-secondary) !important;
+  margin-bottom: 20px;
+  margin-left: 48px;
+  font-size: 0.88rem;
 }
 
 .turno-form {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 16px;
-    padding: 10px 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+  padding: 8px 0;
 }
 
 .full-width {
-    grid-column: 1 / -1;
+  grid-column: 1 / -1;
 }
 
 mat-form-field {
-    width: 100%;
+  width: 100%;
 }
 
 mat-card-actions {
-    padding: 16px 12px;
-    gap: 10px;
+  padding: 16px 12px;
+  gap: 12px;
+  display: flex;
+  justify-content: flex-end;
 }
 
 mat-card-actions button {
-    margin-left: 8px;
+  margin-left: 8px;
+  border-radius: var(--radius-md) !important;
+  transition: all var(--transition-base) !important;
 }
 
 @media (max-width: 767px) {
-    .turno-container {
-        padding: 10px 5px;
-    }
-
-    .turno-card {
-        padding-top: 35px;
-        padding-left: 8px;
-        padding-right: 8px;
-    }
-
-    mat-card-title {
-        font-size: 1.1rem;
-        margin-left: 35px;
-    }
-
-    mat-card-subtitle {
-        margin-left: 35px;
-        font-size: 0.85rem;
-    }
-
-    .turno-form {
-        grid-template-columns: 1fr;
-        gap: 12px;
-    }
-
-    mat-card-actions {
-        flex-direction: column-reverse;
-        padding: 12px 8px;
-    }
-
-    mat-card-actions button {
-        width: 100%;
-        margin-left: 0;
-        margin-bottom: 8px;
-    }
-
-    mat-card-actions button:last-child {
-        margin-bottom: 0;
-    }
+  .turno-container {
+    padding: 12px 8px;
+  }
+  .turno-card {
+    padding: 32px 16px 20px;
+  }
+  mat-card-title {
+    font-size: 1.15rem !important;
+    margin-left: 40px;
+  }
+  mat-card-subtitle {
+    margin-left: 40px;
+    font-size: 0.82rem;
+  }
+  .turno-form {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  mat-card-actions {
+    flex-direction: column-reverse;
+    padding: 12px 8px;
+  }
+  mat-card-actions button {
+    width: 100%;
+    margin-left: 0;
+    margin-bottom: 8px;
+  }
 }
 
 @media (min-width: 768px) and (max-width: 1023px) {
-    .turno-form {
-        grid-template-columns: repeat(2, 1fr);
-    }
+  .turno-form {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }

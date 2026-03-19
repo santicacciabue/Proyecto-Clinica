@@ -1,59 +1,62 @@
-<div class="admin-container">
-    <mat-card>
+<div class="gestion-container animate-slide-up">
+    <mat-card class="premium-card">
+        <div class="page-header">
             <button mat-icon-button color="primary" routerLink="/admin" matTooltip="Volver al Panel de Administración">
-                    <mat-icon>arrow_back</mat-icon>
+                <mat-icon>arrow_back</mat-icon>
             </button>
-        <mat-card-header>
-            <mat-card-title>Gestión de Coberturas Médicas</mat-card-title>
-        </mat-card-header>
+            <div>
+                <h2>Gestión de Coberturas Médicas</h2>
+            </div>
+        </div>
 
         <mat-card-content>
-            
-            <div class="actions-header">
-                <button mat-raised-button class="btnGest" (click)="agregarCobertura()">
+            <div class="actions-bar">
+                <button class="btn-premium btn-accent-premium" (click)="agregarCobertura()">
                     <mat-icon>add</mat-icon> Nueva Cobertura
                 </button>
             </div>
 
-            <div *ngIf="cargando" class="loading-spinner">
+            <div *ngIf="cargando" class="loading-container">
                 <mat-spinner diameter="40"></mat-spinner>
                 <p>Cargando coberturas...</p>
             </div>
             
-            <div *ngIf="!cargando && dataSource.data.length > 0" class="table-container">
-                <table mat-table [dataSource]="dataSource" class="full-width-table">
-                    
-                    <ng-container matColumnDef="id">
-                        <th mat-header-cell *matHeaderCellDef> ID </th>
-                        <td mat-cell *matCellDef="let element"> {{element.id}} </td>
-                    </ng-container>
+            <div *ngIf="!cargando && dataSource.data.length > 0" class="premium-table-container">
+                <div class="table-scroll-wrapper">
+                    <table mat-table [dataSource]="dataSource">
+                        
+                        <ng-container matColumnDef="id">
+                            <th mat-header-cell *matHeaderCellDef> ID </th>
+                            <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+                        </ng-container>
 
-                    <ng-container matColumnDef="nombre">
-                        <th mat-header-cell *matHeaderCellDef> Nombre de Cobertura </th>
-                        <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
-                    </ng-container>
+                        <ng-container matColumnDef="nombre">
+                            <th mat-header-cell *matHeaderCellDef> Nombre de Cobertura </th>
+                            <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
+                        </ng-container>
 
-                    <ng-container matColumnDef="acciones">
-                        <th mat-header-cell *matHeaderCellDef> Acciones </th>
-                        <td mat-cell *matCellDef="let element">
-                            <button mat-icon-button color="accent" matTooltip="Editar" (click)="editarCobertura(element)">
-                                <mat-icon>edit</mat-icon>
-                            </button>
-                            <button mat-icon-button color="warn" matTooltip="Eliminar" (click)="eliminarCobertura(element.id, element.nombre)">
-                                <mat-icon>delete</mat-icon>
-                            </button>
-                        </td>
-                    </ng-container>
+                        <ng-container matColumnDef="acciones">
+                            <th mat-header-cell *matHeaderCellDef> Acciones </th>
+                            <td mat-cell *matCellDef="let element">
+                                <button class="action-icon-btn edit" matTooltip="Editar" (click)="editarCobertura(element)">
+                                    <mat-icon>edit</mat-icon>
+                                </button>
+                                <button class="action-icon-btn delete" matTooltip="Eliminar" (click)="eliminarCobertura(element.id, element.nombre)">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                            </td>
+                        </ng-container>
 
-                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                </table>
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table>
+                </div>
             </div>
 
-            <div *ngIf="!cargando && dataSource.data.length === 0" class="no-data">
+            <div *ngIf="!cargando && dataSource.data.length === 0" class="empty-state">
+                <mat-icon>inventory_2</mat-icon>
                 <p>No hay coberturas cargadas.</p>
             </div>
-
         </mat-card-content>
     </mat-card>
 </div>

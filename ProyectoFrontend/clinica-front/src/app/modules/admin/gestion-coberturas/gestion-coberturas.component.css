@@ -1,7 +1,20 @@
-.btnGest{
-   margin: 12px;
-    font-size: 0.9rem;
-    border: none;
-    border-radius: 10px;
-    background-color: #84abd1 !important;
+.gestion-container {
+  padding: 8px;
+}
+
+.gestion-container .premium-card {
+  padding: 28px;
+}
+
+.actions-bar {
+  margin-bottom: 20px;
+}
+
+@media (max-width: 767px) {
+  .gestion-container {
+    padding: 4px;
+  }
+  .gestion-container .premium-card {
+    padding: 16px;
+  }
 }

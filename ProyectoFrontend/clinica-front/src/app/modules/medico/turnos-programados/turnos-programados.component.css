@@ -1,96 +1,99 @@
-/* Estilo para las filas que son clickeables */
+.turnos-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 8px;
+}
+
+/* Date card */
+.fecha-card {
+  margin-bottom: 24px;
+}
+
+.fecha-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.fecha-field {
+  flex: 1;
+  min-width: 240px;
+}
+
+.fecha-label {
+  display: block;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+}
+
+.fecha-input {
+  width: 100%;
+  max-width: 320px;
+  padding: 12px 16px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  font-family: inherit;
+  font-size: 1rem;
+  background: var(--surface);
+  transition: all var(--transition-base);
+  color: var(--text-primary);
+}
+.fecha-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.12);
+}
+
+.info-turnos {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-light);
+}
+
+.info-turnos h3 {
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.fecha-display {
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.total-turnos {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  margin: 4px 0 0 0;
+}
+
+/* Table rows */
 .clickable-row {
-    cursor: pointer;
-    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease; /* Transiciones más suaves */
+  cursor: pointer;
+  transition: background-color var(--transition-fast), transform var(--transition-fast);
 }
-
-h2{
-    text-align: center;
-}
-
-/* Efecto hover más notable */
 .clickable-row:hover {
-    background-color: #e2e6ea !important; /* Un gris ligeramente más oscuro al pasar el mouse */
-    transform: scale(1.005);
-    box-shadow: 0 0 12px rgba(0, 0, 0, 0.15); /* Sombra más pronunciada */
+  background-color: rgba(var(--accent-rgb), 0.06) !important;
 }
 
-.infoTurnos{
-    margin-top: 25px;
+.turnos-table {
+  width: 100%;
+  border-collapse: collapse;
 }
 
-/* Asegurar que el título principal tenga buen espaciado */
-.container.mt-5 {
-    padding-bottom: 50px;
-}
-.labelSelectFecha{
-    font-size: 18px;
-    padding: 20px;
-}
-
-/* Mejorar el estilo de la tabla */
-.table-responsive {
-    border-radius: 8px; /* Bordes redondeados para la tabla */
-    overflow: hidden; /* Asegura que los bordes redondeados se apliquen bien */
-    border: 1px solid #dee2e6; /* Borde suave para toda la tabla */
-    
-}
-.table{
-        width: 100%;
-}
-/* Estilo para los encabezados de tabla (ajusta los colores a tu tema) */
-.table thead th {
-    background-color: #34495e; /* Color primario de Bootstrap */
-    color: white; /* Texto blanco en el encabezado */
-    padding: 0.75rem 1rem; /* Más padding para los encabezados */
-    vertical-align: middle; /* Centrado vertical */
-}
-
-/* Estilo para las celdas del cuerpo de la tabla */
-.table tbody td {
-    vertical-align: middle; /* Centrar verticalmente el contenido de las celdas */
-    padding: 0.75rem 1rem; /* Un poco más de padding */
-}
-
-/* Pequeño ajuste para el badge de cobertura */
-.badge {
-    padding: 0.5em 0.8em;
-    font-size: 0.85em;
-    font-weight: 600; /* Un poco más de peso a la fuente del badge */
-    border-radius: 0.35rem; /* Bordes un poco más redondeados */
-}
-
-/* Espacio entre el ícono y el texto en los thead */
-.table th i {
-    margin-right: 8px; /* Espacio a la derecha del ícono en el encabezado */
-}
-
-/* Estilo para el input de fecha */
-.form-control-lg {
-    height: calc(2.5em + 0.75rem + 2px); /* Altura estándar de Bootstrap 5 para .form-control-lg */
-}
-
-.form-control-lg {
-    font-size: 1.1rem;
-    padding: 0.8rem 1rem;
-    height: auto;
-    width: 70% !important;
-    border: none;
-    border-radius: 10px;
-}
-
-.datepicker-centered {
-    width: 70% !important;
-    border: none;
-    border-radius: 10px;
-    display: inline-block;
-}
-.form-label {
-    margin-bottom: 0.6rem;
-}
-
-.turnos-programados-container {
-    padding-left: 30px; 
-    padding-right: 30px;
-    margin: 0 auto;
+@media (max-width: 767px) {
+  .turnos-container {
+    padding: 4px;
+  }
+  .fecha-row {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .fecha-input {
+    max-width: 100%;
+  }
 }

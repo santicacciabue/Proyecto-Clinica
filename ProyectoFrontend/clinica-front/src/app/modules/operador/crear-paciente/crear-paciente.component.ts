@@ -102,4 +102,8 @@ export class CrearPacienteComponent implements OnInit {
       }
     });
   }
+
+  cancelar(): void {
+    this.router.navigate(['/operador']);
+  }
 }

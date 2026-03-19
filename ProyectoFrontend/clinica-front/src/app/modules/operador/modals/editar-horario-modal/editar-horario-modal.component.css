@@ -1,15 +1,17 @@
 .mat-mdc-dialog-surface {
-  border-radius: 10px !important;
-  padding: 20px 25px;
+  border-radius: var(--radius-xl) !important;
+  padding: 24px 28px;
 }
 
 .mat-mdc-dialog-title {
-  color: #2c3e50;
+  color: var(--primary) !important;
   text-align: center;
+  font-weight: 700 !important;
+  font-size: 1.2rem !important;
 }
 
 .mat-mdc-dialog-content {
-  padding-top: 10px;
+  padding-top: 12px;
 }
 
 .mat-mdc-form-field {
@@ -21,14 +23,20 @@
 }
 
 .mat-mdc-raised-button.mat-primary {
-  background-color: #84abd1 !important;
-  border-radius: 8px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-light)) !important;
+  border-radius: var(--radius-md) !important;
+  transition: all var(--transition-base);
 }
 
 .mat-mdc-raised-button.mat-primary:hover {
-  background-color: #6c9fc7 !important;
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
 }
 
 button[mat-button] {
-  border-radius: 8px;
+  border-radius: var(--radius-md) !important;
+  transition: all var(--transition-base) !important;
+}
+button[mat-button]:hover {
+  background: rgba(var(--accent-rgb), 0.06) !important;
 }

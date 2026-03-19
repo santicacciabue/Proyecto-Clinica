@@ -1,13 +1,36 @@
-.acciones-celdas{
-    display: flex;
-    align-items: center;
-    margin-top: 3px;
+.gestion-container {
+  padding: 8px;
 }
 
-.btnGest{
-   margin: 12px;
-    font-size: 0.9rem;
-    border: none;
-    border-radius: 10px;
-    background-color: #84abd1 !important;
+.gestion-container .premium-card {
+  padding: 28px;
+}
+
+.actions-bar {
+  margin-bottom: 20px;
+}
+
+.acciones-celdas {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.btn-sm {
+  padding: 6px 14px !important;
+  font-size: 0.82rem !important;
+}
+
+@media (max-width: 767px) {
+  .gestion-container {
+    padding: 4px;
+  }
+  .gestion-container .premium-card {
+    padding: 16px;
+  }
+  .acciones-celdas {
+    flex-direction: column;
+    gap: 6px;
+  }
 }

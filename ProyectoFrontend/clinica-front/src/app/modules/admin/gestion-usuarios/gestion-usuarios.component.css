@@ -1,32 +1,65 @@
-/* src/app/modules/admin/gestion-usuarios/gestion-usuarios.component.css */
-
-/* Estilo para ocultar el grupo de especialidad cuando no se necesita */
-.hidden-field {
-    display: none !important;
-    visibility: hidden;
+.gestion-usuarios-container {
+  padding: 8px;
 }
-/* Estilo para que los inputs en SweetAlert se vean mejor */
-.swal2-content-admin input, 
+
+.actions-bar {
+  margin-bottom: 20px;
+}
+
+.filters-bar {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.filter-field {
+  flex: 1;
+  min-width: 220px;
+}
+
+/* SweetAlert content admin overrides */
+.swal2-content-admin input,
 .swal2-content-admin select {
-    margin-bottom: 10px;
-    width: 100%;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #d9d9d9;
+  margin-bottom: 10px;
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: var(--radius-md);
+  border: 1.5px solid var(--border);
+  font-family: inherit;
+  font-size: 0.9rem;
+  transition: border-color var(--transition-base);
+}
+.swal2-content-admin input:focus,
+.swal2-content-admin select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.12);
 }
 .swal2-content-admin .swal2-label {
-    display: block;
-    text-align: left;
-    margin-top: 5px;
-    font-weight: bold;
-    margin-bottom: 5px;
-    font-weight: 600;
+  display: block;
+  text-align: left;
+  margin-top: 8px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: var(--text-primary);
+  font-size: 0.88rem;
 }
 
-.btnGest{
-   margin: 12px;
-    font-size: 0.9rem;
-    border: none;
-    border-radius: 10px;
-    background-color: #84abd1 !important;
+.hidden-field {
+  display: none !important;
+  visibility: hidden;
+}
+
+@media (max-width: 767px) {
+  .gestion-usuarios-container {
+    padding: 4px;
+  }
+  .filters-bar {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .filter-field {
+    min-width: 100%;
+  }
 }

@@ -11,9 +11,9 @@
                 <p>Como paciente registrado puedes solicitar turnos, ver tus turnos agendados y modificar tus datos personales.</p>
             </mat-card-content>
 
-            <mat-card-actions>
-                <button mat-flat-button style="background-color: #84abd1; margin: 5px;" (click)="abrirLogin()">Iniciar Sesión</button>
-                <button mat-stroked-button style="margin: 5px;" routerLink="/auth/register">Registrarse</button> 
+            <mat-card-actions class="flex justify-center items-center gap-4 w-full">
+                <button mat-flat-button style="background-color: #84abd1;" (click)="abrirLogin()">Iniciar Sesión</button>
+                <button mat-stroked-button routerLink="/auth/register">Registrarse</button> 
             </mat-card-actions>
         </mat-card>
     </ng-container>

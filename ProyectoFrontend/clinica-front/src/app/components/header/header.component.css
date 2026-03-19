@@ -1,16 +1,23 @@
 .header-toolbar {
   color: white;
-  padding: 0 16px;
+  padding: 0 24px;
   height: 64px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  background-color: #34495e;
+  background: linear-gradient(135deg, var(--sidebar-from), var(--sidebar-via), var(--sidebar-to)) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
   display: flex;
   flex-wrap: wrap;
+  position: relative;
+  z-index: 100;
 }
 
 .menu-button {
   margin-right: 8px;
   display: none;
+  color: rgba(255,255,255,0.9) !important;
+  transition: all var(--transition-base);
+}
+.menu-button:hover {
+  background: rgba(255,255,255,0.1) !important;
 }
 
 @media (max-width: 767px) {
@@ -20,15 +27,22 @@
 }
 
 .title {
-  font-size: 1.4rem;
-  font-weight: 500;
+  font-size: 1.35rem;
+  font-weight: 700;
   margin-right: 16px;
+  letter-spacing: 0.5px;
+  transition: opacity var(--transition-base);
+}
+.title:hover {
+  opacity: 0.85;
 }
 
 .welcome-text {
   margin-right: 20px;
-  font-style: italic;
-  opacity: 0.9;
+  font-style: normal;
+  opacity: 0.7;
+  font-size: 0.9rem;
+  font-weight: 300;
 }
 
 .spacer {
@@ -38,35 +52,44 @@
 .header-actions {
   display: flex;
   align-items: center;
-  gap: 8px;
-}
-
-.header-actions button {
-  margin-left: 8px;
+  gap: 10px;
 }
 
 .header-btn {
   font-weight: 500;
-  padding: 0 12px;
+  padding: 0 16px;
+  border-radius: var(--radius-md) !important;
+  transition: all var(--transition-base) !important;
+  font-size: 0.88rem;
+  letter-spacing: 0.3px;
 }
 
 button[mat-flat-button] {
-  background-color: var(--color-accent);
-  color: var(--color-text-dark);
+  background-color: var(--accent) !important;
+  color: #ffffff !important;
+}
+button[mat-flat-button]:hover {
+  background-color: var(--accent-light) !important;
+  box-shadow: 0 4px 12px rgba(var(--accent-rgb), 0.3);
 }
 
 button[mat-stroked-button] {
-  border-color: var(--color-accent);
-  color: var(--color-accent);
+  border-color: rgba(255,255,255,0.5) !important;
+  color: #ffffff !important;
   background-color: transparent;
+}
+button[mat-stroked-button]:hover {
+  border-color: #ffffff !important;
+  background-color: rgba(255,255,255,0.08) !important;
 }
 
 .user-info {
   display: flex;
   align-items: center;
   margin-right: 16px;
-  font-size: 1rem;
+  font-size: 0.92rem;
   font-weight: 400;
+  opacity: 0.9;
 }
 
 .user-info span {
@@ -74,14 +97,24 @@ button[mat-stroked-button] {
 }
 
 mat-toolbar button[mat-button] {
-  color: var(--color-accent);
+  color: var(--accent) !important;
   font-weight: 500;
+  border-radius: var(--radius-md) !important;
+  transition: all var(--transition-base) !important;
+}
+mat-toolbar button[mat-button]:hover {
+  background: rgba(var(--accent-rgb), 0.12) !important;
 }
 
 .user-info mat-icon {
-  color: white;
+  color: rgba(255,255,255,0.7);
+  transition: color var(--transition-base);
+}
+.user-info mat-icon:hover {
+  color: var(--accent);
 }
 
+/* ── Mobile Menu ── */
 @media (max-width: 767px) {
   .header-toolbar {
     padding: 0 12px;
@@ -97,16 +130,19 @@ mat-toolbar button[mat-button] {
     top: 64px;
     left: 0;
     right: 0;
-    background-color: #2c3e50;
+    background: linear-gradient(180deg, var(--sidebar-via), var(--sidebar-to));
     flex-direction: column;
-    padding: 16px;
+    padding: 20px;
     gap: 12px;
-    transform: translateY(-100%);
+    transform: translateY(-110%);
     opacity: 0;
     visibility: hidden;
-    transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.3s;
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.35s ease,
+                visibility 0.35s;
     z-index: 1000;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(16px);
   }
 
   .header-actions.mobile-open {
@@ -118,32 +154,34 @@ mat-toolbar button[mat-button] {
   .header-actions button {
     width: 100%;
     margin-left: 0;
-    margin-bottom: 8px;
+    margin-bottom: 4px;
   }
 
   .header-btn {
     width: 100%;
+    padding: 10px 16px;
   }
 
   .user-info {
     flex-direction: column;
     margin-right: 0;
     margin-bottom: 8px;
+    gap: 4px;
   }
 
   .user-info span {
     margin-right: 0;
-    margin-bottom: 8px;
   }
 }
 
+/* ── Tablet ── */
 @media (min-width: 768px) and (max-width: 1023px) {
   .header-toolbar {
     padding: 0 20px;
   }
 
   .title {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
   }
 
   .welcome-text {
@@ -151,21 +189,16 @@ mat-toolbar button[mat-button] {
   }
 
   .header-actions {
-    gap: 4px;
-  }
-
-  .header-actions button {
-    margin-left: 4px;
-    font-size: 0.9rem;
+    gap: 6px;
   }
 
   .header-btn {
-    padding: 0 8px;
-    font-size: 0.85rem;
+    padding: 0 10px;
+    font-size: 0.84rem;
   }
 
   .user-info {
-    font-size: 0.9rem;
-    margin-right: 12px;
+    font-size: 0.88rem;
+    margin-right: 8px;
   }
 }

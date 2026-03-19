@@ -1,10 +1,9 @@
-/* src/styles.css (o styles.scss) */
-
-html, body {
+html,
+body {
   height: 100%;
   margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
-  background-color: #f4f4f4;
+  font-family: 'Inter', 'Roboto', 'Helvetica Neue', sans-serif;
+  background-color: var(--bg);
 }
 
 .app-container {
@@ -15,29 +14,36 @@ html, body {
 
 main {
   flex: 1;
-  padding: 20px;
   max-width: 1200px;
   width: 100%;
   margin: 0 auto;
   box-sizing: border-box;
+  animation: fadeIn 0.4s ease;
 }
 
 main:has(.admin-container),
 main:has(.layout),
+main:has(.layout-with-sidebar),
 main:has(.operador-container) {
-    max-width: none;
-    width: 100%;
-    margin: 0;
-    padding: 0;
+  max-width: none;
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 main.admin-layout-override {
-    max-width: none;
-    width: 100%;
-    margin: 0;
-    padding: 0;
+  max-width: none;
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 button:hover {
   cursor: pointer;
+}
+
+@media (max-width: 767px) {
+  main {
+    padding: 16px 12px;
+  }
 }

@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { LayoutModule } from '@angular/cdk/layout';
 
 import { MedicoRoutingModule } from './medico-routing.module';
 import { TurnosProgramadosComponent } from './turnos-programados/turnos-programados.component';
@@ -21,7 +23,9 @@ import { MedicoLayoutComponent } from './medico-layout/medico-layout.component';
     MedicoRoutingModule,
     FormsModule,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
+    MatSidenavModule,
+    LayoutModule
   ]
 })
 export class MedicoModule { }

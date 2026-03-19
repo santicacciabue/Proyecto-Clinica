@@ -1,7 +1,7 @@
-<div class="app-container">
+<div class="app-container min-h-screen flex flex-col">
     <app-header></app-header>
 
-    <main [class.admin-layout-override]="isAdminRoute"> 
+    <main [class.admin-layout-override]="isSidebarRoute" class="flex-grow"> 
         <router-outlet></router-outlet>
     </main>
 
